@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Key Responder Skills — Module 1: Preparing for Interactions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+html{font-size:clamp(16px,0.42vw + 13.4px,24px)}
+@media (max-width:760px){html{font-size:17px}}
+:root{
+  --trust:#FDDA64; --tranquil:#B8D8EB; --team:#235B4E; --taupe:#847770;
+  --header:#222222; --body:#424759; --bg:#F0F2F5; --border:#D8DEEB; --white:#fff;
+  --convo:#F1F8FC; --convo-line:#D3E7F3; --alert:#C0392B; --alert-bg:#FBEDEB;
+  --sans:"Roboto","Helvetica Neue",Arial,sans-serif;
+  --serif:"Lora",Georgia,"Times New Roman",serif;
+  --col:46rem;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;scroll-behavior:smooth}
+body{font-family:var(--serif);color:var(--body);background:var(--white);font-size:1.06rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.sans{font-family:var(--sans);color:var(--header);font-weight:500}
+button{font:inherit}
+:focus-visible{outline:2px solid var(--team);outline-offset:2px;border-radius:99px}
+.skip{position:absolute;left:-9999px;background:var(--header);color:#fff;padding:10px 16px;z-index:200}
+.skip:focus{left:0;top:0}
+
+/* ---------- logo ---------- */
+.lockup{display:flex;align-items:center;gap:.7rem}
+.mark{background:var(--trust);color:var(--header);border-radius:50%;font-family:var(--sans);font-weight:700;display:grid;place-items:center;flex:0 0 auto;letter-spacing:-.02em}
+.mark.lg{width:5rem;height:5rem;font-size:1.5rem}
+.mark.md{width:2.5rem;height:2.5rem;font-size:.78rem}
+.wordmark{font-family:var(--sans);font-weight:700;color:var(--header);line-height:1.12}
+.wordmark.lg{font-size:1.5rem}
+.wordmark.md{font-size:.8rem}
+
+/* ---------- top bar ---------- */
+.top{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.top .row{max-width:78rem;margin:0 auto;padding:.6rem 1.4rem;display:flex;align-items:center;gap:1rem}
+.top .name{font-family:var(--sans);font-size:.82rem;color:var(--taupe);letter-spacing:.02em;line-height:1.3}
+.top .name b{display:block;color:var(--header);font-weight:500;font-size:.95rem}
+.top .spacer{flex:1}
+.menu{font-family:var(--sans);font-size:.85rem;background:none;border:1.5px solid var(--border);border-radius:99px;padding:.42rem 1rem;cursor:pointer;color:var(--header);display:flex;align-items:center;gap:.5rem}
+.menu:hover{border-color:var(--trust)}
+.menu .bars{display:inline-flex;flex-direction:column;gap:3px}
+.menu .bars i{width:14px;height:2px;background:var(--header);border-radius:2px}
+.track{height:3px;background:var(--bg)}
+.fill{height:100%;width:0;background:var(--trust);transition:width .12s linear}
+
+.drawer{position:fixed;inset:0;z-index:99;background:rgba(34,34,34,.35);opacity:0;pointer-events:none;transition:opacity .25s}
+.drawer.on{opacity:1;pointer-events:auto}
+.drawer .panel2{position:absolute;right:0;top:0;bottom:0;width:min(23rem,88vw);background:var(--white);padding:5rem 1.6rem 2rem;overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.drawer.on .panel2{transform:none}
+.drawer h4{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);margin:0 0 .8rem}
+.drawer a{display:block;font-family:var(--sans);font-size:.95rem;color:var(--body);text-decoration:none;padding:.6rem .8rem;border-radius:.7rem;line-height:1.35}
+.drawer a:hover{background:var(--bg);color:var(--header)}
+.drawer a .n{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe)}
+
+/* ---------- hero ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 1.4rem 9rem;position:relative;overflow:hidden}
+.hero .in{max-width:var(--col);margin:0 auto;width:100%;position:relative;z-index:1}
+.hero .sweep{position:absolute;left:-10%;right:-10%;bottom:-6rem;height:18rem;background:var(--trust);border-radius:100% 100% 0 0 / 100% 100% 0 0}
+.hero .circ{position:absolute;right:-3rem;bottom:0;width:15rem;height:15rem;border-radius:50%;background:var(--tranquil)}
+.hero .lockup{margin-bottom:2.6rem}
+.hero .kick{font-family:var(--sans);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--taupe);margin:0 0 .7rem}
+.hero h1{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.1;margin:0 0 .6rem;letter-spacing:-.5px}
+.hero .sub{font-family:var(--sans);font-size:1.15rem;color:var(--header);margin:0 0 1.4rem}
+.hero .meta{font-family:var(--sans);font-size:.85rem;color:var(--taupe);margin:0 0 2rem}
+.scrollcue{display:inline-flex;align-items:center;gap:.7rem;background:var(--header);color:#fff;border:0;border-radius:99px;padding:.75rem 1.6rem;font-family:var(--serif);font-size:1rem;cursor:pointer}
+.scrollcue:hover{transform:translateY(-1px)}
+
+/* ---------- stream ---------- */
+main{padding-bottom:6rem}
+.col{max-width:var(--col);margin:0 auto;padding:0 1.4rem}
+.blk{margin:0 auto;padding:2.2rem 0 0;scroll-margin-top:5rem}
+.rev{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.rev.in{opacity:1;transform:none}
+p{margin:0 0 1rem}
+h2{font-size:1.9rem;line-height:1.2;margin:0 0 .9rem;letter-spacing:-.3px}
+h3{font-size:1.15rem;margin:1.6rem 0 .6rem}
+.eyebrow{font-family:var(--sans);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--taupe);margin:0 0 .5rem}
+strong{font-weight:600;color:var(--header)}
+ul.brand,ol.brand{margin:0 0 1rem;padding:0;list-style:none}
+ul.brand li{position:relative;padding-left:1.5rem;margin-bottom:.55rem}
+ul.brand li::before{content:"";position:absolute;left:.15rem;top:.72em;width:.5rem;height:.5rem;border-radius:50%;background:var(--trust)}
+ol.brand{counter-reset:b}
+ol.brand li{position:relative;padding-left:2.6rem;margin-bottom:.8rem;counter-increment:b}
+ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--trust);color:var(--header);font-family:var(--sans);font-weight:500;font-size:.85rem;display:grid;place-items:center}
+
+.panel{background:var(--bg);border:1px solid var(--border);border-radius:1.2rem;padding:1.1rem 1.35rem;margin:0 0 1rem;position:relative;overflow:hidden}
+.panel.blue{background:#EAF4FA;border-color:#CFE5F2}
+.panel.blue::after{content:"";position:absolute;right:-2rem;top:-2.6rem;width:6rem;height:6rem;border-radius:50%;background:rgba(255,255,255,.55)}
+.panel h4{margin:0 0 .35rem;font-size:1rem}
+.panel p{margin:0;position:relative;z-index:1}
+.note{font-style:italic;border-left:3px solid var(--taupe);padding:.15rem 0 .15rem 1rem;margin:0 0 1rem}
+.note p{margin:0}
+.keycall{border-left:.3rem solid var(--trust);background:var(--bg);border-radius:0 1rem 1rem 0;padding:1rem 1.3rem;margin:.4rem 0 1rem}
+.keycall p{margin:0 0 .5rem;color:var(--header);font-family:var(--sans);font-size:1.02rem;line-height:1.5}
+.keycall p:last-child{margin:0}
+
+.cards{display:grid;gap:.7rem;margin:0 0 1rem}
+.cards[data-cols="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cards[data-cols="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cards[data-cols="5"]{grid-template-columns:repeat(5,minmax(0,1fr))}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:1.1rem;padding:.85rem .95rem;display:flex;gap:.7rem;align-items:flex-start;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-2px);border-color:var(--trust)}
+.card span{font-size:.97rem;line-height:1.5}
+.card .mk{flex:0 0 auto;font-family:var(--sans);font-size:.8rem;font-weight:500;color:var(--taupe);padding-top:.12rem}
+.card .mk.dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--trust);margin-top:.6rem}
+.cards.numbered .card{align-items:center}
+.cards.tight .card{padding:.6rem .8rem}
+
+.flips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:.4rem 0 1rem}
+.flip{perspective:1000px;height:15rem}
+.flip .inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;cursor:pointer;background:none;border:0;padding:0;text-align:left;font:inherit}
+.flip.on .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:1.2rem;padding:1.2rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;gap:.7rem;overflow:hidden}
+.face .n{font-family:var(--sans);font-weight:500;font-size:1.2rem;color:var(--header);opacity:.45;line-height:1}
+.face .t{font-family:var(--sans);font-weight:500;font-size:1.05rem;color:var(--header);line-height:1.3;margin-top:auto}
+.face .hint{font-family:var(--sans);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:var(--header);opacity:.55;line-height:1.3}
+.face.f{background:var(--trust)}
+.face.b{background:var(--bg);border:1px solid var(--border);transform:rotateY(180deg)}
+.face.b p{font-size:.95rem;line-height:1.55;margin:0 0 auto}
+.face.b .hint{opacity:.75}
+.flip .inner:hover .face.f{filter:brightness(1.03)}
+
+.tabs{margin:0 0 1rem}
+.tablist{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem}
+.tablist button{font-family:var(--sans);font-size:.85rem;border:1.5px solid var(--border);background:var(--white);color:var(--body);border-radius:99px;padding:.42rem 1rem;cursor:pointer}
+.tablist button[aria-selected="true"]{background:var(--trust);border-color:var(--trust);color:var(--header);font-weight:500}
+.tabpanel{background:var(--bg);border:1px solid var(--border);border-radius:1.2rem;padding:1.1rem 1.35rem}
+.tabpanel h4{margin:0 0 .35rem;font-size:1rem}
+.tabpanel p{margin:0}
+
+.acc{border-top:1px solid var(--border);margin:0 0 1rem}
+.acc-item{border-bottom:1px solid var(--border)}
+.acc-item>button{width:100%;display:flex;gap:.8rem;align-items:center;background:none;border:0;cursor:pointer;padding:.85rem .2rem;text-align:left;font-family:var(--sans);font-size:1rem;color:var(--header);font-weight:500;line-height:1.35}
+.acc-item>button .plus{margin-left:auto;flex:0 0 auto;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--trust);display:grid;place-items:center;position:relative;transition:transform .25s}
+.acc-item>button .plus::before,.acc-item>button .plus::after{content:"";position:absolute;background:var(--header);border-radius:2px}
+.acc-item>button .plus::before{width:.62rem;height:2px}
+.acc-item>button .plus::after{width:2px;height:.62rem;transition:opacity .2s}
+.acc-item.on>button .plus{transform:rotate(180deg)}
+.acc-item.on>button .plus::after{opacity:0}
+.acc-body{display:none;padding:0 2.4rem .9rem .2rem}
+.acc-item.on .acc-body{display:block}
+.acc-body p{margin:0;font-size:.98rem}
+
+.reveal-list{display:flex;flex-direction:column;gap:.5rem;margin:0 0 .8rem}
+.rv{display:flex;gap:.7rem;align-items:flex-start;background:var(--bg);border:1px solid var(--border);border-radius:1rem;padding:.7rem .95rem}
+.rv .d{width:.5rem;height:.5rem;border-radius:50%;background:var(--trust);flex:0 0 auto;margin-top:.6rem}
+.rv span{font-size:.97rem;line-height:1.5}
+.btn{font-family:var(--serif);font-size:1rem;border-radius:99px;padding:.6rem 1.5rem;border:1.5px solid transparent;cursor:pointer;background:var(--header);color:#fff}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:var(--white);color:var(--header);border-color:var(--border)}
+.btn.ghost:hover{border-color:var(--header);background:var(--white)}
+.fb.no .btn.ghost{border-color:#E4B7B1}
+.fb.no .btn.ghost:hover{border-color:var(--alert);color:var(--alert)}
+.fb.no :focus-visible{outline-color:var(--alert)}
+.btn.yellow{background:var(--trust);color:var(--header)}
+.btn.small{font-size:.88rem;padding:.5rem 1.15rem}
+
+/* ---------- section divider ---------- */
+.divider{margin:4.5rem 0 1rem;padding:3.2rem 1.4rem;border-top:1px solid var(--border);border-bottom:.5rem solid var(--trust);background:var(--white);scroll-margin-top:4.5rem}
+.divider[data-tone="tranquil"]{border-bottom-color:var(--tranquil)}
+.divider .in{max-width:var(--col);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 9.5rem;gap:2rem;align-items:center}
+.divider .num{font-family:var(--sans);font-weight:500;font-size:3.8rem;line-height:1;color:var(--trust);margin:0 0 .1rem}
+.divider[data-tone="tranquil"] .num{color:var(--tranquil)}
+.divider .rule{width:3.2rem;height:.32rem;border-radius:99px;background:var(--trust);margin:0 0 .9rem}
+.divider[data-tone="tranquil"] .rule{background:var(--tranquil)}
+.divider .kick{font-family:var(--sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--taupe);margin:0 0 .4rem}
+.divider h2{font-size:2.3rem;margin:0 0 .6rem}
+.divider .line{margin:0;max-width:40ch}
+.divider .art{width:100%;height:auto}
+
+/* ---------- knowledge check ---------- */
+.check{background:#F7F8FB;border:1px solid var(--border);border-radius:1.4rem;padding:1.4rem 1.5rem;margin:1rem 0}
+.check .hint{font-family:var(--serif);font-style:italic;color:var(--taupe);font-size:.98rem;margin:-.4rem 0 .9rem}
+.check .prompt{font-family:var(--sans);font-size:1.1rem;color:var(--header);font-weight:500;margin:0 0 .9rem;line-height:1.4}
+.check .prompt.scenario{font-family:var(--serif);font-weight:400;color:var(--body);font-size:1.02rem;line-height:1.6;margin:0 0 .8rem}
+.check .prompt.ask{margin:0 0 .9rem}
+.opts{display:flex;flex-direction:column;gap:.55rem}
+.opt{display:flex;gap:.8rem;align-items:flex-start;text-align:left;width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:1rem;padding:.75rem .9rem;cursor:pointer;color:var(--body);font-family:var(--serif);font-size:1rem;line-height:1.5;transition:border-color .18s,background .18s}
+.opt:hover:not(:disabled){border-color:var(--trust)}
+.opt:disabled{cursor:default}
+.opt .key{flex:0 0 auto;width:1.6rem;height:1.6rem;border-radius:50%;background:#E6E9EF;color:var(--header);font-family:var(--sans);font-size:.82rem;font-weight:500;display:grid;place-items:center;margin-top:.05rem}
+.opt[data-picked="1"]{border-color:var(--header)}
+.opt[data-picked="1"] .key{background:var(--header);color:#fff}
+.opt[data-outcome="correct"]{border-color:var(--team);border-width:2px;background:#EAF3EF}
+.opt[data-outcome="correct"] .key{background:var(--team);color:#fff}
+.opt[data-outcome="info"]{border-color:var(--tranquil)}
+.opt[data-outcome="info"] .key{background:var(--tranquil)}
+.opt[data-outcome="dim"]{opacity:.5}
+.fb{border-radius:1rem;padding:.85rem 1.1rem;margin-top:.8rem;font-size:1rem}
+.fb p{margin:0}
+.fb.yes{background:#E4EFEA;border-left:.3rem solid var(--team);color:#1D4A40}
+.fb.no{background:var(--alert-bg);border-left:.3rem solid var(--alert)}
+.fb.info{background:#EAF4FA;border-left:.3rem solid #7FB4D4}
+.fb .cards{margin:.7rem 0 0}
+.fb .card{background:var(--white);border-color:#CFE5F2} .fb.info .head{color:#2C6C90}
+
+/* ---------- transcripts ---------- */
+.vig{border:1px solid var(--border);border-radius:1.4rem;padding:1.3rem 1.4rem;margin:1rem 0 0}
+.vig-head{display:flex;align-items:center;gap:.8rem;margin:0 0 1rem;flex-wrap:wrap}
+.avatar{width:2.6rem;height:2.6rem;border-radius:50%;background:var(--tranquil);display:grid;place-items:center;font-family:var(--sans);font-weight:500;color:var(--header)}
+.vig-head .nm{font-family:var(--sans);font-size:1.1rem;color:var(--header);font-weight:500;display:block;line-height:1.2}
+.vig-head .sub{font-family:var(--sans);font-size:.78rem;color:var(--taupe)}
+.chip{font-family:var(--sans);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;padding:.35rem .8rem;border-radius:99px;background:var(--trust);color:var(--header)}
+.chip.blue{background:var(--tranquil)}
+.thread{background:var(--convo);border:1px solid var(--convo-line);border-radius:1.1rem;padding:1rem 1.15rem;margin:0 0 1rem}
+.thread .ch{font-family:var(--sans);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--taupe);font-weight:500;margin:0 0 .7rem}
+.line{margin:0 0 .7rem}
+.line:last-child{margin-bottom:0}
+.line .spk{font-family:var(--sans);font-size:.78rem;font-weight:500;color:var(--header);display:block;margin-bottom:.15rem}
+.line .meta{font-style:italic;color:var(--taupe)}
+.bubble{max-width:88%;padding:.65rem .9rem;border-radius:1.1rem;margin:0 0 .45rem;font-size:1rem;line-height:1.55}
+.bubble.them{background:var(--white);border:1px solid var(--convo-line);border-bottom-left-radius:.35rem}
+.bubble.us{background:var(--tranquil);border-bottom-right-radius:.35rem;margin-left:auto;color:var(--header)}
+.bubble .spk{font-family:var(--sans);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);display:block;margin-bottom:.2rem}
+.sysline{font-style:italic;color:var(--taupe);font-size:.95rem;margin:.2rem 0 .7rem;text-align:center}
+.typing{display:inline-flex;gap:5px;padding:.7rem .9rem;background:var(--white);border:1px solid var(--convo-line);border-radius:1.1rem}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--taupe);opacity:.5;animation:blink 1.3s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:.9;transform:translateY(-3px)}}
+.step{font-family:var(--sans);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);font-weight:500;display:flex;align-items:center;gap:.6rem;margin:1.4rem 0 .6rem}
+.step .n{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--trust);color:var(--header);display:grid;place-items:center;font-size:.75rem;letter-spacing:0}
+.locked{opacity:.45;pointer-events:none}
+.gate{max-width:var(--col);margin:2.6rem auto 1rem;padding:1.4rem 1.4rem 0;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:.7rem;text-align:center}
+.gate .btn{max-width:100%}
+.gate .back{background:none;border:0;color:var(--taupe);font-family:var(--sans);font-size:.85rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.gate .back:hover{color:var(--header)}
+.pagehead{max-width:var(--col);margin:0 auto;padding:1.4rem 1.4rem 0;font-family:var(--sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe)}
+.drawer a[aria-current="true"]{background:var(--bg);color:var(--header);font-weight:500}
+.drawer a .tick{float:right;color:var(--trust)}
+
+/* ---------- video / reflection / refs / end ---------- */
+.video .frame{position:relative;aspect-ratio:16/9;border-radius:1.3rem;background:var(--bg);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;margin:0 0 1rem}
+.video .play{width:3.6rem;height:3.6rem;border-radius:50%;background:var(--trust);position:relative}
+.video .play::after{content:"";position:absolute;left:53%;top:50%;transform:translate(-50%,-50%);border-left:1.05rem solid var(--header);border-top:.65rem solid transparent;border-bottom:.65rem solid transparent}
+.video .lbl{font-family:var(--sans);font-size:.85rem;color:var(--taupe)}
+.reflect label{display:block;font-family:var(--sans);font-size:1rem;color:var(--header);font-weight:500;margin:0 0 .45rem;line-height:1.4}
+.field{margin-bottom:1rem}
+textarea{width:100%;min-height:5rem;border:1.5px solid var(--border);border-radius:1rem;padding:.8rem .9rem;font-family:var(--serif);font-size:1rem;color:var(--body);line-height:1.55;resize:vertical;background:var(--white)}
+textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(253,218,100,.4)}
+.refs p{font-size:.9rem;line-height:1.5;margin:0 0 .6rem;padding-left:1.4rem;text-indent:-1.4rem}
+.end{margin-top:4rem;padding:4rem 1.4rem 5rem;position:relative;overflow:hidden;border-top:1px solid var(--border)}
+.end .in{max-width:var(--col);margin:0 auto;position:relative;z-index:1}
+.end .sweep{position:absolute;left:-10%;right:-10%;bottom:-7rem;height:14rem;background:var(--trust);border-radius:100% 100% 0 0 / 100% 100% 0 0}
+.end h2{font-size:2.1rem}
+.foot{padding:1.2rem 1.4rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.8rem;justify-content:center;font-family:var(--sans);font-size:.78rem;color:var(--taupe)}
+
+@media (max-width:760px){
+  .cards[data-cols="2"],.cards[data-cols="3"],.cards[data-cols="5"]{grid-template-columns:1fr}
+  .flips{grid-template-columns:1fr}
+  .flip{height:9rem}
+  .face{padding:1rem}
+  .divider .in{grid-template-columns:1fr}
+  .divider .art{max-width:11rem}
+  .divider h2{font-size:1.8rem}
+  .top .name{display:none}
+  .top .row{padding:.5rem 1rem;gap:.7rem}
+  .wordmark.md{font-size:.72rem}
+  .menu{padding:.38rem .8rem;font-size:.8rem}
+  .hero{padding:6rem 1.2rem 8rem}
+  .blk{padding-top:1.8rem}
+  .gate .btn{white-space:normal}
+  .gate{margin-top:2rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rev{opacity:1;transform:none}}
+
+.audio{margin:0 0 1rem}
+.audio .bar{display:flex;align-items:center;gap:.9rem;background:var(--convo);border:1px solid var(--convo-line);border-radius:1.1rem;padding:.75rem 1rem}
+.audio .play{flex:0 0 auto;width:2.5rem;height:2.5rem;border-radius:50%;background:var(--trust);position:relative}
+.audio .play::after{content:"";position:absolute;left:54%;top:50%;transform:translate(-50%,-50%);border-left:.72rem solid var(--header);border-top:.45rem solid transparent;border-bottom:.45rem solid transparent}
+.audio .meta{min-width:0}
+.audio .ttl{display:block;font-family:var(--sans);font-size:.9rem;color:var(--header);line-height:1.3}
+.audio .sub{display:block;font-family:var(--sans);font-size:.75rem;color:var(--taupe)}
+.audio .wave{flex:1;height:1.6rem;display:flex;align-items:center;gap:2px;opacity:.45;min-width:3rem}
+.audio .wave span{flex:1;background:var(--taupe);border-radius:99px}
+.transbtn{margin:.6rem 0 0;font-family:var(--sans);font-size:.85rem;background:none;border:1.5px solid var(--border);border-radius:99px;padding:.38rem 1rem;cursor:pointer;color:var(--header)}
+.transbtn:hover{border-color:var(--trust)}
+.audio .thread{margin:.7rem 0 0}
+@media (max-width:760px){ .audio .wave{display:none} }
+</style>
+</head>
+<body>
+<a class="skip" href="#stream">Skip to module content</a>
+
+<header class="top">
+  <div class="row">
+    <div class="lockup"><div class="mark md" aria-hidden="true">9&middot;8&middot;8</div>
+      <div class="wordmark md">Suicide Crisis<br>Helpline</div></div>
+    <div class="name">Key Responder Skills<b>Module 1 &middot; Preparing for Interactions</b></div>
+    <div class="spacer"></div>
+    <span class="name" id="pct">0%</span>
+    <button class="menu" id="menubtn" aria-expanded="false"><span class="bars"><i></i><i></i><i></i></span> Contents</button>
+  </div>
+  <div class="track"><div class="fill" id="fill"></div></div>
+</header>
+
+<div class="drawer" id="drawer">
+  <div class="panel2">
+    <h4>Module contents</h4>
+    <nav id="toc"></nav>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="sweep"></div><div class="circ"></div>
+  <div class="in">
+    <div class="lockup"><div class="mark lg" aria-hidden="true">9&middot;8&middot;8</div>
+      <div class="wordmark lg">Suicide Crisis<br>Helpline</div></div>
+    <p class="kick">Key Responder Skills &middot; Module 1</p>
+    <h1>Preparing for Interactions</h1>
+    <p class="meta">Estimated completion time: 30 minutes</p>
+    <button class="scrollcue" id="begin">Begin the module</button>
+  </div>
+</section>
+
+<main id="stream"></main>
+
+<div class="foot">
+  <div class="mark md" aria-hidden="true" style="width:1.9rem;height:1.9rem;font-size:.58rem">9&middot;8&middot;8</div>
+  <span>9-8-8 &middot; Canada's three-digit suicide crisis helpline</span>
+</div>
+
+<script>
+const SCREENS = [
+{sec:0, type:'cover'},
+
+{sec:0, type:'prose', eyebrow:'Module overview', title:'What this module is about', blocks:[
+  {p:`Every 9-8-8 interaction begins with uncertainty. You do not know who will reach out, what they will share, or what they may need from you.`, lede:true},
+  {p:`In this module, you will learn about how to prepare for these interactions and become comfortable with the unknown. Along the way, you will meet callers and texters whose experiences reflect the range of interactions you may encounter in your work. You will consider what each person may need in the opening moments of the interaction and select the best responses based on those needs.`},
+  {p:`You will also:`},
+  {cards:{cols:3, items:[
+    {t:`Compare your expectations with research on caller and texter presentations`},
+    {t:`Examine how social, cultural and structural circumstances shape distress and disclosure`},
+    {t:`Explore ways to prepare for the demands of the work`}
+  ]}},
+  {panel:{cls:'blue', p:`The callers and texters introduced in this module will return throughout the course.`}},
+  {note:`Estimated completion time: 30 minutes`}
+]},
+
+{sec:0, type:'prose', eyebrow:'Learning objectives', title:'By the end of this module, you will be able to:', blocks:[
+  {cards:{cols:1, num:true, items:[
+    {t:`Describe the range of reasons people contact 9-8-8, including loneliness, significant distress, and suicidal crisis`},
+    {t:`Explain why repeat contact is a normal part of the service`},
+    {t:`Explain why uncertainty is part of crisis line work and why tolerating it is a professional skill`},
+    {t:`Identify how social, cultural, and structural circumstances can shape distress and disclosure`},
+    {t:`Identify personal reactions that may arise during demanding interactions and strategies for managing them`}
+  ]}}
+]},
+
+{sec:0, type:'prose', eyebrow:'Module topics', title:'Three topics', blocks:[
+  {p:`Turn each card to see what the topic covers.`, lede:true},
+  {flip:[
+    {front:`Preparing for the interaction`, back:`How becoming comfortable with uncertainty can be developed as a professional skill.`},
+    {front:`How callers and texters present`, back:`How the range of caller and texter needs and experiences may appear in your work.`},
+    {front:`Understanding context`, back:`How social, cultural, and structural circumstances influence distress and disclosure.`}
+  ]}
+]},
+
+/* ---------------- TOPIC 1 ---------------- */
+{sec:1, type:'section', num:'01', kicker:'Topic 1', art:'a',
+ title:`Preparing for the interaction`, line:`How becoming comfortable with uncertainty can be developed as a professional skill.`},
+
+{sec:1, type:'prose', eyebrow:'Topic 1', title:'What you cannot know in advance', blocks:[
+  {p:`When you answer a 9-8-8 call or text, you usually know very little about the person. There is often no file, no background information, and no shared history to guide you. For many people, it may be the first and only time they contact the service.`, lede:true},
+  {p:`During an interaction, it is the person who reaches out that decides what to share, when to share it, and where the conversation will go. As a result, there are <strong>many things you cannot predict</strong> in advance:`},
+  {cards:{cols:3, items:[
+    {t:`A person may begin with one concern and move toward something very different.`},
+    {t:`Difficult information may emerge without warning, sometimes in the first sentence.`},
+    {t:`The interaction may end without you knowing how the person experienced it or what happened afterward.`}
+  ]}},
+  {key:[`This uncertainty is a <strong>defining part</strong> of crisis line work.`]}
+]},
+
+{sec:1, type:'prose', eyebrow:'Topic 1', title:'Tolerating uncertainty is a professional skill', blocks:[
+  {p:`Not knowing how an interaction will go can feel uncomfortable. That discomfort is normal.`, lede:true},
+  {p:`The good news is that tolerating uncertainty is not a personality trait that some responders naturally have and others do not. It is a <strong>professional skill</strong> that develops with practice.`},
+  {h3:`How does this skill develop?`},
+  {p:`The starting point is <strong>self-awareness.</strong> This means noticing what happens within yourself when you do not know what is coming.`},
+  {p:`Your reactions can provide useful information, but they should not determine how you respond.`},
+  {h3:`Responders commonly experience:`},
+  {reveal:{cta:`Reveal a common reaction`, more:`Reveal the next`, items:[
+    `Sadness`,`Powerlessness`,`Shock`,
+    `An urge to fix the situation quickly`,
+    `A desire to know how the interaction turned out`
+  ]}},
+  {panel:{cls:'blue', p:`These reactions do not mean that something has gone wrong. They are simply part of the work of a 9-8-8 responder. It's what you do with them that matters.`}}
+]},
+
+{sec:1, type:'prose', eyebrow:'Topic 1', title:'What that looks like in practice', blocks:[
+  {p:`In practice, developing this skill means:`, lede:true},
+  {acc:[
+    {q:`Setting realistic expectations of yourself`, a:`A lot of this discomfort comes from feeling that you need to resolve every situation or find out how it ends. Being clear about your role as a responder, and its limits, can make the uncertainty easier to tolerate.`},
+    {q:`Allowing a moment to unfold`, a:`Long pauses, vague openings, or silence can be difficult to interpret. Part of developing this skill means learning to wait a little longer before stepping in.`},
+    {q:`Reflecting after interactions`, a:`One way you can build the necessary self-awareness for this skill is by intentionally reflecting about how an interaction affected you and what shaped your responses.`},
+    {q:`Using debriefing, supervision, and peer support`, a:`This skill can also be developed by talking through a nuanced or difficult interaction with supervisors and peers. 9-8-8 provides resources for structured debriefing on our portal.`}
+  ]},
+  {p:`The more experience you have, the more natural this will become. As you encounter a wider range of interactions, fewer situations will feel entirely unfamiliar.`},
+  {key:[`The uncertainty does not disappear, but you become better able to recognize your reactions and remain present without letting them take control.`]}
+]},
+
+{sec:1, type:'mcq', eyebrow:'Activity', title:'What can you know from the first message?',
+ intro:[
+  {p:`The first message of an interaction is often all you have to guide your initial response. It can quickly shape what you expect and what you say next. Tolerating uncertainty means noticing what the message suggests and your reaction to it, without treating those first impressions as facts.`},
+  {p:`In this activity, you will apply these ideas to a real example. The example below is adapted from an interaction submitted by a 9-8-8 partner organization. As you read it, consider what the opening message tells you, what it might suggest, and what remains unknown.`},
+  {thread:{ch:'Text', lines:[{who:'them', spk:'Texter', t:`I'm not suicidal. Is there a different number I should use for just bad thoughts?`}]}}
+ ],
+ prompt:`Based only on this opening message, how would you expect the interaction to develop?`, hint:`Select the best answer.`,
+ options:[
+  {k:'A', t:`The interaction will probably remain focused on the difficult thoughts the texter mentioned, with suicide risk unlikely to become part of it.`, correct:false,
+   fb:`The opening message gives you useful information, but it does not tell you everything. Settling too quickly on an interpretation can make important information easier to miss.`},
+  {k:'B', t:`The interaction may take a different direction than what the first message suggests, particularly as trust begins to build.`, correct:true,
+   fb:`The opening message matters, but it is only the beginning. Staying curious gives the texter space to share more information about what is happening.`},
+  {k:'C', t:`The texter likely wants support for the difficult thoughts for now, then a referral to a more appropriate service later.`, correct:false,
+   fb:`You do not yet know where the interaction will lead. Deciding too early that another service is more appropriate can narrow your understanding before you have enough information.`}
+ ]},
+
+{sec:1, type:'prose', eyebrow:'Activity', title:'What happened next?', blocks:[
+  {p:`In the actual interaction, as the conversation continued and trust developed, the texter shared:`, lede:true},
+  {reveal:{cta:`Reveal what the texter shared`, more:`Reveal the next`, items:[
+    `A long history of self-harm and a current urge to self-harm`,
+    `A suicide attempt two months earlier`,
+    `A recent experience that had brought earlier trauma back to the surface`,
+    `Suicide plans that they were not currently intending to act on`,
+    `A change they found frightening: wanting to self-harm even when they were not feeling distressed`
+  ]}},
+  {p:`None of this meant the texter's first message was inaccurate. When they said they were not suicidal, they meant it. There was simply more to understand.`},
+  {p:`The fuller picture emerged over the course of the interaction because the responder did not assume that the first message told them everything they needed to know.`},
+  {panel:{cls:'blue', p:`Tolerating uncertainty means resisting the pressure to decide too quickly on what an interaction is about or where it will lead. Instead, your job is to stay curious and allow the person to show you what they need as the interaction develops.`}}
+]},
+
+/* ---------------- TOPIC 2 ---------------- */
+{sec:2, type:'section', num:'02', kicker:'Topic 2', art:'b',
+ title:`How callers and texters present`, line:`The range of needs and experiences you may encounter, and what the research shows about people who use crisis services.`},
+
+{sec:2, type:'prose', eyebrow:'Topic 2', title:'Estimation activity', blocks:[
+  {p:`Before we learn more about who reaches out to 9-8-8, let's start with a brief estimation activity. You will be presented with 3 questions about the statistics on who uses crisis services. Make your best guess from the options provided.`, lede:true},
+  {note:`Your answers will not be scored. The purpose of this activity is to notice the expectations you may already bring into this work, and then compare them with what the research tells us about people who use crisis services.`}
+]},
+
+{sec:2, type:'mcq', eyebrow:'Estimate 1 of 3', title:'Thoughts of suicide', shared:true, answerKey:'A',
+ prompt:`Out of every 100 people who text a crisis service, how many do you think report thoughts of suicide?`, hint:`Make your best guess.`,
+ options:[{k:'A', t:`About 20`},{k:'B', t:`About 50`},{k:'C', t:`About 80`}],
+ sharedFb:`In the largest study of a text-based crisis service, about <strong>23 out of every 100</strong> texters reported thoughts of suicide. Suicidal thoughts are an important part of the work, but most texters in this study were experiencing other forms of distress.`},
+
+{sec:2, type:'mcq', eyebrow:'Estimate 2 of 3', title:'Depression and anxiety', shared:true, answerKey:'C',
+ prompt:`Out of every 100 people who text a crisis service, how many do you think score above clinical thresholds for depression or anxiety?`, hint:`Make your best guess.`,
+ options:[{k:'A', t:`About 20`},{k:'B', t:`About 50`},{k:'C', t:`About 80`}],
+ sharedFb:`In the same study, about <strong>80 out of every 100</strong> texters scored above clinical thresholds for depression or anxiety. The absence of suicidal thoughts does not mean distress is mild. Many people contact a crisis service in significant emotional distress, whether or not suicide is part of what they share.`},
+
+{sec:2, type:'mcq', eyebrow:'Estimate 3 of 3', title:'Contacting more than once', shared:true, answerKey:'C',
+ prompt:`How common do you think it is for the same person to contact a crisis service more than once?`, hint:`Make your best guess.`,
+ options:[{k:'A', t:`Rare`},{k:'B', t:`Fairly common`},{k:'C', t:`Very common`}],
+ sharedFb:`Repeat contact is a <strong>very common</strong> part of crisis service work. Research shows that many people reach out more than once. For some, a crisis line is one part of a broader network of support for loneliness, significant mental health concerns, or suicide risk.`},
+
+{sec:2, type:'prose', eyebrow:'Topic 2', title:'What do these findings tell us?', blocks:[
+  {p:`Taken together, these findings give us a better understanding of who reaches out.`, lede:true},
+  {reveal:{cta:`Reveal what the findings show`, more:`Reveal the next`, items:[
+    `Some interactions involve suicidal thoughts or acute suicide risk.`,
+    `Many others involve significant distress without suicidality.`,
+    `Some people will contact the service once, while others will return.`
+  ]}},
+  {h3:`Across crisis services, common reasons for reaching out include:`},
+  {cards:{cols:3, tight:true, items:[
+    {t:`Loneliness`},{t:`Isolation`},{t:`Relationship problems`},{t:`Grief`},{t:`Family conflict`}
+  ]}},
+  {p:`If any of the findings differed from what you expected, take note of that gap. Your expectations about what an interaction is supposed to look like can shape what you pay attention to once it begins.`}
+]},
+
+{sec:2, type:'prose', eyebrow:'Topic 2', title:'The range of people who contact 9-8-8', blocks:[
+  {p:`Since 9-8-8 is a suicide prevention service, everyone who reaches out is offered support related to suicide risk. At the same time, no one is turned away just because their situation does not look like an immediate suicidal crisis.`, lede:true},
+  {h3:`The range of interactions you will encounter is broad. A person contacting 9-8-8 may be:`},
+  {reveal:{cta:`Reveal a reason someone may reach out`, more:`Reveal the next`, items:[
+    `Experiencing an acute suicidal crisis`,
+    `Living with loneliness, grief, abuse or the end of a relationship`,
+    `Facing financial or housing stress`,
+    `Worried about someone else`,
+    `Frightened by thoughts of harming another person`
+  ]}},
+  {p:`Several of these concerns may appear in a single interaction, and the first concern a person describes may not be the one that becomes most important.`}
+]},
+
+{sec:2, type:'prose', eyebrow:'Topic 2', title:'Being prepared for all interactions', blocks:[
+  {p:`When preparing for the range of interactions you may encounter, it's important to keep in mind that <strong>some interactions misuse the service.</strong>`, lede:true},
+  {p:`A small number of people contact 9-8-8 in ways that violate service boundaries. This includes sexually motivated interactions, which responders frequently identify as a source of stress. Being prepared for these types of interactions is part of understanding the realistic range of the work.`},
+  {note:`Note: responders are not expected to continue an interaction that violates service boundaries. Procedures for setting limits and ending these interactions can be found in the Standard Operating Procedures (SOPs) and will be covered in a future e-learning course.`}
+]},
+
+{sec:2, type:'prose', eyebrow:'Topic 2', title:'Why this matters for your work', blocks:[
+  {p:`Responder training often focuses on a single, familiar version of a crisis: a highly distressed person at imminent risk of suicide.`, lede:true},
+  {p:`Those interactions are important, but they are only one aspect of the work. Real interactions vary in urgency, tone, content, and need.`},
+  {h3:`If you only expect a dramatic crisis on the lines:`},
+  {cards:{cols:2, items:[
+    {t:`You may find it harder to recognize other forms of distress.`},
+    {t:`You may compare the person with an expected pattern, rather than being understood on their own terms.`}
+  ]}},
+  {key:[`Preparing for the full range of interactions helps you respond to the person who is actually in front of you.`]}
+]},
+
+/* ---------------- VIGNETTES ---------------- */
+{sec:3, type:'section', num:'', kicker:'Activity', art:'e', tone:'tranquil',
+ title:`Who is reaching out?`, line:`The opening moments of seven different 9-8-8 interactions.`},
+
+{sec:3, type:'prose', eyebrow:'Activity', title:'How this activity works', blocks:[
+  {p:`In this activity, you will review the opening moments of seven different 9-8-8 interactions. Each person reflects a type of presentation you may encounter in this work.`, lede:true},
+  {h3:`For each interaction, you will complete two steps:`},
+  {ol:[
+    `<strong>Consider what the person may need first:</strong> Select the best answer from the options, then review the feedback.`,
+    `<strong>Choose how you might respond:</strong> Select the first thing you would say or send, then see how the person responds.`
+  ]},
+  {p:`The second step is a preview of the skills you will develop in Module 4. It is not a test of proficiency, and your responses are not scored. The goal for now is to notice how different responses can shape what happens next.`},
+  {note:`Note: You do not need to apply any procedures or policies in this activity. Focus on who is reaching out and what they may need from the responder in the opening moments.`}
+]},
+
+{sec:3, type:'vignette', n:1, person:{name:'Dominique', init:'D', sub:'Voice', tag:'High distress without suicidal thoughts'},
+ thread:{ch:'Voice call', lines:[
+   {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
+   {who:'them', spk:'Caller', meta:`(tired, words coming quickly)`, t:`Hi. I don't even know if this is the kind of thing that you can help with. I'm not going to hurt myself or anything like that. It's just... it's my disability benefits. They're reviewing my claim and there's been months of paperwork. There's this, like, review meeting coming up soon and I haven't been sleeping so good. I just can't really think straight anymore.`}
+ ]},
+ step1:{prompt:`What may Dominique need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
+   {k:'A', t:`A warm reflection of how exhausting the months of paperwork and sleeplessness have been`, correct:false,
+    fb:`A reflection would be helpful, but Dominique first needs to know whether she has reached the right service.`},
+   {k:'B', t:`Confirmation that she has reached the right place before anything else is explored`, correct:true,
+    fb:`Answering Dominique's question directly lets her know she can continue. People in significant distress can contact 9-8-8 even when they are not currently suicidal.`},
+   {k:'C', t:`An open question inviting her to say more about what has been hardest lately`, correct:false,
+    fb:`An open question may help next, but exploring before answering her question may leave Dominique unsure whether she should continue.`}
+ ]},
+ step2:{prompt:`Now choose the first thing you would say to Dominique.`, hint:`There is no score. Notice how each response affects what she does next.`, options:[
+   {k:'A', t:`"That sounds completely exhausting. Tell me more about what these months have been like."`,
+    reply:[{spk:'Caller', meta:`(hesitant)`, t:`It is. But... is this really what this line is for, though? I don't want to take up space from someone who needs it more.`}]},
+   {k:'B', t:`"You're in the right place. This line is for exactly what you're describing, and I'm glad you called tonight. Where would you like to start?"`,
+    reply:[{spk:'Caller', meta:`(exhales slowly)`, t:`Okay. Thank you. I honestly didn't know if I should call. It's been a tough couple of weeks, and last night I was just sitting in the kitchen at three in the morning, wide awake, going in circles.`}]},
+   {k:'C', t:`"Have you been able to get any advice about the claim itself? There are clinics that can help with reviews."`,
+    reply:[{spk:'Caller', meta:`(flat)`, t:`I already have help with the forms. That's not really why I'm calling a crisis hotline...`}]}
+ ],
+ closing:`Dominique's immediate question is whether she should be calling 9-8-8 at all. An empathic reflection leaves that question unanswered, while problem-solving addresses a need she has not raised. Once you confirm that she is welcome, Dominique can settle into the interaction and say more.`}
+},
+
+{sec:3, type:'vignette', n:2, person:{name:'Riley', init:'R', sub:'Text', tag:'A quiet, disengaged texter'},
+ thread:{ch:'Text', lines:[
+   {who:'us', spk:'Responder', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
+   {who:'them', spk:'Texter', t:`i don't really know why i'm texting`},
+   {sys:`a long pause; the typing indicator appears, then stops`, typing:true}
+ ]},
+ step1:{prompt:`What may Riley need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
+   {k:'A', t:`A warm welcoming message, followed by some time to reply at their own pace`, correct:true,
+    fb:`Riley's typing indicator suggests they may still be deciding whether to continue. A warm message that does not require an immediate answer gives them room to decide at their own pace.`},
+   {k:'B', t:`A gentle open question about what today has been like for them so far`, correct:false,
+    fb:`An open question may help soon, but even a gentle question asks Riley to answer before they seem ready. Warmth and patience are more important in this moment.`},
+   {k:'C', t:`A short reassurance that texting was a good first step, followed by another check-in soon after`, correct:false,
+    fb:`The reassurance is warm, but another message too soon may create pressure to respond. Riley may need time more than momentum.`}
+ ]},
+ step2:{prompt:`Now choose the first message you would send to Riley.`, hint:`There is no score. Notice how each response affects what they do next.`, options:[
+   {k:'A', t:`"Hi, I'm glad you texted. There's no pressure to know what to say yet. I'm here, and we can go at whatever pace works for you."`,
+    reply:[{sys:`two minutes pass`},{spk:'Texter', t:`ok`},{spk:'Texter', t:`it's been a weird week i guess`},{sys:`the thread stays open`}]},
+   {k:'B', t:`"Hi, thanks for reaching out. Can you tell me a bit about what's going on today? What made you decide to text?"`,
+    reply:[{sys:`the typing indicator appears, stops, and does not return for several minutes`}]},
+   {k:'C', t:`"Hi, you've reached 9-8-8. Lots of people aren't sure what to say at first. Is it something at school, at home, or something else?"`,
+    reply:[{spk:'Texter', t:`idk`},{sys:`nothing further arrives for a long time`}]}
+ ],
+ closing:`Riley is still deciding whether to continue. A warm welcome makes that easier without requiring an explanation. The other responses ask something of Riley before they seem ready. In a hesitant text interaction, time can matter just as much as words.`}
+},
+
+{sec:3, type:'vignette', n:3, person:{name:'Sam', init:'S', sub:'Voice', tag:'An angry caller'},
+ thread:{ch:'Voice call', lines:[
+   {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
+   {who:'them', spk:'Caller', meta:`(fast, loud)`, t:`Yeah, hi. So what's the script tonight? Because I've heard them all. I lost my job and my housing in the same month. The same month. I've been calling these help numbers for weeks and every single one reads me the same lines. Oh, and the apartment hunt? The second the landlord meets me, the unit's suddenly taken. Every time. You want to tell me that's a coincidence? Go ahead. Tell me to take a deep breath.`}
+ ]},
+ step1:{prompt:`What may Sam need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
+   {k:'A', t:`Acknowledgement of the losses, followed by a gentle transition toward what might help tonight`, correct:false,
+    fb:`Acknowledging the losses is important, but moving quickly to what might help risks repeating the pattern Sam is describing. He first needs to know the responder has heard what happened.`},
+   {k:'B', t:`Naming the anger directly and inviting Sam to say more about it`, correct:false,
+    fb:`Naming the emotion can help, but Sam has been clear about what is driving his anger. Start with what happened rather than making the emotion the focus.`},
+   {k:'C', t:`A sincere and calm acknowledgement of what the past several weeks have been like`, correct:true,
+    fb:`Sam expects another script. Calmly acknowledging the job loss, housing loss and repeated experiences of being turned away shows that the responder has heard the substance of what he said. Other feelings may emerge once he feels heard.`}
+ ]},
+ step2:{prompt:`Now choose the first thing you would say to Sam.`, hint:`There is no score. Notice how each response affects what he does next.`, options:[
+   {k:'A', t:`"Okay. Let's slow things down a little. Take a breath, and start from the beginning for me."`,
+    reply:[{spk:'Caller', meta:`(sharper)`, t:`Take a breath. There it is. You people must get that off a laminated card.`}]},
+   {k:'B', t:`"You lost your job and your housing in the same month. Then you've spent weeks calling places and feeling like you're getting the same response everywhere. That sounds tough."`,
+    reply:[{spk:'Caller', meta:`(a beat)`, t:`...Yeah. The same month.`},{spk:'Caller', meta:`(slower)`, t:`And everyone I call acts like I'm the problem. You're the first one who's said it back to me straight.`}]},
+   {k:'C', t:`"I'm not going to read you a script. Tell me what you need tonight."`,
+    reply:[{spk:'Caller', meta:`(guarded)`, t:`What I need. If I knew that, I wouldn't be calling a stranger at midnight, would I.`}]}
+ ],
+ closing:`Sam expects another script. Telling him to slow down confirms that expectation, while asking what he needs moves too quickly toward a solution. Reflecting the substance of what he said shows that you have listened, and his anger begins to soften.`}
+},
+
+{sec:3, type:'vignette', n:4, person:{name:'Walter', init:'W', sub:'Voice', tag:'A lonely repeat caller'},
+ thread:{ch:'Voice call', lines:[
+   {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
+   {who:'them', spk:'Caller', meta:`(warm, leisurely)`, t:`Oh, hello. It's Walter. I expect I've spoken with some of your colleagues before, I call most weeks. In the evenings, mostly. The house gets very quiet around this hour. Margaret used to have the radio on while she made tea, and, well... I thought I'd rather talk to a person tonight than sit with the quiet.`}
+ ]},
+ step1:{prompt:`What may Walter need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
+   {k:'A', t:`A friendly check on how he has been doing since his last call to the line`, correct:false,
+    fb:`Walter has called before, but this responder has no shared history or record of those conversations to draw on.`},
+   {k:'B', t:`A warm, relaxed welcome that leaves room for where Walter would like the conversation to go`, correct:true,
+    fb:`Walter has said what brought him here. A warm welcome accepts his reason for calling and lets him guide where the conversation goes.`},
+   {k:'C', t:`A warm acknowledgement of the quiet evening, followed by a question about supports that are closer to home`, correct:false,
+    fb:`The acknowledgement is helpful, but asking about other supports suggests that the call needs a different destination. Tonight, connection is the reason Walter called.`}
+ ]},
+ step2:{prompt:`Now choose the first thing you would say to Walter.`, hint:`There is no score. Notice how each response affects what he does next.`, options:[
+   {k:'A', t:`"It's good to hear from you, Walter. Those quiet evenings can feel long. What's been on your mind today?"`,
+    reply:[{spk:'Caller', meta:`(settles in, warmer)`, t:`They can, they can. Well. I had a letter from my granddaughter today, actually. Margaret would have loved it. She's studying out west now, my granddaughter, and she writes the way Margaret used to...`}]},
+   {k:'B', t:`"Thanks for calling, Walter. It's a busy night, so I want to make sure I help you best: what's the main thing you'd like to talk about?"`,
+    reply:[{spk:'Caller', meta:`(a small pause)`, t:`Oh. Well. Nothing urgent, I suppose.`},{spk:'Caller', meta:`(more formal now)`, t:`I don't want to keep you if it's a busy night.`}]},
+   {k:'C', t:`"Hello, Walter. Have you thought about a seniors' program or a phone-visiting service for the evenings? It might help with the quiet."`,
+    reply:[{spk:'Caller', meta:`(polite, flatter)`, t:`I've got the pamphlets somewhere, I'm sure.`},{spk:'Caller', meta:`(pause)`, t:`Well. Perhaps I'm keeping you.`}]}
+ ],
+ closing:`Walter has explained why he called. The first response accepts his need for connection and lets the conversation develop. The others suggest that he should have something more urgent to discuss or find another service, and he begins to withdraw. Repeat contact does not make his need less legitimate.`}
+},
+
+{sec:3, type:'vignette', n:5, person:{name:'Maya', init:'M', sub:'Text', tag:'A third-party interaction'},
+ thread:{ch:'Text', lines:[
+   {who:'us', spk:'Responder', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
+   {who:'them', spk:'Texter', t:`Hi, sorry if this isn't the right place for this. I'm actually not texting about me. I'm worried about my roommate. She barely left her room in two weeks and isn't answering my messages. She skipped all her classes too. Is it okay that I'm texting you about someone else? I don't know what I'm supposed to do`}
+ ]},
+ step1:{prompt:`What may Maya need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
+   {k:'A', t:`A direct affirmative answer to her question, along with acknowledgement of how worrying the past two weeks have been`, correct:true,
+    fb:`Answering Maya's question directly confirms that third-party interactions are part of the service. Acknowledging her worry also keeps the focus on Maya as the person who reached out.`},
+   {k:'B', t:`Reassurance, followed by questions about her roommate to understand what is happening`, correct:false,
+    fb:`Questions about Maya's roommate will be important, but first she needs to know that her interaction is welcome.`},
+   {k:'C', t:`A warm acknowledgement of her concern, followed by encouragement to have her roommate contact 9-8-8 directly`, correct:false,
+    fb:`Her roommate may eventually be encouraged to reach out, but Maya is the person contacting the service now. This leaves her question unanswered.`}
+ ]},
+ step2:{prompt:`Now choose the first message you would send to Maya.`, hint:`There is no score. Notice how each response affects what she does next.`, options:[
+   {k:'A', t:`"Yes, it's absolutely okay to text about someone else. You're in the right place. It sounds like a worrying two weeks, and we can think it through together."`,
+    reply:[{spk:'Texter', t:`Okay, thank you, that's honestly a relief`},{spk:'Texter', t:`I've been second guessing whether I'm overreacting. So what should I be doing? I have so many questions`}]},
+   {k:'B', t:`"Thanks for reaching out. Can you tell me more about your roommate? How long has this been going on, and has she said anything about how she's feeling?"`,
+    reply:[{spk:'Texter', t:`Um, two weeks ish? She hasn't really said anything, that's kind of the problem`},{spk:'Texter', t:`Sorry, was it wrong that I texted instead of her?`}]},
+   {k:'C', t:`"That sounds hard. The most helpful thing is often for the person to contact us themselves. Do you think your roommate would be open to texting this line?"`,
+    reply:[{spk:'Texter', t:`I mean maybe? She's not answering me at all though`},{spk:'Texter', t:`Sorry, I just didn't know where else to ask`}]}
+ ],
+ closing:`Maya first needs to know that she can reach out about someone else. Once you answer directly, she stops apologizing and begins asking for help. The other responses shift too quickly to her roommate.`}
+},
+
+{sec:3, type:'vignette', n:6, person:{name:'Marc', init:'M', sub:'Voice', tag:'Thoughts of harming someone else'},
+ thread:{ch:'Voice call', lines:[
+   {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
+   {who:'them', spk:'Caller', meta:`(quiet, halting)`, t:`Hi. Um. I've never called anything like this before. (pause) I want to say something first. It's not about hurting myself. It's these thoughts I've been having about someone. Someone from my old job. (pause) I don't know if I'm even allowed to talk about that here. The thoughts are scaring me. That's why I called.`}
+ ]},
+ step1:{prompt:`What may Marc need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
+   {k:'A', t:`Reassurance that intrusive thoughts are common and rarely mean a person will act`, correct:false,
+    fb:`You do not yet know what Marc is describing. Reassurance could minimize what frightened him and make it harder to continue.`},
+   {k:'B', t:`Gentle, specific questions about the thoughts to understand what he is describing`, correct:false,
+    fb:`Understanding the thoughts will be important, but detailed questions may feel like the reaction Marc fears. First, he needs to know he can talk about this here.`},
+   {k:'C', t:`A steady, clear response that lets him know he can talk about it here`, correct:true,
+    fb:`Marc is testing whether it is safe to say more. A calm, non-judgmental response answers that question without alarm. The SASP course and standard operating procedures cover the next steps, including how to address risk to others.`}
+ ]},
+ step2:{prompt:`Now choose the first thing you would say to Marc.`, hint:`There is no score. Notice how each response affects what he does next.`, options:[
+   {k:'A', t:`"You're allowed to talk about that here. I'm glad you called. Take whatever time you need."`,
+    reply:[{spk:'Caller', meta:`(long exhale)`, t:`Okay. (pause) Okay. I wasn't sure anyone would say that.`},{spk:'Caller', meta:`(still halting, but continuing)`, t:`It started after they let me go...`}]},
+   {k:'B', t:`"It's normal to have upsetting thoughts sometimes. They usually pass. What's been going on?"`,
+    reply:[{spk:'Caller', meta:`(quiet)`, t:`Right. Normal. (pause) They don't feel normal.`},{spk:'Caller', meta:`(flatter)`, t:`Maybe this was a mistake.`}]},
+   {k:'C', t:`"I hear you. Before you say more, I should explain a few things about how this call works."`,
+    reply:[{spk:'Caller', meta:`(wary)`, t:`How the call works. (pause) What do you mean? Is something going to happen if I tell you?`}]}
+ ],
+ closing:`Marc is asking whether he can say this here at all. A steady yes opens the door. Reassurance minimizes what frightened him, while the procedural preface sounds like the alarm he expects. The SASP course and standard operating procedures cover what you should do next.`}
+},
+
+{sec:3, type:'vignette', n:7, person:{name:'Jae', init:'J', sub:'Text', tag:'A person in acute crisis'},
+ thread:{ch:'Text', lines:[
+   {who:'us', spk:'Responder', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
+   {who:'them', spk:'Texter', t:`i can't do this`},
+   {who:'them', spk:'Texter', t:`my relationship ended this week and i can't stop crying`},
+   {who:'them', spk:'Texter', t:`i keep thinking about killing myself`},
+   {who:'them', spk:'Texter', t:`i don't know what to do`},
+   {sys:`the four messages arrive within seconds of each other`}
+ ]},
+ step1:{prompt:`What may Jae need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
+   {k:'A', t:`A caring reflection that brings together the breakup, the crying, and the thoughts of suicide`, correct:false,
+    fb:`Reflection matters, but a long response may be hard to process when messages are arriving this quickly. Jae needs something brief enough to meet the urgency.`},
+   {k:'B', t:`A brief, clear message that responds directly to the most urgent thing Jae has said`, correct:true,
+    fb:`Jae has said directly that they are thinking about suicide. A brief, clear response shows that you have heard this and are present. The rapid, fragmented messages also indicate the level of distress. The next steps, including suicide risk assessment, should follow the SASP Model.`},
+   {k:'C', t:`A quick supportive message, followed by a question about what has helped during difficult moments before`, correct:false,
+    fb:`That question may help later. First, you need to meet what Jae has said directly and establish a sense of presence.`}
+ ]},
+ step2:{prompt:`Now choose the first message you would send to Jae.`, hint:`There is no score. Notice how each response affects what they do next.`, options:[
+   {k:'A', t:`"I'm here with you, and I'm glad you texted. You said you're thinking about killing yourself, and I want us to stay with that together. You're not alone right now."`,
+    reply:[{sys:`the reply pattern slows`},{spk:'Texter', t:`ok`},{spk:'Texter', t:`i'm here`}]},
+   {k:'B', t:`"I'm so sorry about your relationship. Breakups are one of the hardest things we go through, and crying is a completely natural response. It makes sense that you don't know what to do. Can you tell me more about what happened between you two?"`,
+    reply:[{spk:'Texter', t:`idk`},{spk:'Texter', t:`it's not really about the breakup`},{spk:'Texter', t:`i said i keep thinking about killing myself`},{sys:`the messages keep arriving in bursts`}]},
+   {k:'C', t:`"Thank you for reaching out. You've come to the right place. How are you feeling right now?"`,
+    reply:[{spk:'Texter', t:`i don't know`},{spk:'Texter', t:`bad`},{spk:'Texter', t:`i don't know what to do`},{sys:`the burst pattern continues`}]}
+ ],
+ closing:`Jae has mentioned suicidal thoughts directly. The first response addresses this clearly and calmly, and the pace begins to slow. The other responses focus elsewhere or ask Jae to repeat what is already evident. The SASP course covers suicide risk assessment and response in full.`}
+},
+
+{sec:3, type:'prose', eyebrow:'Activity', title:'Activity debrief', blocks:[
+  {p:`These interactions show how differently people may present and what they may need in the opening moments. They also show how a responder's first words can shape what happens next.`, lede:true},
+  {key:[`The tricky part of this work is that no single response can meet every person's needs. Since you cannot know which needs the next interaction will bring, it is important to remain adaptable and comfortable with the unknown. That uncertainty is part of your job as a responder.`]},
+  {note:`Note: these callers and texters will return throughout the course. In future modules, you will revisit these opening moments and develop the skills used in these first responses more fully.`}
+]},
+
+/* ---------------- TOPIC 3 ---------------- */
+{sec:4, type:'section', num:'03', kicker:'Topic 3', art:'c',
+ title:`Understanding context`, line:`How social, cultural and structural circumstances shape distress and disclosure.`},
+
+{sec:4, type:'prose', eyebrow:'Topic 3', title:'Distress does not look one way', blocks:[
+  {p:`People do not experience or express distress in the same way. Identity, social position and life circumstances shape what distress looks and sounds like, and whether someone feels able to discuss it in the first place.`, lede:true},
+  {h3:`Relevant factors can include:`},
+  {cards:{cols:5, tight:true, items:[
+    {t:`Gender`},{t:`Racialization`},{t:`Education`},{t:`Income`},{t:`Ability`}
+  ]}},
+  {p:`Suicide risk is also shaped by the social determinants of health, and some populations face greater risk than others.`},
+  {key:[`People experiencing similar levels of distress may still present very differently.`]},
+  {panel:{cls:'grey', h:'For example', p:`Some men may communicate suicidal distress through anger or physical concerns, rather than direct statements about how they feel.`}},
+  {key:[`There is no single way that a person in crisis sounds. If you expect distress to follow a familiar pattern, you may miss what is being communicated by someone whose experience does not fit that pattern.`]}
+]},
+
+{sec:4, type:'prose', eyebrow:'Topic 3', title:"How can we understand someone's context?", blocks:[
+  {p:`There are two related forms of influence that help us understand a person's context.`, lede:true},
+  {tabs:[
+    {label:`Social determinants`, h:`Social determinants`, p:`The conditions in which people live, including income, housing, education, employment, and social connection.`},
+    {label:`Structural determinants`, h:`Structural determinants`, p:`The policies, institutional arrangements, and written or unwritten rules that create and sustain patterns of advantage and disadvantage between groups.`}
+  ]},
+  {p:`Racism, discrimination against 2SLGTBQIA+ people, and other forms of oppression can cause harm in daily life and within the institutions people approach for help. Past discrimination may also reduce trust in services and shape whether, when and how much someone feels able to disclose.`},
+  {panel:{cls:'blue', p:`It's important to remember that context is not always just background information. Discrimination, isolation, financial precarity, or unsafe living conditions may be central to someone's crisis.`}},
+  {key:[`Recognizing these experiences as potential sources of distress is part of understanding a person's situation more fully.`]}
+]},
+
+{sec:4, type:'prose', eyebrow:'Topic 3', title:'You are also part of the interaction', blocks:[
+  {p:`Every interaction includes another source of context: the responder.`, lede:true},
+  {p:`Your own social and cultural position shapes what you notice, the meaning you assign to what you hear, and how you respond.`},
+  {note:`In Module 3, you will explore in detail the reflective practice needed to work with this awareness. For now, remember that every interaction is shaped by the contexts of two people, not one.`}
+]},
+
+{sec:5, type:'section', num:'', kicker:'Activity', art:'b', tone:'tranquil',
+ title:`What might be shaping this presentation?`, line:`Four caller and texter presentations, and the circumstances that may be shaping each one.`},
+
+{sec:5, type:'prose', eyebrow:'Activity', title:'How this activity works', blocks:[
+  {p:`The same distress can look and sound very different from one person to another.`, lede:true},
+  {p:`In this activity, you will review a series of caller and texter presentations and select the factor that you think may be shaping how the person's distress is experienced.`},
+  {note:`Note: the word "may" matters. These are possibilities to remain curious about, not conclusions to reach on someone else's behalf.`}
+]},
+
+{sec:5, type:'mcq', eyebrow:'Presentation 1 of 4', title:'A caller in his fifties',
+ prompt:`A caller in his fifties describes chest tightness, poor sleep and a short temper. When the responder asks how he has been feeling, he says he is "not much of a talker" and almost ends the call.`, ask:`What might be shaping how this caller's distress presents?`, hint:`Select the best answer.`,
+ options:[
+  {k:'A', t:`He has a preference for privacy and handling difficult situations on his own`, correct:false,
+   fb:`The caller may value privacy, but assuming that he wants to manage alone could close off the conversation. His physical concerns and irritability may be a way for him to express his distress.`},
+  {k:'B', t:`He may express his distress through irritability and physical concerns, rather than direct statements`, correct:true,
+   fb:`Some men communicate serious distress, including suicidal distress, through anger, irritability or physical concerns rather than direct statements about feelings. This does not establish what is happening, but it is a reason to remain patient and let the caller express himself in his own way.`},
+  {k:'C', t:`He is ambivalent about receiving support`, correct:false,
+   fb:`Almost ending the call is worth noticing, but reluctance to discuss feelings is not the same as unwillingness to accept support. He has remained on the line, creating an opportunity to continue gently.`}
+ ]},
+
+{sec:5, type:'mcq', eyebrow:'Presentation 2 of 4', title:'A texter who asks twice',
+ prompt:`A texter takes a long time to share anything personal and asks twice about what will happen with the information they provide.`, ask:`What might be shaping how this texter engages with the service?`, hint:`Select the best answer.`,
+ options:[
+  {k:'A', t:`They are slower and more cautious because they are texting`, correct:false,
+   fb:`The texter has asked twice what will happen with their information. Address that concern directly rather than attributing it to the fact that they are texting.`},
+  {k:'B', t:`They are unfamiliar with how 9-8-8 works`, correct:false,
+   fb:`Unfamiliarity may be a factor, but the repeated question suggests a broader concern about whether it is safe to disclose.`},
+  {k:'C', t:`They may be cautious based on past experiences with services or institutions`, correct:true,
+   fb:`Racism, discrimination, dismissal or other institutional harms can make caution a reasonable form of self-protection. Do not assume this is the texter's history. Support trust by answering honestly, explaining what happens with their information and avoiding pressure to disclose. You will practise this in Module 2.`}
+ ]},
+
+{sec:5, type:'mcq', eyebrow:'Presentation 3 of 4', title:'A caller who keeps returning to money',
+ prompt:`When describing their distress, a caller keeps returning to issues around money. Rent is overdue, an eviction notice has arrived, and they are struggling to show up to their shifts at work.`, ask:`What might be shaping this caller's distress?`, hint:`Select the best answer.`,
+ options:[
+  {k:'A', t:`Financial precarity`, correct:true,
+   fb:`Social and structural conditions can be the substance of a crisis, not background information. The overdue rent and threat of eviction are central to this caller's experience. Taking the fear and exhaustion seriously is an important form of validation.`},
+  {k:'B', t:`Discomfort discussing feelings explicitly`, correct:false,
+   fb:`Feelings and finances may be connected, but treating money as a symptom rather than a cause directs the caller away from the crisis as they experience it. The financial situation is the crisis.`},
+  {k:'C', t:`A need for practical guidance`, correct:false,
+   fb:`Practical resources may eventually help, but moving immediately to referrals or problem-solving may leave the caller's fear and distress unheard.`}
+ ]},
+
+{sec:5, type:'mcq', eyebrow:'Presentation 4 of 4', title:'An older caller in a rural community',
+ prompt:`An older caller who lives alone in a rural community calls most weeks, usually in the evening.`, ask:`What might be shaping this pattern of contact?`, hint:`Select the best answer.`,
+ options:[
+  {k:'A', t:`The caller misunderstands the service's purpose and has become dependent on responders in place of other relationships`, correct:false,
+   fb:`Regular contact does not constitute misuse or dependence. Start with curiosity about what the calls provide and why this support is accessible.`},
+  {k:'B', t:`The caller prefers telephone support over building connections in their community`, correct:false,
+   fb:`Telephone support may be a preference, but rural communities may also have limited services, long travel distances and few transportation options.`},
+  {k:'C', t:`The caller is socially isolated and likely has limited access to services in the area`, correct:true,
+   fb:`Local supports may be limited or difficult to reach, and telephone support may be the most accessible way to connect. Repeat contact is normal, and 9-8-8 may be a meaningful part of this caller's support network.`}
+ ]},
+
+/* ---------------- PREPARE & REFLECT ---------------- */
+{sec:6, type:'section', num:'', kicker:'Prepare and reflect', art:'d', tone:'tranquil',
+ title:`Being ready for the work`, line:`What readiness involves, and how responders build a set of strategies they can rely on.`},
+
+{sec:6, type:'video', eyebrow:'Prepare and reflect', title:'Being ready for the work'},
+
+{sec:6, type:'plan', eyebrow:'Activity', title:'Build a readiness plan'},
+
+{sec:6, type:'reflect', eyebrow:'Activity', title:'Readiness reflection'},
+
+{sec:6, type:'prose', eyebrow:'Prepare and reflect', title:'Live-practice handoff', blocks:[
+  {p:`This module has focused on recognition and readiness. These skills deepen when you practise them with other people.`, lede:true},
+  {p:`If Community of Practice sessions are available to you, bring your readiness reflection to a session. The discussion will build directly on what you have identified here.`},
+  {p:`The callers and texters introduced in this module will also return throughout the course, and your organization may use their profiles for supervised role-play practice.`},
+  {p:`Related skills are developed in other parts of 9-8-8 training.`},
+  {panel:{cls:'blue', p:`Suicide risk assessment, safety planning and emergency intervention are practised in the SASP course. Procedures for setting limits within an interaction, including ending interactions that misuse the service, are covered in the Setting Boundaries course and the standard operating procedures.`}}
+]},
+
+{sec:6, type:'refs', eyebrow:'References', title:'References'},
+
+{sec:6, type:'complete'}
+];
+const SECTIONS = ['Welcome','Topic 1: Preparing for the interaction','Topic 2: How callers and texters present','Activity: Who is reaching out?','Topic 3: Understanding context','Activity: Shaping the presentation','Prepare and reflect'];
+const REFS = [
+  `Centre for Addiction and Mental Health. (2024). 9-8-8 intervention manual [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
+  `Centre for Addiction and Mental Health. (2025). 9-8-8 Safety and Wellbeing Framework [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
+  `Coveney, C. M., Pollock, K., Armstrong, S., &amp; Moore, J. (2012). Callers' experiences of contacting a national suicide prevention helpline. Crisis, 33(6), 313–324.`,
+  `Crawford, A., &amp; Clarkin, C. (2023). Canadian crisis line response competency framework for suicide prevention. Centre for Addiction and Mental Health.`,
+  `Hafeez, H., Lamoureux, A., Stuart-Williams, S., Washington, I., &amp; Wolframe, J. (2025). Equity-focused practices in mental health and substance use care: Common definitions, tools and resources. Provincial System Support Program, Centre for Addiction and Mental Health.`,
+  `Middleton, A., Gunn, J., Bassilios, B., &amp; Pirkis, J. (2014). Systematic review of research into frequent callers to crisis helplines. Journal of Telemedicine and Telecare, 20(2), 89–98. https://doi.org/10.1177/1357633X14524156`,
+  `Mishara, B. L., Côté, L.-P., &amp; Dargis, L. (2023). Systematic review of research and interventions with frequent callers to suicide prevention helplines and crisis centers. Crisis, 44(2), 154–167. https://doi.org/10.1027/0227-5910/a000838`,
+  `National Collaborating Centre for Determinants of Health. (2025). Let's talk: Moving upstream. https://nccdh.ca/wp-content/uploads/2014/03/NCCDH_Lets-Talk_-Moving-Upstream_2025_EN.pdf`,
+  `Pisani, A. R., Gould, M. S., Gallo, C., Ertefaie, A., Kelberman, C., Harrington, D., Weller, D., &amp; Green, S. (2022). Individuals who text Crisis Text Line: Key characteristics and opportunities for suicide prevention. Suicide and Life-Threatening Behavior, 52(3), 567–582. https://doi.org/10.1111/sltb.12872`,
+  `Sercombe, J., Devine, E. K., Deady, M., &amp; Mills, K. L. (2024). Holding the line: Mental well-being, stressors, and coping in crisis supporters. Crisis: The Journal of Crisis Intervention and Suicide Prevention. https://doi.org/10.1027/0227-5910/a000985`,
+  `Sindahl, T. N., Cote, L.-P., Dargis, L., Mishara, B. L., &amp; Bechmann Jensen, T. (2019). Texting for help: Processes and impact of text counseling with children and youth with suicide ideation. Suicide and Life-Threatening Behavior, 49(5), 1412–1430. https://doi.org/10.1111/sltb.12531`
+];
+const STRATEGIES = [
+  `Checking in with yourself before a shift and recognizing your early signs of stress`,
+  `Setting realistic expectations about your role, including what is and is not within your control`,
+  `Using emotion regulation and coping strategies that work for you`,
+  `Maintaining healthy boundaries, including noticing when you may be over-identifying with a caller or texter`,
+  `Recognizing the value and strengths of the work, as well as what it asks of you`,
+  `Making time to decompress after a shift, including debriefing and seeking support from peers or supervisors`
+];
+const VIDEO_BLOCKS = [
+  {p:`You have seen how much can vary from one interaction to the next. Let's now turn to how you can ready yourself to handle these interactions during your shifts.`, lede:true},
+  {p:`Being ready for this work does not mean feeling calm, confident, or unaffected before every shift. It means knowing what helps you:`},
+  {cards:{cols:3, items:[
+    {t:`Stay grounded during your shifts`},
+    {t:`Recognize when the work is affecting you`},
+    {t:`Recover when the shift ends`}
+  ]}},
+  {p:`To put this into practice, it can be helpful to hear what works for other people. In this video, you will hear experienced 9-8-8 responders reflect on what readiness looks like in their own practice.`},
+  {note:`As you watch, consider which of their approaches might work for you.`}
+];
+const REFLECT_PROMPTS = [
+  `What is one assumption you have noticed that you hold about who contacts a crisis line?`,
+  `What is one aspect of your social or cultural position that you bring into your interactions?`,
+  `What is one personal reaction you may need to notice and manage during demanding interactions?`
+];
+const REFLECT_INTRO = [
+  {p:`Throughout this module, you have considered the range of people who contact 9-8-8, the different ways distress may present, and what you bring to each interaction.`, lede:true},
+  {p:`Before you finish, take a few minutes to reflect on what you have learned about yourself.`}
+];
+const REFLECT_FEEDBACK = `Thank you for reflecting. Be sure to write down your responses to these prompts and keep them somewhere you can retrieve them. You will return to these responses in Module 3.`;
+const PLAN_INTRO = [
+  {p:`As the video demonstrates, no single strategy works for everyone, and what helps may change from one day to the next. Over time, the goal is to build a personal set of strategies that you can draw on, adapt, and add to as needed.`, lede:true},
+  {p:`In this activity, you will create a simple readiness plan for your shifts. Choose strategies that feel realistic for you and that you would be able to use in practice. Your responses are for your own reflection and will not be scored.`},
+  {key:[`What could help you prepare before a shift, stay grounded during it, and decompress afterward?`]}
+];
+const PLAN_PROMPTS = ['Before a shift','During a shift','After a shift'];
+const PLAN_FEEDBACK = `Other possible strategies responders have described using include:`;
+
+const $ = s => document.querySelector(s);
+const H = t => String(t).split('9-8-8').join('9\u20118\u20118');
+const el = (tag, cls, html) => { const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; };
+
+function sectionArt(v, tone){
+  const w = tone==='tranquil' ? 'var(--tranquil)' : 'var(--trust)';
+  const d = tone==='tranquil' ? 'var(--trust)' : 'var(--tranquil)';
+  const A={
+    a:`<circle cx="108" cy="62" r="46" fill="${w}"/><path d="M42 172a66 66 0 0 1 132 0z" fill="${d}"/>`,
+    b:`<path d="M14 168a96 96 0 0 1 192 0z" fill="${w}"/><circle cx="176" cy="44" r="32" fill="${d}"/>`,
+    c:`<path d="M22 20h86a86 86 0 0 1-86 86z" fill="${w}"/><circle cx="152" cy="126" r="48" fill="${d}"/><circle cx="152" cy="126" r="20" fill="var(--white)"/>`,
+    d:`<circle cx="104" cy="90" r="58" fill="${w}"/><path d="M104 32a58 58 0 0 1 0 116z" fill="${d}"/>`,
+    e:`<path d="M18 160C18 74 96 106 96 20" stroke="${w}" stroke-width="22" fill="none" stroke-linecap="round"/><circle cx="158" cy="66" r="38" fill="${w}"/><circle cx="158" cy="66" r="16" fill="${d}"/><path d="M118 172a40 40 0 0 1 80 0z" fill="${d}"/>`
+  };
+  return '<svg class="art" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+(A[v]||A.a)+'</svg>';
+}
+
+/* ---------- blocks ---------- */
+function blocks(list, root){
+  list.forEach(b=>{
+    if(b.p) root.append(el('p', b.lede?'lede':null, H(b.p)));
+    else if(b.h3) root.append(el('h3', null, H(b.h3)));
+    else if(b.ul){ const u=el('ul','brand'); b.ul.forEach(t=>u.append(el('li',null,H(t)))); root.append(u); }
+    else if(b.ol){ const o=el('ol','brand'); b.ol.forEach(t=>o.append(el('li',null,H(t)))); root.append(o); }
+    else if(b.panel) root.append(el('div','panel '+(b.panel.cls||''), (b.panel.h?'<h4>'+b.panel.h+'</h4>':'')+'<p>'+H(b.panel.p)+'</p>'));
+    else if(b.note) root.append(el('div','note','<p>'+H(b.note)+'</p>'));
+    else if(b.key) root.append(el('div','keycall', b.key.map(t=>'<p>'+H(t)+'</p>').join('')));
+    else if(b.cards) root.append(cardsEl(b.cards));
+    else if(b.flip) root.append(flipEl(b.flip));
+    else if(b.tabs) root.append(tabsEl(b.tabs));
+    else if(b.acc) root.append(accEl(b.acc));
+    else if(b.reveal) root.append(revealEl(b.reveal));
+    else if(b.thread) root.append(threadEl(b.thread));
+  });
+}
+function cardsEl(c){
+  const d=el('div','cards'+(c.tight?' tight':'')+(c.num?' numbered':'')); d.dataset.cols=c.cols||3;
+  c.items.forEach((i,ix)=>d.append(el('div','card',
+    (c.num?'<span class="mk">'+String(ix+1).padStart(2,'0')+'</span>':'<span class="mk dot"></span>')+'<span>'+H(i.t)+'</span>')));
+  return d;
+}
+function flipEl(items){
+  const d=el('div','flips');
+  items.forEach((i,ix)=>{
+    const c=el('div','flip','<button class="inner" aria-pressed="false">'+
+      '<span class="face f"><span class="n">'+String(ix+1).padStart(2,'0')+'</span><span class="t">'+H(i.front)+'</span><span class="hint">Tap to turn</span></span>'+
+      '<span class="face b"><span class="hint">'+H(i.front)+'</span><p>'+H(i.back)+'</p><span class="hint">Tap to turn back</span></span></button>');
+    const btn=c.querySelector('.inner');
+    btn.onclick=()=>{ c.classList.toggle('on'); btn.setAttribute('aria-pressed', c.classList.contains('on')); };
+    d.append(c);
+  });
+  return d;
+}
+function tabsEl(items){
+  const d=el('div','tabs'), list=el('div','tablist'), panel=el('div','tabpanel');
+  list.setAttribute('role','tablist'); panel.setAttribute('role','tabpanel');
+  const show=n=>{ [...list.children].forEach((b,i)=>b.setAttribute('aria-selected', i===n));
+    const it=items[n]; panel.innerHTML=(it.h?'<h4>'+H(it.h)+'</h4>':'')+'<p>'+H(it.p)+'</p>'; };
+  items.forEach((it,i)=>{ const b=el('button',null,it.label); b.setAttribute('role','tab'); b.onclick=()=>show(i); list.append(b); });
+  d.append(list,panel); show(0); return d;
+}
+function accEl(items){
+  const d=el('div','acc');
+  items.forEach(it=>{
+    const w=el('div','acc-item','<button aria-expanded="false"><span>'+H(it.q)+'</span><span class="plus"></span></button>'+
+      '<div class="acc-body"><p>'+H(it.a)+'</p></div>');
+    const b=w.querySelector('button');
+    b.onclick=()=>{ const on=w.classList.toggle('on'); b.setAttribute('aria-expanded', on); };
+    d.append(w);
+  });
+  return d;
+}
+function revealEl(r){
+  const wrap=el('div'), list=el('div','reveal-list'), row=el('div');
+  row.style.margin='0 0 1rem';
+  const btn=el('button','btn yellow small', r.cta||'Reveal');
+  let i=0;
+  btn.onclick=()=>{
+    list.append(el('div','rv','<span class="d"></span><span>'+H(r.items[i])+'</span>')); i++;
+    if(i>=r.items.length) row.remove(); else btn.textContent=r.more||'Reveal the next';
+  };
+  row.append(btn); wrap.append(list,row); return wrap;
+}
+function writingEl(cfg){
+  const wrap=el('div');
+  const form=el('div','reflect'); const vals=cfg.prompts.map(()=>'');
+  cfg.prompts.forEach((t,i)=>{
+    const f=el('div','field','<label for="'+cfg.id+i+'">'+(cfg.numbered?(i+1)+'. ':'')+H(t)+(cfg.numbered?'':':')+'</label>');
+    const ta=el('textarea'); ta.id=cfg.id+i; ta.placeholder=cfg.placeholder||'Your answer';
+    ta.oninput=e=>vals[i]=e.target.value;
+    f.append(ta); form.append(f);
+  });
+  wrap.append(form);
+  const row=el('div'); row.style.cssText='display:flex;gap:.8rem;align-items:center;flex-wrap:wrap';
+  const show=el('button','btn yellow small',cfg.cta||'Submit');
+  const copy=el('button','btn ghost small','Copy my answers');
+  const said=el('span','eyebrow'); said.style.margin='0';
+  const slot=el('div');
+  show.onclick=()=>{
+    slot.innerHTML='';
+    const fb=el('div','fb info'); fb.setAttribute('role','status'); fb.innerHTML=cfg.feedback;
+    slot.append(fb); show.remove();
+  };
+  copy.onclick=async()=>{
+    const txt=cfg.prompts.map((p,i)=>(cfg.numbered?(i+1)+'. ':'')+p+'\n'+(vals[i]||'')).join('\n\n');
+    try{ await navigator.clipboard.writeText(txt); said.textContent='Copied'; }
+    catch(e){ said.textContent='Copying is blocked here — select and copy manually'; }
+  };
+  row.append(show,copy,said); wrap.append(row,slot);
+  wrap.append(el('div','note','<p>Prototype note: answers stay in this browser session only. In the LMS build, responses save to the learner record.</p>'));
+  return wrap;
+}
+
+function audioEl(cfg){
+  const w=el('div','audio');
+  w.innerHTML='<div class="bar"><span class="play"></span>'+
+    '<div class="meta"><span class="ttl">'+cfg.label+'</span>'+
+    '<span class="sub">Audio to be added</span></div>'+
+    '<div class="wave">'+Array.from({length:38},(_,i)=>'<span style="height:'+(18+Math.abs(Math.sin(i*1.15))*62)+'%"></span>').join('')+'</div></div>';
+  const btn=el('button','transbtn', (cfg.open?'Hide transcript':'Show transcript'));
+  const slot=el('div');
+  slot.style.display = cfg.open ? '' : 'none';
+  slot.append(cfg.transcript);
+  btn.onclick=()=>{
+    const on = slot.style.display==='none';
+    slot.style.display = on ? '' : 'none';
+    btn.textContent = on ? 'Hide transcript' : 'Show transcript';
+    btn.setAttribute('aria-expanded', on);
+  };
+  btn.setAttribute('aria-expanded', !!cfg.open);
+  w.append(btn, slot);
+  return w;
+}
+
+function threadEl(t){
+  const isText = t.ch==='Text';
+  const w=el('div','thread','<p class="ch">'+(isText?'Text conversation':'Voice call')+'</p>');
+  t.lines.forEach(l=>w.append(lineEl(l,isText)));
+  return w;
+}
+function lineEl(l, isText){
+  if(l.sys){
+    const wrap=el('div');
+    if(l.typing) wrap.append(el('div','typing','<i></i><i></i><i></i>'));
+    wrap.append(el('p','sysline','('+l.sys+')'));
+    return wrap;
+  }
+  if(isText) return el('div','bubble '+(l.who==='us'?'us':'them'),'<span class="spk">'+(l.spk||'')+'</span>'+H(l.t));
+  return el('div','line','<span class="spk">'+(l.spk||'')+'</span>'+(l.meta?'<span class="meta">'+l.meta+' </span>':'')+H(l.t));
+}
+
+/* ---------- knowledge check ---------- */
+function questionEl(q, opts){
+  const box=el('div','check',
+    '<p class="prompt'+(q.ask?' scenario':'')+'">'+H(q.prompt)+'</p>'+
+    (q.ask?'<p class="prompt ask">'+H(q.ask)+'</p>':'')+
+    (q.hint?'<p class="hint">'+H(q.hint)+'</p>':''));
+  const list=el('div','opts'); box.append(list);
+  const slot=el('div'); box.append(slot);
+  let picked=null;
+  const paint=()=>{
+    list.innerHTML=''; slot.innerHTML='';
+    const gotIt = picked && (q.shared || (q.options.find(o=>o.k===picked)||{}).correct);
+    q.options.forEach(o=>{
+      const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>');
+      if(picked){
+        b.disabled=true;
+        if(picked===o.k) b.dataset.picked='1';
+        if(q.shared){ if(q.answerKey===o.k) b.dataset.outcome='info'; else if(picked!==o.k) b.dataset.outcome='dim'; }
+        else if(gotIt){ if(o.correct) b.dataset.outcome='correct'; else b.dataset.outcome='dim'; }
+      }
+      b.onclick=()=>{ picked=o.k; paint(); if(opts&&opts.onCorrect&&(q.shared||o.correct)) opts.onCorrect(); };
+      list.append(b);
+    });
+    if(picked){
+      const chosen=q.options.find(o=>o.k===picked);
+      const fb=el('div'); fb.setAttribute('role','status');
+      if(q.shared){ fb.className='fb info'; fb.innerHTML='<p>'+H(q.sharedFb)+'</p>'; }
+      else{
+        fb.className='fb '+(chosen.correct?'yes':'no');
+        fb.innerHTML='<p>'+H(chosen.fb)+'</p>';
+        if(!chosen.correct){
+          const again=el('button','btn ghost small','Try again'); again.style.marginTop='.8rem';
+          again.onclick=()=>{ picked=null; paint(); };
+          fb.append(again);
+        }
+      }
+      slot.append(fb);
+    }
+  };
+  paint();
+  return box;
+}
+
+/* ---------- pages ---------- */
+const stream=$('#stream'), hero=document.querySelector('.hero');
+const PAGES = SECTIONS.map((name,si)=>({
+  si, name,
+  header: SCREENS.find(s=>s.sec===si && s.type==='section') || null,
+  chunks: SCREENS.filter(s=>s.sec===si && s.type!=='section' && s.type!=='cover' && s.type!=='complete')
+}));
+const TOTAL = PAGES.reduce((n,p)=>n+p.chunks.length,0);
+const state = { page:0, revealed: PAGES.map(()=>1), done:false };
+
+function el2(tag,cls,html){ return el(tag,cls,html); }
+
+function dividerEl(s){
+  const d=el('section','divider rev in');
+  d.dataset.tone=s.tone||'trust';
+  d.innerHTML='<div class="in"><div>'+(s.num?'<p class="num">'+s.num+'</p>':'<div class="rule"></div>')+
+    '<p class="kick">'+s.kicker+'</p><h2>'+H(s.title)+'</h2><p class="line">'+H(s.line)+'</p></div>'+
+    '<div>'+sectionArt(s.art,s.tone)+'</div></div>';
+  return d;
+}
+
+function chunkEl(s){
+  const d=el('div','blk rev'); const c=el('div','col'); d.append(c);
+  if(s.eyebrow) c.append(el('p','eyebrow',s.eyebrow));
+  if(s.title) c.append(el('h2',null,H(s.title)));
+
+  if(s.type==='prose'){ blocks(s.blocks,c); return d; }
+
+  if(s.type==='mcq'){
+    if(s.intro) blocks(s.intro,c);
+    c.append(questionEl(s));
+    return d;
+  }
+
+  if(s.type==='vignette'){
+    const isText=s.thread.ch==='Text';
+    const v=el('div','vig');
+    v.append(el('div','vig-head','<div class="avatar">'+s.person.init+'</div>'+
+      '<div><span class="nm">'+s.person.name+'</span><span class="sub">'+s.person.sub+'</span></div>'+
+      '<span class="chip'+(isText?' blue':'')+'" style="display:none">'+s.person.tag+'</span>'));
+    if(isText) v.append(threadEl(s.thread));
+    else v.append(audioEl({label:'Opening moments of the call', transcript:threadEl(s.thread)}));
+    v.append(el('p','step','<span class="n">1</span> What may '+s.person.name+' need first?'));
+    const step2=el('div','locked');
+    v.append(questionEl({prompt:s.step1.prompt, hint:s.step1.hint, options:s.step1.options},{onCorrect:()=>{
+      step2.classList.remove('locked'); v.querySelector('.chip').style.display='';
+    }}));
+    step2.append(el('p','step','<span class="n">2</span> Choose your first response'));
+    const q2=el('div','check','<p class="prompt">'+H(s.step2.prompt)+'</p>'+
+      (s.step2.hint?'<p class="hint">'+H(s.step2.hint)+'</p>':''));
+    const list=el('div','opts'); q2.append(list);
+    const out=el('div'), closing=el('div');
+    let chosen=null, tried=[];
+    const paint2=()=>{
+      list.innerHTML=''; out.innerHTML=''; closing.innerHTML='';
+      s.step2.options.filter(o=>!chosen||o.k===chosen).forEach(o=>{
+        const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>');
+        if(chosen){ b.disabled=true; b.dataset.picked='1'; }
+        b.onclick=()=>{ chosen=o.k; tried.push(o.k); paint2(); };
+        list.append(b);
+      });
+      if(chosen){
+        const o=s.step2.options.find(x=>x.k===chosen);
+        const cont=el('div','thread','<p class="ch">'+(isText?'How the thread continues':'How the call continues')+'</p>');
+        cont.append(lineEl({who:'us',spk:'Responder',t:o.t.replace(/^"|"$/g,'')},isText));
+        o.reply.forEach(r=>cont.append(lineEl({...r,who:'them'},isText)));
+        if(isText) out.append(cont);
+        else out.append(audioEl({label:'Your response and what follows', transcript:cont}));
+        if(tried.length<s.step2.options.length){
+          const again=el('button','btn yellow small','Try another response');
+          again.style.margin='0 0 1rem'; again.onclick=()=>{ chosen=null; paint2(); };
+          out.append(again);
+        }
+        closing.append(el('div','fb info','<p>'+H(s.step2.closing)+'</p>'));
+      }
+    };
+    paint2();
+    step2.append(q2,out,closing); v.append(step2); c.append(v);
+    return d;
+  }
+
+  if(s.type==='video'){
+    blocks(VIDEO_BLOCKS,c);
+    c.append(el('div','video','<div class="frame"><span class="play"></span><span class="lbl">Responder voices &middot; video to be produced</span></div>'));
+    return d;
+  }
+
+  if(s.type==='reflect'){
+    blocks(REFLECT_INTRO,c);
+    c.append(writingEl({id:'r', prompts:REFLECT_PROMPTS, numbered:true, cta:'Submit my reflection',
+      feedback:'<p>'+H(REFLECT_FEEDBACK)+'</p>'}));
+    return d;
+  }
+
+  if(s.type==='plan'){
+    blocks(PLAN_INTRO,c);
+    c.append(writingEl({id:'p', prompts:PLAN_PROMPTS, numbered:false, placeholder:'What would work for you?',
+      cta:'Submit my plan',
+      feedback:'<p>'+H(PLAN_FEEDBACK)+'</p>'+
+        cardsEl({cols:1, tight:true, items:STRATEGIES.map(t=>({t}))}).outerHTML}));
+    return d;
+  }
+
+  if(s.type==='refs'){ c.append(el('div','refs', REFS.map(r=>'<p>'+r+'</p>').join(''))); return d; }
+  return d;
+}
+
+function endEl(){
+  return el('section','end rev','<div class="sweep"></div><div class="in">'+
+    '<p class="eyebrow">Module 1 complete</p><h2>You have finished Module 1</h2>'+
+    '<p>You met seven callers and texters, tested your expectations against the research, and started building a personal set of strategies. They all return later in the course.</p>'+
+    '<div class="panel"><h4>What comes next</h4><p>Module 2 practises meeting caution with patience and honest answers. Module 3 develops reflective practice, and takes your readiness reflection with it. Module 4 builds first responses into a full skill set.</p></div>'+
+    '</div>');
+}
+
+function gateEl(){
+  const p=PAGES[state.page], shown=state.revealed[state.page];
+  const g=el('div','gate');
+  const more = shown < p.chunks.length;
+  const last = state.page===PAGES.length-1;
+  const btn=el('button','btn', more ? 'Continue' : (last ? 'Finish module' : 'Continue to '+PAGES[state.page+1].name));
+  btn.onclick=()=>{
+    if(more){
+      g.remove();
+      const node=chunkEl(p.chunks[shown]);
+      stream.append(node);
+      state.revealed[state.page]=shown+1;
+      stream.append(gateEl());
+      requestAnimationFrame(()=>{ node.classList.add('in'); node.scrollIntoView({behavior:'smooth',block:'start'}); });
+      progress();
+    } else if(last){
+      g.remove(); state.done=true;
+      const e=endEl(); stream.append(e);
+      requestAnimationFrame(()=>{ e.classList.add('in'); e.scrollIntoView({behavior:'smooth',block:'start'}); });
+      progress();
+    } else {
+      goPage(state.page+1);
+    }
+  };
+  g.append(btn);
+  if(state.page>0 && !more){
+    const back=el('button','back','Back to '+PAGES[state.page-1].name);
+    back.onclick=()=>goPage(state.page-1);
+    g.append(back);
+  }
+  return g;
+}
+
+function goPage(pi){
+  state.page=pi;
+  stream.innerHTML='';
+  hero.style.display = pi===0 ? '' : 'none';
+  const p=PAGES[pi];
+  if(p.header) stream.append(dividerEl(p.header));
+  else stream.append(el('p','pagehead',p.name));
+  const shown=state.revealed[pi];
+  for(let i=0;i<shown;i++){ const n=chunkEl(p.chunks[i]); n.classList.add('in'); stream.append(n); }
+  stream.append(gateEl());
+  if(state.done && pi===PAGES.length-1){ const e=endEl(); e.classList.add('in'); stream.append(e); }
+  window.scrollTo({top: pi===0 ? 0 : 0, behavior:'auto'});
+  buildToc(); progress();
+}
+
+/* ---------- contents drawer ---------- */
+const toc=$('#toc');
+function buildToc(){
+  toc.innerHTML='';
+  PAGES.forEach((p,si)=>{
+    const complete = state.revealed[si] >= p.chunks.length && si < state.page;
+    const a=el('a',null,'<span class="n">'+(si===0?'Start':'Part '+si)+(complete?'<span class="tick">&#9679;</span>':'')+'</span>'+p.name);
+    a.href='#';
+    if(si===state.page) a.setAttribute('aria-current','true');
+    a.onclick=e=>{ e.preventDefault(); goPage(si); closeDrawer(); };
+    toc.append(a);
+  });
+}
+const drawer=$('#drawer'), menubtn=$('#menubtn');
+function openDrawer(){ drawer.classList.add('on'); menubtn.setAttribute('aria-expanded','true'); }
+function closeDrawer(){ drawer.classList.remove('on'); menubtn.setAttribute('aria-expanded','false'); }
+menubtn.onclick=()=>drawer.classList.contains('on')?closeDrawer():openDrawer();
+drawer.onclick=e=>{ if(e.target===drawer) closeDrawer(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDrawer(); });
+$('#begin').onclick=()=>stream.scrollIntoView({behavior:'smooth',block:'start'});
+
+/* ---------- progress ---------- */
+const fill=$('#fill'), pct=$('#pct');
+function progress(){
+  let seen=0;
+  PAGES.forEach((p,i)=>{ seen += (i<state.page) ? p.chunks.length : (i===state.page ? state.revealed[i] : 0); });
+  const p=Math.min(100, Math.round(seen/TOTAL*100));
+  fill.style.width=p+'%'; pct.textContent=p+'%';
+}
+
+goPage(0);
+</script>
+</body>
+</html>
