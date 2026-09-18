@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Key Responder Skills — Module 1: Preparing for Interactions</title>
+<title>Key Responder Skills</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -75,6 +75,9 @@ button{font:inherit}
 main{padding-bottom:6rem}
 .col{max-width:var(--col);margin:0 auto;padding:0 1.4rem}
 .blk{margin:0 auto;padding:2.2rem 0 0;scroll-margin-top:5rem}
+/* A page opening with a divider clears the fixed bar on its own margin. A
+   continuation page starts straight into a screen, so it needs the room. */
+#stream[data-top="bare"]>.blk:first-child{padding-top:5.6rem}
 .rev{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
 .rev.in{opacity:1;transform:none}
 p{margin:0 0 1rem}
@@ -103,20 +106,25 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .cards{display:grid;gap:.7rem;margin:0 0 1rem}
 .cards[data-cols="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
 .cards[data-cols="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cards[data-cols="4"]{grid-template-columns:repeat(4,minmax(0,1fr))}
 .cards[data-cols="5"]{grid-template-columns:repeat(5,minmax(0,1fr))}
 .card{background:var(--bg);border:1px solid var(--border);border-radius:1.1rem;padding:.85rem .95rem;display:flex;gap:.7rem;align-items:flex-start;transition:transform .2s,border-color .2s}
 .card:hover{transform:translateY(-2px);border-color:var(--trust)}
-.card span{font-size:.97rem;line-height:1.5}
+/* The lift on hover moves the bottom edge away from the pointer; this keeps
+   the hover area where it was so a card at the edge does not flicker. */
+.card{position:relative}.card::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px}
+.card span{font-size:.97rem;line-height:1.5;min-width:0;overflow-wrap:anywhere}
 .card .mk{flex:0 0 auto;font-family:var(--sans);font-size:.8rem;font-weight:500;color:var(--taupe);padding-top:.12rem}
 .card .mk.dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--trust);margin-top:.6rem}
 .cards.numbered .card{align-items:center}
 .cards.tight .card{padding:.6rem .8rem}
 
 .flips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:.4rem 0 1rem}
-.flip{perspective:1000px;height:15rem}
-.flip .inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;cursor:pointer;background:none;border:0;padding:0;text-align:left;font:inherit}
+.flips[data-cols="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.flip{perspective:1000px;min-height:15rem;display:grid}
+.flip .inner{position:relative;width:100%;display:grid;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;cursor:pointer;background:none;border:0;padding:0;text-align:left;font:inherit}
 .flip.on .inner{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:1.2rem;padding:1.2rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;gap:.7rem;overflow:hidden}
+.face{grid-area:1/1;min-height:15rem;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:1.2rem;padding:1.2rem 1.15rem;display:flex;flex-direction:column;justify-content:space-between;gap:.7rem;overflow:hidden}
 .face .n{font-family:var(--sans);font-weight:500;font-size:1.2rem;color:var(--header);opacity:.45;line-height:1}
 .face .t{font-family:var(--sans);font-weight:500;font-size:1.05rem;color:var(--header);line-height:1.3;margin-top:auto}
 .face .hint{font-family:var(--sans);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:var(--header);opacity:.55;line-height:1.3}
@@ -146,6 +154,8 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .acc-body{display:none;padding:0 2.4rem .9rem .2rem}
 .acc-item.on .acc-body{display:block}
 .acc-body p{margin:0;font-size:.98rem}
+.acc-body li{font-size:.98rem}
+.acc-body>:last-child{margin-bottom:0}
 
 .reveal-list{display:flex;flex-direction:column;gap:.5rem;margin:0 0 .8rem}
 .rv{display:flex;gap:.7rem;align-items:flex-start;background:var(--bg);border:1px solid var(--border);border-radius:1rem;padding:.7rem .95rem}
@@ -153,6 +163,7 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .rv span{font-size:.97rem;line-height:1.5}
 .btn{font-family:var(--serif);font-size:1rem;border-radius:99px;padding:.6rem 1.5rem;border:1.5px solid transparent;cursor:pointer;background:var(--header);color:#fff}
 .btn:hover{transform:translateY(-1px)}
+.btn{position:relative}.btn::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px}
 .btn.ghost{background:var(--white);color:var(--header);border-color:var(--border)}
 .btn.ghost:hover{border-color:var(--header);background:var(--white)}
 .fb.no .btn.ghost{border-color:#E4B7B1}
@@ -174,6 +185,16 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .divider .line{margin:0;max-width:40ch}
 .divider .art{width:100%;height:auto}
 
+/* ---------- table ---------- */
+.tbl{margin:1rem 0;border:1px solid var(--border);border-radius:1.1rem;overflow:hidden}
+.tbl table{width:100%;border-collapse:collapse}
+.tbl th,.tbl td{text-align:left;vertical-align:top;padding:.75rem .9rem;font-size:.96rem;line-height:1.5;border-bottom:1px solid var(--border)}
+.tbl tbody:empty{display:none}
+.tbl thead th{font-family:var(--sans);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);font-weight:500;background:var(--bg)}
+.tbl tbody th{font-family:var(--sans);font-weight:500;color:var(--header);font-size:1rem}
+.tbl tbody tr:last-child th,.tbl tbody tr:last-child td{border-bottom:0}
+.tbl tbody tr:nth-child(even) th,.tbl tbody tr:nth-child(even) td{background:#FBFBFD}
+
 /* ---------- knowledge check ---------- */
 .check{background:#F7F8FB;border:1px solid var(--border);border-radius:1.4rem;padding:1.4rem 1.5rem;margin:1rem 0}
 .check .hint{font-family:var(--serif);font-style:italic;color:var(--taupe);font-size:.98rem;margin:-.4rem 0 .9rem}
@@ -189,11 +210,16 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .opt[data-picked="1"] .key{background:var(--header);color:#fff}
 .opt[data-outcome="correct"]{border-color:var(--team);border-width:2px;background:#EAF3EF}
 .opt[data-outcome="correct"] .key{background:var(--team);color:#fff}
+.opt[data-outcome="wrong"]{border-color:var(--alert);border-width:2px;background:var(--alert-bg)}
+.opt[data-outcome="wrong"] .key{background:var(--alert);color:#fff}
 .opt[data-outcome="info"]{border-color:var(--tranquil)}
 .opt[data-outcome="info"] .key{background:var(--tranquil)}
 .opt[data-outcome="dim"]{opacity:.5}
 .fb{border-radius:1rem;padding:.85rem 1.1rem;margin-top:.8rem;font-size:1rem}
 .fb p{margin:0}
+.fb p+p{margin-top:.7rem}
+.fb .thread{margin:.7rem 0 0}
+.fb .thread+p{margin-top:.7rem}
 .fb.yes{background:#E4EFEA;border-left:.3rem solid var(--team);color:#1D4A40}
 .fb.no{background:var(--alert-bg);border-left:.3rem solid var(--alert)}
 .fb.info{background:#EAF4FA;border-left:.3rem solid #7FB4D4}
@@ -214,15 +240,38 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .line:last-child{margin-bottom:0}
 .line .spk{font-family:var(--sans);font-size:.78rem;font-weight:500;color:var(--header);display:block;margin-bottom:.15rem}
 .line .meta{font-style:italic;color:var(--taupe)}
-.bubble{max-width:88%;padding:.65rem .9rem;border-radius:1.1rem;margin:0 0 .45rem;font-size:1rem;line-height:1.55}
+.bubble{max-width:88%;padding:.65rem .9rem;border-radius:1.1rem;margin:0 0 .45rem;font-size:1rem;line-height:1.55;position:relative;z-index:1}
 .bubble.them{background:var(--white);border:1px solid var(--convo-line);border-bottom-left-radius:.35rem}
 .bubble.us{background:var(--tranquil);border-bottom-right-radius:.35rem;margin-left:auto;color:var(--header)}
 .bubble .spk{font-family:var(--sans);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);display:block;margin-bottom:.2rem}
 .sysline{font-style:italic;color:var(--taupe);font-size:.95rem;margin:.2rem 0 .7rem;text-align:center}
+/* An annotation hangs off the message it belongs to: same yellow as the
+   highlight, tucked under the bubble, so it reads as part of that message
+   rather than as the next one in the thread. */
+.ann{display:none;max-width:88%;margin:-.55rem 0 .9rem auto;padding:.9rem .95rem .6rem;background:#FFF3C4;border:1px solid var(--trust);border-top:0;border-radius:0 0 .9rem .9rem;font-size:.95rem;line-height:1.5;color:var(--header);position:relative;z-index:0}
+.ann .spk{color:#6B5A1E}
+.ann.on{display:block}
+.col p.indent{margin-left:1.6rem;padding-left:1rem;border-left:2px solid var(--border)}
+mark{background:var(--trust);color:var(--header);padding:.05em .25em;border-radius:.3em;cursor:pointer;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-bottom:2px solid rgba(34,34,34,.35);transition:background .15s}
+mark:hover{filter:brightness(.95)}
+mark.on{background:var(--header);color:var(--white);border-bottom-color:var(--header)}
+mark:focus-visible{outline:2px solid var(--header);outline-offset:2px}
+.ann .spk{font-family:var(--sans);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);display:block;margin-bottom:.2rem}
+.col p a,.col li a,.col .note a{color:var(--header);text-decoration:underline;text-underline-offset:.15em}
 .typing{display:inline-flex;gap:5px;padding:.7rem .9rem;background:var(--white);border:1px solid var(--convo-line);border-radius:1.1rem}
 .typing i{width:6px;height:6px;border-radius:50%;background:var(--taupe);opacity:.5;animation:blink 1.3s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:.9;transform:translateY(-3px)}}
+/* The learner's own draft set beside the strongest option, shown once a
+   response has been chosen. Two equal panels; the strongest one carries the
+   yellow edge. */
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:0 0 .9rem}
+.compare .side{background:var(--white);border:1px solid var(--convo-line);border-radius:1rem;padding:.75rem .9rem}
+.compare .side.best{border-color:var(--trust);border-width:2px;background:#FFFBEF}
+.compare .lbl{display:block;font-family:var(--sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);font-weight:500;margin-bottom:.35rem}
+.compare p{margin:0;font-size:.97rem;line-height:1.55;color:var(--body);white-space:pre-wrap}
+.compare p.none{font-style:italic;color:var(--taupe)}
+.writestep textarea{margin-top:.2rem}
 .step{font-family:var(--sans);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);font-weight:500;display:flex;align-items:center;gap:.6rem;margin:1.4rem 0 .6rem}
 .step .n{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--trust);color:var(--header);display:grid;place-items:center;font-size:.75rem;letter-spacing:0}
 .locked{opacity:.45;pointer-events:none}
@@ -230,7 +279,6 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .gate .btn{max-width:100%}
 .gate .back{background:none;border:0;color:var(--taupe);font-family:var(--sans);font-size:.85rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .gate .back:hover{color:var(--header)}
-.pagehead{max-width:var(--col);margin:0 auto;padding:1.4rem 1.4rem 0;font-family:var(--sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe)}
 .drawer a[aria-current="true"]{background:var(--bg);color:var(--header);font-weight:500}
 .drawer a .tick{float:right;color:var(--trust)}
 
@@ -251,9 +299,18 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
 .foot{padding:1.2rem 1.4rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.8rem;justify-content:center;font-family:var(--sans);font-size:.78rem;color:var(--taupe)}
 
 @media (max-width:760px){
-  .cards[data-cols="2"],.cards[data-cols="3"],.cards[data-cols="5"]{grid-template-columns:1fr}
+  .cards[data-cols="2"],.cards[data-cols="3"],.cards[data-cols="4"],.cards[data-cols="5"]{grid-template-columns:1fr}
+  .tbl thead{display:none}
+  .tbl table,.tbl tbody,.tbl tr,.tbl th,.tbl td{display:block;width:100%}
+  .tbl tr{border-bottom:1px solid var(--border);padding:.3rem 0}
+  .tbl tr:last-child{border-bottom:0}
+  .tbl tbody th{padding-bottom:.2rem;border-bottom:0}
+  .tbl tbody td{border-bottom:0;padding-top:.15rem}
+  .tbl tbody td::before{content:attr(data-lbl);display:block;font-family:var(--sans);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:.15rem}
+  .tbl tbody tr:nth-child(even) th,.tbl tbody tr:nth-child(even) td{background:transparent}
   .flips{grid-template-columns:1fr}
-  .flip{height:9rem}
+  .compare{grid-template-columns:1fr}
+  .flip,.face{min-height:9rem}
   .face{padding:1rem}
   .divider .in{grid-template-columns:1fr}
   .divider .art{max-width:11rem}
@@ -264,6 +321,7 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
   .menu{padding:.38rem .8rem;font-size:.8rem}
   .hero{padding:6rem 1.2rem 8rem}
   .blk{padding-top:1.8rem}
+  #stream[data-top="bare"]>.blk:first-child{padding-top:5rem}
   .gate .btn{white-space:normal}
   .gate{margin-top:2rem}
 }
@@ -291,7 +349,7 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
   <div class="row">
     <div class="lockup"><div class="mark md" aria-hidden="true">9&middot;8&middot;8</div>
       <div class="wordmark md">Suicide Crisis<br>Helpline</div></div>
-    <div class="name">Key Responder Skills<b>Module 1 &middot; Preparing for Interactions</b></div>
+    <div class="name" id="topName"></div>
     <div class="spacer"></div>
     <span class="name" id="pct">0%</span>
     <button class="menu" id="menubtn" aria-expanded="false"><span class="bars"><i></i><i></i><i></i></span> Contents</button>
@@ -311,9 +369,9 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
   <div class="in">
     <div class="lockup"><div class="mark lg" aria-hidden="true">9&middot;8&middot;8</div>
       <div class="wordmark lg">Suicide Crisis<br>Helpline</div></div>
-    <p class="kick">Key Responder Skills &middot; Module 1</p>
-    <h1>Preparing for Interactions</h1>
-    <p class="meta">Estimated completion time: 30 minutes</p>
+    <p class="kick" id="heroKick"></p>
+    <h1 id="heroTitle"></h1>
+    <p class="meta" id="heroMeta"></p>
     <button class="scrollcue" id="begin">Begin the module</button>
   </div>
 </section>
@@ -326,36 +384,85 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
 </div>
 
 <script>
+/* =====================================================================
+   9-8-8 e-learning prototype — MODULE CONTENT
+   Key Responder Skills · Module 1: Preparing for Interactions
+   Source storyboard: KRS_Module_1_Content_SME_Changes_Included.docx
+
+   This file holds content only. All styling and interaction behaviour
+   lives in shell.html. Build a deliverable with:
+       python3 build.py module1_content.js
+   ===================================================================== */
+
+const META = {
+  course:      'Key Responder Skills',
+  moduleLabel: 'Module 1',
+  title:       'Preparing for Interactions',
+  time:        '30 minutes'
+};
+
+/* The storyboard supplies no completion copy for this module; this is
+   carried forward from the previous build for the client to confirm. */
+const END = {
+  title:     `You have finished Module 1`,
+  summary:   `You met seven callers and texters, tested your expectations against the research, and started building a personal set of strategies. They all return later in the course.`,
+  nextTitle: `What comes next`,
+  next:      `Module 2 practises meeting caution with patience and honest answers. Module 3 develops reflective practice, and takes your readiness reflection with it. Module 4 builds first responses into a full skill set.`
+};
+
+/* Sidebar / drawer page names. One entry per `sec` index used below.
+   A string lists the page in the contents menu; {menu:false} keeps a
+   continuation page out of it, so the menu reads as topics and activities. */
+const SECTIONS = [
+  'Welcome',
+  'Topic 1: Preparing for the interaction',
+  'Activity: What can you know from the first moments?',
+  {name:'What can you know from the first moments: the message', menu:false},
+  'Topic 2: How callers and texters present',
+  'Activity: Who is reaching out?',
+  {name:'Who is reaching out: the interactions', menu:false},
+  'Topic 3: Understanding context',
+  'Activity: What might be shaping this presentation?',
+  {name:'What might be shaping this presentation: the presentations', menu:false},
+  {name:'Topic 3: Understanding context, continued', menu:false},
+  'Activity: Build a readiness plan',
+  'Activity: Readiness reflection',
+  'Live practice and references'
+];
+
+/* Every screen, in order. `sec` maps a screen to a page in SECTIONS. */
 const SCREENS = [
 {sec:0, type:'cover'},
 
-{sec:0, type:'prose', eyebrow:'Module overview', title:'What this module is about', blocks:[
-  {p:`Every 9-8-8 interaction begins with uncertainty. You do not know who will reach out, what they will share, or what they may need from you.`, lede:true},
-  {p:`In this module, you will learn about how to prepare for these interactions and become comfortable with the unknown. Along the way, you will meet callers and texters whose experiences reflect the range of interactions you may encounter in your work. You will consider what each person may need in the opening moments of the interaction and select the best responses based on those needs.`},
+{sec:0, type:'prose', title:'Module overview', blocks:[
+  {p:`Every 9-8-8 interaction is unique. When an interaction begins, you may know very little about the person reaching out, what they are experiencing, or the support they need in that moment.`, lede:true},
+  {p:`In this module, you will learn how to prepare for these interactions and how to work with the uncertainty they bring. Along the way, you will meet callers and texters whose experiences reflect the range of interactions you will encounter in your work. You will consider what each person may need in the opening moments of the interaction and select the best responses based on those needs.`},
   {p:`You will also:`},
   {cards:{cols:3, items:[
     {t:`Compare your expectations with research on caller and texter presentations`},
     {t:`Examine how social, cultural and structural circumstances shape distress and disclosure`},
     {t:`Explore ways to prepare for the demands of the work`}
   ]}},
-  {panel:{cls:'blue', p:`The callers and texters introduced in this module will return throughout the course.`}},
+  {p:`This foundation will help you adapt the skills taught in later modules to a diverse range of people and situations.`},
+  {panel:{cls:'blue', p:`The callers and texters introduced here will return as you practise those skills throughout the course.`}},
   {note:`Estimated completion time: 30 minutes`}
 ]},
 
-{sec:0, type:'prose', eyebrow:'Learning objectives', title:'By the end of this module, you will be able to:', blocks:[
+{sec:0, type:'prose', title:'Learning objectives', blocks:[
+  {p:`By the end of this module, you will be able to:`, lede:true},
   {cards:{cols:1, num:true, items:[
-    {t:`Describe the range of reasons people contact 9-8-8, including loneliness, significant distress, and suicidal crisis`},
+    {t:`Describe the range of reasons people contact 9-8-8, from loneliness and emotional distress to suicidal crisis`},
     {t:`Explain why repeat contact is a normal part of the service`},
-    {t:`Explain why uncertainty is part of crisis line work and why tolerating it is a professional skill`},
+    {t:`Explain why uncertainty is a natural part of crisis line work and why working with it is a professional skill`},
     {t:`Identify how social, cultural, and structural circumstances can shape distress and disclosure`},
     {t:`Identify personal reactions that may arise during demanding interactions and strategies for managing them`}
   ]}}
 ]},
 
-{sec:0, type:'prose', eyebrow:'Module topics', title:'Three topics', blocks:[
+{sec:0, type:'prose', title:'Module topics', blocks:[
   {p:`Turn each card to see what the topic covers.`, lede:true},
   {flip:[
-    {front:`Preparing for the interaction`, back:`How becoming comfortable with uncertainty can be developed as a professional skill.`},
+    {front:`Preparing for the interaction`, back:`How working with uncertainty can be developed as a professional skill.`},
     {front:`How callers and texters present`, back:`How the range of caller and texter needs and experiences may appear in your work.`},
     {front:`Understanding context`, back:`How social, cultural, and structural circumstances influence distress and disclosure.`}
   ]}
@@ -363,51 +470,74 @@ const SCREENS = [
 
 /* ---------------- TOPIC 1 ---------------- */
 {sec:1, type:'section', num:'01', kicker:'Topic 1', art:'a',
- title:`Preparing for the interaction`, line:`How becoming comfortable with uncertainty can be developed as a professional skill.`},
+ title:`Preparing for the interaction`, line:`How working with uncertainty can be developed as a professional skill.`},
 
-{sec:1, type:'prose', eyebrow:'Topic 1', title:'What you cannot know in advance', blocks:[
-  {p:`When you answer a 9-8-8 call or text, you usually know very little about the person. There is often no file, no background information, and no shared history to guide you. For many people, it may be the first and only time they contact the service.`, lede:true},
+{sec:1, type:'prose', title:'What you cannot know in advance', blocks:[
+  {p:`When you answer a 9-8-8 call or text, you usually know very little about the person. There is often no background information and no shared history to guide you. For many people, it may be the first and only time they contact the service.`, lede:true},
   {p:`During an interaction, it is the person who reaches out that decides what to share, when to share it, and where the conversation will go. As a result, there are <strong>many things you cannot predict</strong> in advance:`},
   {cards:{cols:3, items:[
     {t:`A person may begin with one concern and move toward something very different.`},
-    {t:`Difficult information may emerge without warning, sometimes in the first sentence.`},
+    {t:`The person may share very little information to guide the conversation.`},
     {t:`The interaction may end without you knowing how the person experienced it or what happened afterward.`}
   ]}},
-  {key:[`This uncertainty is a <strong>defining part</strong> of crisis line work.`]}
+  {key:[`This uncertainty is a <strong>natural part</strong> of crisis line work.`]}
 ]},
 
-{sec:1, type:'prose', eyebrow:'Topic 1', title:'Tolerating uncertainty is a professional skill', blocks:[
+{sec:1, type:'prose', title:'What you do know', blocks:[
+  {p:`At the same time, there is a lot that you do know. As a responder, you begin every interaction with:`, lede:true},
+  {cards:{cols:2, items:[
+    {t:`Your training, including the skills you will develop in this course`},
+    {t:`A clear understanding of your role as a responder and its limits`},
+    {t:`The 9-8-8 Suicide Assessment and Safety Planning (SASP) Model and the standard operating procedures`},
+    {t:`A supervisor who is available to support you during your shift`}
+  ]}},
+  {p:`These are consistent resources you can draw on as you learn more about each caller or texter, consider what they need, and decide how to proceed in the interaction.`}
+]},
+
+{sec:1, type:'prose', title:'Working with uncertainty is a professional skill', blocks:[
   {p:`Not knowing how an interaction will go can feel uncomfortable. That discomfort is normal.`, lede:true},
-  {p:`The good news is that tolerating uncertainty is not a personality trait that some responders naturally have and others do not. It is a <strong>professional skill</strong> that develops with practice.`},
+  {p:`The good news is that the ability to handle uncertainty is not a personality trait that some responders naturally have and others do not. It is a <strong>professional skill</strong> that can be developed and strengthened through practice, reflection, and experience.`},
   {h3:`How does this skill develop?`},
   {p:`The starting point is <strong>self-awareness.</strong> This means noticing what happens within yourself when you do not know what is coming.`},
   {p:`Your reactions can provide useful information, but they should not determine how you respond.`},
-  {h3:`Responders commonly experience:`},
+  {h3:`Responders may experience:`},
   {reveal:{cta:`Reveal a common reaction`, more:`Reveal the next`, items:[
-    `Sadness`,`Powerlessness`,`Shock`,
-    `An urge to fix the situation quickly`,
+    `Sadness`,
+    `Powerlessness`,
+    `Surprise or shock`,
+    `An urge to problem-solve or address the situation quickly`,
     `A desire to know how the interaction turned out`
   ]}},
   {panel:{cls:'blue', p:`These reactions do not mean that something has gone wrong. They are simply part of the work of a 9-8-8 responder. It's what you do with them that matters.`}}
 ]},
 
-{sec:1, type:'prose', eyebrow:'Topic 1', title:'What that looks like in practice', blocks:[
+{sec:1, type:'prose', title:'What that looks like in practice', blocks:[
   {p:`In practice, developing this skill means:`, lede:true},
   {acc:[
-    {q:`Setting realistic expectations of yourself`, a:`A lot of this discomfort comes from feeling that you need to resolve every situation or find out how it ends. Being clear about your role as a responder, and its limits, can make the uncertainty easier to tolerate.`},
+    {q:`Setting realistic expectations of yourself`, a:`A lot of this discomfort comes from feeling that you need to resolve every situation or find out how it ends. Being clear about your role as a responder, and its limits, can make the uncertainty easier to handle.`},
     {q:`Allowing a moment to unfold`, a:`Long pauses, vague openings, or silence can be difficult to interpret. Part of developing this skill means learning to wait a little longer before stepping in.`},
     {q:`Reflecting after interactions`, a:`One way you can build the necessary self-awareness for this skill is by intentionally reflecting about how an interaction affected you and what shaped your responses.`},
-    {q:`Using debriefing, supervision, and peer support`, a:`This skill can also be developed by talking through a nuanced or difficult interaction with supervisors and peers. 9-8-8 provides resources for structured debriefing on our portal.`}
+    {q:`Using debriefing, supervision, and peer support`, a:`This skill can also be developed by talking through a nuanced or difficult interaction with supervisors and peers.`}
   ]},
   {p:`The more experience you have, the more natural this will become. As you encounter a wider range of interactions, fewer situations will feel entirely unfamiliar.`},
   {key:[`The uncertainty does not disappear, but you become better able to recognize your reactions and remain present without letting them take control.`]}
 ]},
 
-{sec:1, type:'mcq', eyebrow:'Activity', title:'What can you know from the first message?',
+/* ---------------- ACTIVITY: FIRST MOMENTS ---------------- */
+{sec:2, type:'section', kicker:'Activity', art:'e', tone:'tranquil',
+ title:`What can you know from the first moments?`, line:`One opening message, and what it does and does not tell you.`},
+
+{sec:2, type:'prose', title:'How this activity works', blocks:[
+  {p:`The first thing a person shares is often all you have to guide your initial response. It can quickly shape what you expect and what you say next. Working with uncertainty means noticing what those first words suggest and how you react to them, without treating those first impressions as facts.`, lede:true},
+  {p:`In this activity, you will apply these ideas to an example. The example below is based on the kinds of interactions that 9-8-8 partner organizations have encountered in real life. As you read it, consider what the opening message tells you, what it might suggest, and what remains unknown.`},
+  {note:`After you answer a question in this module, you can select the other options to read their feedback.`}
+]},
+
+{sec:3, type:'mcq', title:'The opening message',
  intro:[
-  {p:`The first message of an interaction is often all you have to guide your initial response. It can quickly shape what you expect and what you say next. Tolerating uncertainty means noticing what the message suggests and your reaction to it, without treating those first impressions as facts.`},
-  {p:`In this activity, you will apply these ideas to a real example. The example below is adapted from an interaction submitted by a 9-8-8 partner organization. As you read it, consider what the opening message tells you, what it might suggest, and what remains unknown.`},
-  {thread:{ch:'Text', lines:[{who:'them', spk:'Texter', t:`I'm not suicidal. Is there a different number I should use for just bad thoughts?`}]}}
+  {thread:{ch:'Text', lines:[
+    {who:'them', spk:'Texter', t:`I'm not suicidal. Is there a different number I should use for just bad thoughts?`}
+  ]}}
  ],
  prompt:`Based only on this opening message, how would you expect the interaction to develop?`, hint:`Select the best answer.`,
  options:[
@@ -419,63 +549,60 @@ const SCREENS = [
    fb:`You do not yet know where the interaction will lead. Deciding too early that another service is more appropriate can narrow your understanding before you have enough information.`}
  ]},
 
-{sec:1, type:'prose', eyebrow:'Activity', title:'What happened next?', blocks:[
-  {p:`In the actual interaction, as the conversation continued and trust developed, the texter shared:`, lede:true},
+{sec:3, type:'prose', title:'What happened next?', blocks:[
+  {p:`As the conversation continued and trust developed, the texter shared:`, lede:true},
   {reveal:{cta:`Reveal what the texter shared`, more:`Reveal the next`, items:[
     `A long history of self-harm and a current urge to self-harm`,
-    `A suicide attempt two months earlier`,
+    `A recent suicide attempt`,
     `A recent experience that had brought earlier trauma back to the surface`,
     `Suicide plans that they were not currently intending to act on`,
-    `A change they found frightening: wanting to self-harm even when they were not feeling distressed`
+    `A recent change in their urges to self-harm that frightened them`
   ]}},
-  {p:`None of this meant the texter's first message was inaccurate. When they said they were not suicidal, they meant it. There was simply more to understand.`},
+  {p:`None of this meant the texter's first message was inaccurate. When they wrote "I'm not suicidal," they meant it. There was simply more to understand.`},
   {p:`The fuller picture emerged over the course of the interaction because the responder did not assume that the first message told them everything they needed to know.`},
-  {panel:{cls:'blue', p:`Tolerating uncertainty means resisting the pressure to decide too quickly on what an interaction is about or where it will lead. Instead, your job is to stay curious and allow the person to show you what they need as the interaction develops.`}}
+  {panel:{cls:'blue', p:`Working with uncertainty means resisting the pressure to decide too quickly on what an interaction is about or where it will lead. Instead, your job is to stay curious and allow the person to show you what they need as the interaction develops.`}}
 ]},
 
 /* ---------------- TOPIC 2 ---------------- */
-{sec:2, type:'section', num:'02', kicker:'Topic 2', art:'b',
- title:`How callers and texters present`, line:`The range of needs and experiences you may encounter, and what the research shows about people who use crisis services.`},
+{sec:4, type:'section', num:'02', kicker:'Topic 2', art:'b',
+ title:`How callers and texters present`, line:`How the range of caller and texter needs and experiences may appear in your work.`},
 
-{sec:2, type:'prose', eyebrow:'Topic 2', title:'Estimation activity', blocks:[
-  {p:`Before we learn more about who reaches out to 9-8-8, let's start with a brief estimation activity. You will be presented with 3 questions about the statistics on who uses crisis services. Make your best guess from the options provided.`, lede:true},
+{sec:4, type:'prose', blocks:[
+  {p:`Before we learn more about who reaches out to 9-8-8, let's start with a brief estimation activity. You will be presented with two questions about the statistics on who uses crisis services. Make your best guess from the options provided.`, lede:true},
   {note:`Your answers will not be scored. The purpose of this activity is to notice the expectations you may already bring into this work, and then compare them with what the research tells us about people who use crisis services.`}
 ]},
 
-{sec:2, type:'mcq', eyebrow:'Estimate 1 of 3', title:'Thoughts of suicide', shared:true, answerKey:'A',
+{sec:4, type:'mcq', title:'Estimate 1', shared:true, answerKey:'A',
  prompt:`Out of every 100 people who text a crisis service, how many do you think report thoughts of suicide?`, hint:`Make your best guess.`,
  options:[{k:'A', t:`About 20`},{k:'B', t:`About 50`},{k:'C', t:`About 80`}],
  sharedFb:`In the largest study of a text-based crisis service, about <strong>23 out of every 100</strong> texters reported thoughts of suicide. Suicidal thoughts are an important part of the work, but most texters in this study were experiencing other forms of distress.`},
 
-{sec:2, type:'mcq', eyebrow:'Estimate 2 of 3', title:'Depression and anxiety', shared:true, answerKey:'C',
- prompt:`Out of every 100 people who text a crisis service, how many do you think score above clinical thresholds for depression or anxiety?`, hint:`Make your best guess.`,
- options:[{k:'A', t:`About 20`},{k:'B', t:`About 50`},{k:'C', t:`About 80`}],
- sharedFb:`In the same study, about <strong>80 out of every 100</strong> texters scored above clinical thresholds for depression or anxiety. The absence of suicidal thoughts does not mean distress is mild. Many people contact a crisis service in significant emotional distress, whether or not suicide is part of what they share.`},
-
-{sec:2, type:'mcq', eyebrow:'Estimate 3 of 3', title:'Contacting more than once', shared:true, answerKey:'C',
+{sec:4, type:'mcq', title:'Estimate 2', shared:true, answerKey:'C',
  prompt:`How common do you think it is for the same person to contact a crisis service more than once?`, hint:`Make your best guess.`,
  options:[{k:'A', t:`Rare`},{k:'B', t:`Fairly common`},{k:'C', t:`Very common`}],
  sharedFb:`Repeat contact is a <strong>very common</strong> part of crisis service work. Research shows that many people reach out more than once. For some, a crisis line is one part of a broader network of support for loneliness, significant mental health concerns, or suicide risk.`},
 
-{sec:2, type:'prose', eyebrow:'Topic 2', title:'What do these findings tell us?', blocks:[
-  {p:`Taken together, these findings give us a better understanding of who reaches out.`, lede:true},
-  {reveal:{cta:`Reveal what the findings show`, more:`Reveal the next`, items:[
-    `Some interactions involve suicidal thoughts or acute suicide risk.`,
-    `Many others involve significant distress without suicidality.`,
+{sec:4, type:'prose', title:'What do these findings tell us?', blocks:[
+  {p:`Taken together, these findings give us a better understanding of who reaches out to 9-8-8.`, lede:true},
+  {ul:[
+    `Some interactions involve suicidal thoughts or behaviour.`,
+    `Many others involve significant distress without thoughts of suicide.`,
     `Some people will contact the service once, while others will return.`
-  ]}},
+  ]},
+  {p:`The absence of suicidal thoughts does not mean that distress is mild. Many people contact a crisis service in significant emotional distress, whether or not suicide is part of what they share.`},
   {h3:`Across crisis services, common reasons for reaching out include:`},
-  {cards:{cols:3, tight:true, items:[
+  {cards:{cols:5, tight:true, items:[
     {t:`Loneliness`},{t:`Isolation`},{t:`Relationship problems`},{t:`Grief`},{t:`Family conflict`}
   ]}},
-  {p:`If any of the findings differed from what you expected, take note of that gap. Your expectations about what an interaction is supposed to look like can shape what you pay attention to once it begins.`}
+  {p:`If any of the findings differed from what you expected, take note of that gap. Your expectations about what an interaction is supposed to look like can shape what you pay attention to once it begins.`},
+  {panel:{cls:'blue', p:`Keep these expectations in mind as you meet the callers and texters in this course.`}}
 ]},
 
-{sec:2, type:'prose', eyebrow:'Topic 2', title:'The range of people who contact 9-8-8', blocks:[
-  {p:`Since 9-8-8 is a suicide prevention service, everyone who reaches out is offered support related to suicide risk. At the same time, no one is turned away just because their situation does not look like an immediate suicidal crisis.`, lede:true},
+{sec:4, type:'prose', title:'The range of people who contact 9-8-8', blocks:[
+  {p:`Since 9-8-8 is a suicide prevention service, everyone who reaches out is offered support related to suicide assessment and safety planning. At the same time, no one is turned away just because their situation is not, or does not look like, a suicidal crisis.`, lede:true},
   {h3:`The range of interactions you will encounter is broad. A person contacting 9-8-8 may be:`},
   {reveal:{cta:`Reveal a reason someone may reach out`, more:`Reveal the next`, items:[
-    `Experiencing an acute suicidal crisis`,
+    `Experiencing a suicidal crisis`,
     `Living with loneliness, grief, abuse or the end of a relationship`,
     `Facing financial or housing stress`,
     `Worried about someone else`,
@@ -484,91 +611,96 @@ const SCREENS = [
   {p:`Several of these concerns may appear in a single interaction, and the first concern a person describes may not be the one that becomes most important.`}
 ]},
 
-{sec:2, type:'prose', eyebrow:'Topic 2', title:'Being prepared for all interactions', blocks:[
-  {p:`When preparing for the range of interactions you may encounter, it's important to keep in mind that <strong>some interactions misuse the service.</strong>`, lede:true},
-  {p:`A small number of people contact 9-8-8 in ways that violate service boundaries. This includes sexually motivated interactions, which responders frequently identify as a source of stress. Being prepared for these types of interactions is part of understanding the realistic range of the work.`},
-  {note:`Note: responders are not expected to continue an interaction that violates service boundaries. Procedures for setting limits and ending these interactions can be found in the Standard Operating Procedures (SOPs) and will be covered in a future e-learning course.`}
+{sec:4, type:'prose', title:'Being prepared for all interactions', blocks:[
+  {p:`When preparing for the range of interactions you may encounter, it's important to keep in mind that <strong>a small number of people use 9-8-8 in ways that do not align with the <a href="https://988.ca/terms">9-8-8 Terms of Service</a>.</strong>`, lede:true},
+  {p:`9-8-8 is committed to being a safe and respectful space for everyone, including responders. Language or behaviour that does not align with the Terms of Service can include:`},
+  {ul:[
+    `Sexually inappropriate behaviour, such as using the service for sexual gratification`,
+    `Language that is discriminatory, racist, harassing, abusive, or threatening`,
+    `Intentional disruption of the service, such as prank calls`
+  ]},
+  {p:`This is different from an expression of frustration, anger, or pain. A person in distress may raise their voice or use profanity, and this on its own is not a misuse of the service.`},
+  {p:`Responders frequently identify sexually inappropriate behaviours as a source of stress. Being prepared for these types of interactions is part of understanding the realistic range of the work.`},
+  {note:`Note: 9-8-8 aims to balance the needs of callers and texters with the wellbeing of responders. The steps to follow when someone uses inappropriate language or behaviour are set out in the standard operating procedures (SOPs). This includes what to do if you do not feel safe to continue, or if you are concerned about the person's level of risk. Your supervisor is always available to support you, and these procedures will be covered in future training.`}
 ]},
 
-{sec:2, type:'prose', eyebrow:'Topic 2', title:'Why this matters for your work', blocks:[
-  {p:`Responder training often focuses on a single, familiar version of a crisis: a highly distressed person at imminent risk of suicide.`, lede:true},
+{sec:4, type:'prose', title:'Why this matters for your work', blocks:[
+  {p:`Responder training often focuses on a single, familiar version of a crisis: a highly distressed person at risk of suicide.`, lede:true},
   {p:`Those interactions are important, but they are only one aspect of the work. Real interactions vary in urgency, tone, content, and need.`},
-  {h3:`If you only expect a dramatic crisis on the lines:`},
+  {p:`The intensity of a person's emotions is also not a reliable measure of their suicide risk. A person may be sobbing, shouting, or struggling to speak but not thinking about suicide. They may have reached a point where they have no other outlet and are turning to 9-8-8 for support. You will learn more about responding to strong emotions in Module 6, and the steps for suicide risk assessment are covered in the SASP course.`},
+  {h3:`If you expect a specific type of presentation on the lines:`},
   {cards:{cols:2, items:[
     {t:`You may find it harder to recognize other forms of distress.`},
-    {t:`You may compare the person with an expected pattern, rather than being understood on their own terms.`}
+    {t:`You may compare the person with an expected pattern, rather than understanding them on their own terms.`}
   ]}},
-  {key:[`Preparing for the full range of interactions helps you respond to the person who is actually in front of you.`]}
+  {key:[`Preparing for the full range of interactions helps you respond to the person who has reached out.`]}
 ]},
 
-/* ---------------- VIGNETTES ---------------- */
-{sec:3, type:'section', num:'', kicker:'Activity', art:'e', tone:'tranquil',
+/* ---------------- ACTIVITY: WHO IS REACHING OUT? ---------------- */
+{sec:5, type:'section', kicker:'Activity', art:'c', tone:'tranquil',
  title:`Who is reaching out?`, line:`The opening moments of seven different 9-8-8 interactions.`},
 
-{sec:3, type:'prose', eyebrow:'Activity', title:'How this activity works', blocks:[
+{sec:5, type:'prose', title:'How this activity works', blocks:[
   {p:`In this activity, you will review the opening moments of seven different 9-8-8 interactions. Each person reflects a type of presentation you may encounter in this work.`, lede:true},
-  {h3:`For each interaction, you will complete two steps:`},
+  {p:`The activity changes slightly from one interaction to the next. You will be asked to complete some or all of these steps:`},
   {ol:[
     `<strong>Consider what the person may need first:</strong> Select the best answer from the options, then review the feedback.`,
+    `<strong>Write your own first response:</strong> Type the first message you would send before you see any options.`,
     `<strong>Choose how you might respond:</strong> Select the first thing you would say or send, then see how the person responds.`
   ]},
-  {p:`The second step is a preview of the skills you will develop in Module 4. It is not a test of proficiency, and your responses are not scored. The goal for now is to notice how different responses can shape what happens next.`},
+  {p:`Choosing a response is a preview of the skills you will develop in Module 4. It is not a test of proficiency, and your responses are not scored. The goal for now is to notice how different responses can shape what happens next. After you see how the person responds, the feedback will identify the strongest response and explain why. You can also select the other responses to see how the person would have reacted.`},
   {note:`Note: You do not need to apply any procedures or policies in this activity. Focus on who is reaching out and what they may need from the responder in the opening moments.`}
 ]},
 
-{sec:3, type:'vignette', n:1, person:{name:'Dominique', init:'D', sub:'Voice', tag:'High distress without suicidal thoughts'},
+{sec:6, type:'vignette', n:1, person:{name:'Dominique', init:'D', sub:'Voice', tag:'High distress without suicidal thoughts'},
  thread:{ch:'Voice call', lines:[
    {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
-   {who:'them', spk:'Caller', meta:`(tired, words coming quickly)`, t:`Hi. I don't even know if this is the kind of thing that you can help with. I'm not going to hurt myself or anything like that. It's just... it's my disability benefits. They're reviewing my claim and there's been months of paperwork. There's this, like, review meeting coming up soon and I haven't been sleeping so good. I just can't really think straight anymore.`}
+   {who:'them', spk:'Caller', meta:`(tired, frustrated)`, t:`Hi. I don't even know if this is the kind of thing that you can help with. I'm not going to hurt myself or anything like that.`}
  ]},
  step1:{prompt:`What may Dominique need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
-   {k:'A', t:`A warm reflection of how exhausting the months of paperwork and sleeplessness have been`, correct:false,
-    fb:`A reflection would be helpful, but Dominique first needs to know whether she has reached the right service.`},
+   {k:'A', t:`An empathic reflection of how tired and frustrated she sounds`, correct:false,
+    fb:`Reflecting her tone could help, but Dominique first needs to know whether she has reached the right service.`},
    {k:'B', t:`Confirmation that she has reached the right place before anything else is explored`, correct:true,
-    fb:`Answering Dominique's question directly lets her know she can continue. People in significant distress can contact 9-8-8 even when they are not currently suicidal.`},
+    fb:`Answering Dominique's question directly lets her know she can continue. People in significant distress can contact 9-8-8 even when they are not thinking about suicide.`},
    {k:'C', t:`An open question inviting her to say more about what has been hardest lately`, correct:false,
     fb:`An open question may help next, but exploring before answering her question may leave Dominique unsure whether she should continue.`}
  ]},
  step2:{prompt:`Now choose the first thing you would say to Dominique.`, hint:`There is no score. Notice how each response affects what she does next.`, options:[
-   {k:'A', t:`"That sounds completely exhausting. Tell me more about what these months have been like."`,
-    reply:[{spk:'Caller', meta:`(hesitant)`, t:`It is. But... is this really what this line is for, though? I don't want to take up space from someone who needs it more.`}]},
-   {k:'B', t:`"You're in the right place. This line is for exactly what you're describing, and I'm glad you called tonight. Where would you like to start?"`,
-    reply:[{spk:'Caller', meta:`(exhales slowly)`, t:`Okay. Thank you. I honestly didn't know if I should call. It's been a tough couple of weeks, and last night I was just sitting in the kitchen at three in the morning, wide awake, going in circles.`}]},
-   {k:'C', t:`"Have you been able to get any advice about the claim itself? There are clinics that can help with reviews."`,
-    reply:[{spk:'Caller', meta:`(flat)`, t:`I already have help with the forms. That's not really why I'm calling a crisis hotline...`}]}
+   {k:'A', t:`"It sounds like you've been carrying something heavy for a while. Can you tell me more about what's been going on lately?"`,
+    reply:[{spk:'Caller', meta:`(hesitant)`, t:`I guess. But... is this really what this line is for, though? I don't want to take up space from someone who needs it more.`}]},
+   {k:'B', t:`"It sounds like something's really weighing on you. Would it help if I pointed you to some resources that might fit your situation?"`,
+    reply:[{spk:'Caller', meta:`(flat)`, t:`I've got plenty of pamphlets and phone numbers already. That's not really why I'm calling a crisis hotline...`}]},
+   {k:'C', t:`"You're in the right place. This line is for all kinds of distress, and I'm glad you called. Where would you like to start?"`,
+    reply:[{spk:'Caller', meta:`(exhales slowly)`, t:`Okay. Thank you. I honestly didn't know if I should call. It's my disability benefits. They've had my claim under review for months, and there's a meeting coming up. It's like they've already decided I'm making it up. I haven't been sleeping. Last night I was just sitting in the kitchen at three in the morning, wide awake, going in circles.`}]}
  ],
- closing:`Dominique's immediate question is whether she should be calling 9-8-8 at all. An empathic reflection leaves that question unanswered, while problem-solving addresses a need she has not raised. Once you confirm that she is welcome, Dominique can settle into the interaction and say more.`}
+ closing:`Dominique's immediate question is whether she should be calling 9-8-8 at all. The strongest response is the one that confirms she is in the right place. Once she knows she is welcome, Dominique can settle into the interaction and say more. An empathic reflection leaves her question unanswered, while offering resources addresses a need she has not raised.`}
 },
 
-{sec:3, type:'vignette', n:2, person:{name:'Riley', init:'R', sub:'Text', tag:'A quiet, disengaged texter'},
+{sec:6, type:'vignette', n:2, person:{name:'Riley', init:'R', sub:'Text', tag:'A texter who is quiet and slow to engage'},
  thread:{ch:'Text', lines:[
    {who:'us', spk:'Responder', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
-   {who:'them', spk:'Texter', t:`i don't really know why i'm texting`},
+   {who:'them', spk:'Texter', t:`hi`},
+   {who:'them', spk:'Texter', t:`idk what i'm supposed to say`},
    {sys:`a long pause; the typing indicator appears, then stops`, typing:true}
  ]},
- step1:{prompt:`What may Riley need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
-   {k:'A', t:`A warm welcoming message, followed by some time to reply at their own pace`, correct:true,
-    fb:`Riley's typing indicator suggests they may still be deciding whether to continue. A warm message that does not require an immediate answer gives them room to decide at their own pace.`},
-   {k:'B', t:`A gentle open question about what today has been like for them so far`, correct:false,
-    fb:`An open question may help soon, but even a gentle question asks Riley to answer before they seem ready. Warmth and patience are more important in this moment.`},
-   {k:'C', t:`A short reassurance that texting was a good first step, followed by another check-in soon after`, correct:false,
-    fb:`The reassurance is warm, but another message too soon may create pressure to respond. Riley may need time more than momentum.`}
- ]},
+ write:{prompt:`Before you see any options, try writing the first message you would send to Riley.`,
+  placeholder:`What would you send?`, cta:`Save my response`, best:'A',
+  feedback:`Keep your message in mind as you review the options below. Notice which option is closest to what you wrote, and how Riley responds to it.`},
  step2:{prompt:`Now choose the first message you would send to Riley.`, hint:`There is no score. Notice how each response affects what they do next.`, options:[
-   {k:'A', t:`"Hi, I'm glad you texted. There's no pressure to know what to say yet. I'm here, and we can go at whatever pace works for you."`,
+   {k:'A', t:`"Hi, I'm glad you texted. There's no pressure to know what to say yet. I'm here, and we can go at your pace."`,
     reply:[{sys:`two minutes pass`},{spk:'Texter', t:`ok`},{spk:'Texter', t:`it's been a weird week i guess`},{sys:`the thread stays open`}]},
    {k:'B', t:`"Hi, thanks for reaching out. Can you tell me a bit about what's going on today? What made you decide to text?"`,
     reply:[{sys:`the typing indicator appears, stops, and does not return for several minutes`}]},
    {k:'C', t:`"Hi, you've reached 9-8-8. Lots of people aren't sure what to say at first. Is it something at school, at home, or something else?"`,
     reply:[{spk:'Texter', t:`idk`},{sys:`nothing further arrives for a long time`}]}
  ],
- closing:`Riley is still deciding whether to continue. A warm welcome makes that easier without requiring an explanation. The other responses ask something of Riley before they seem ready. In a hesitant text interaction, time can matter just as much as words.`}
+ closing:`Riley's typing indicator suggests they are still deciding whether to continue. The strongest response is the warm welcome that does not ask for an answer, because it gives Riley room to reply at their own pace. The other two responses ask Riley a question before they seem ready. Even a gentle question, or a second message sent too soon, can create pressure to respond. In a hesitant text interaction, time can matter just as much as words.`}
 },
 
-{sec:3, type:'vignette', n:3, person:{name:'Sam', init:'S', sub:'Voice', tag:'An angry caller'},
+{sec:6, type:'vignette', n:3, person:{name:'Sam', init:'S', sub:'Voice', tag:'A caller presenting with anger'},
  thread:{ch:'Voice call', lines:[
    {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
-   {who:'them', spk:'Caller', meta:`(fast, loud)`, t:`Yeah, hi. So what's the script tonight? Because I've heard them all. I lost my job and my housing in the same month. The same month. I've been calling these help numbers for weeks and every single one reads me the same lines. Oh, and the apartment hunt? The second the landlord meets me, the unit's suddenly taken. Every time. You want to tell me that's a coincidence? Go ahead. Tell me to take a deep breath.`}
+   {who:'them', spk:'Caller', meta:`(fast, loud)`, t:`Yeah, hi. So what's the script tonight? Because I've heard them all. I've been calling these help numbers for weeks, and every single one reads me the same lines. I lost my job and my housing in the same month. The same month. So go ahead. Tell me to take a deep breath.`}
  ]},
  step1:{prompt:`What may Sam need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
    {k:'A', t:`Acknowledgement of the losses, followed by a gentle transition toward what might help tonight`, correct:false,
@@ -576,68 +708,61 @@ const SCREENS = [
    {k:'B', t:`Naming the anger directly and inviting Sam to say more about it`, correct:false,
     fb:`Naming the emotion can help, but Sam has been clear about what is driving his anger. Start with what happened rather than making the emotion the focus.`},
    {k:'C', t:`A sincere and calm acknowledgement of what the past several weeks have been like`, correct:true,
-    fb:`Sam expects another script. Calmly acknowledging the job loss, housing loss and repeated experiences of being turned away shows that the responder has heard the substance of what he said. Other feelings may emerge once he feels heard.`}
+    fb:`Sam expects another script. Calmly acknowledging the job loss, the housing loss and the weeks of scripted responses shows that the responder has heard the substance of what he said. Other feelings may emerge once he feels heard.`}
  ]},
  step2:{prompt:`Now choose the first thing you would say to Sam.`, hint:`There is no score. Notice how each response affects what he does next.`, options:[
-   {k:'A', t:`"Okay. Let's slow things down a little. Take a breath, and start from the beginning for me."`,
+   {k:'A', t:`"You lost your job and your housing in the same month, and every place you've called has given you the same lines. That sounds exhausting."`,
+    reply:[{spk:'Caller', meta:`(a beat)`, t:`...Yeah. The same month.`},
+           {spk:'Caller', meta:`(slower)`, t:`And every landlord wants three months of pay stubs. With what job? Everyone I call acts like I'm the problem. You're the first one who's said it back to me straight.`}]},
+   {k:'B', t:`"Okay. I can hear how upset you are. Let's slow things down a little. Take a breath, and start from the beginning for me."`,
     reply:[{spk:'Caller', meta:`(sharper)`, t:`Take a breath. There it is. You people must get that off a laminated card.`}]},
-   {k:'B', t:`"You lost your job and your housing in the same month. Then you've spent weeks calling places and feeling like you're getting the same response everywhere. That sounds tough."`,
-    reply:[{spk:'Caller', meta:`(a beat)`, t:`...Yeah. The same month.`},{spk:'Caller', meta:`(slower)`, t:`And everyone I call acts like I'm the problem. You're the first one who's said it back to me straight.`}]},
-   {k:'C', t:`"I'm not going to read you a script. Tell me what you need tonight."`,
+   {k:'C', t:`"I'm not going to read you a script, I promise. I'm here to help. So tell me, what do you need from me tonight?"`,
     reply:[{spk:'Caller', meta:`(guarded)`, t:`What I need. If I knew that, I wouldn't be calling a stranger at midnight, would I.`}]}
  ],
- closing:`Sam expects another script. Telling him to slow down confirms that expectation, while asking what he needs moves too quickly toward a solution. Reflecting the substance of what he said shows that you have listened, and his anger begins to soften.`}
+ closing:`Sam expects another script. The strongest response is the one that mirrors what he has told you about the job, the housing, and the ongoing calls. It shows that you have listened, and his anger begins to soften. Telling him to slow down confirms what he expects to hear, while asking what he needs moves too quickly toward a solution.`}
 },
 
-{sec:3, type:'vignette', n:4, person:{name:'Walter', init:'W', sub:'Voice', tag:'A lonely repeat caller'},
+{sec:6, type:'vignette', n:4, person:{name:'Walter', init:'W', sub:'Voice', tag:'A caller who is lonely and contacts the line regularly'},
  thread:{ch:'Voice call', lines:[
    {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
    {who:'them', spk:'Caller', meta:`(warm, leisurely)`, t:`Oh, hello. It's Walter. I expect I've spoken with some of your colleagues before, I call most weeks. In the evenings, mostly. The house gets very quiet around this hour. Margaret used to have the radio on while she made tea, and, well... I thought I'd rather talk to a person tonight than sit with the quiet.`}
  ]},
- step1:{prompt:`What may Walter need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
-   {k:'A', t:`A friendly check on how he has been doing since his last call to the line`, correct:false,
-    fb:`Walter has called before, but this responder has no shared history or record of those conversations to draw on.`},
-   {k:'B', t:`A warm, relaxed welcome that leaves room for where Walter would like the conversation to go`, correct:true,
-    fb:`Walter has said what brought him here. A warm welcome accepts his reason for calling and lets him guide where the conversation goes.`},
-   {k:'C', t:`A warm acknowledgement of the quiet evening, followed by a question about supports that are closer to home`, correct:false,
-    fb:`The acknowledgement is helpful, but asking about other supports suggests that the call needs a different destination. Tonight, connection is the reason Walter called.`}
- ]},
- step2:{prompt:`Now choose the first thing you would say to Walter.`, hint:`There is no score. Notice how each response affects what he does next.`, options:[
-   {k:'A', t:`"It's good to hear from you, Walter. Those quiet evenings can feel long. What's been on your mind today?"`,
+ step2:{prompt:`Choose the first thing you would say to Walter.`, hint:`There is no score. Notice how each response affects what he does next.`, options:[
+   {k:'A', t:`"Thanks for calling, Walter. It's a busy night, so let's focus. What's the main thing you'd like to talk about?"`,
+    reply:[{spk:'Caller', meta:`(a small pause)`, t:`Oh. Well. Nothing urgent, I suppose.`},
+           {spk:'Caller', meta:`(more formal now)`, t:`I don't want to keep you if it's a busy night.`}]},
+   {k:'B', t:`"It's good to hear from you, Walter. Those quiet evenings can feel long. What's been on your mind today?"`,
     reply:[{spk:'Caller', meta:`(settles in, warmer)`, t:`They can, they can. Well. I had a letter from my granddaughter today, actually. Margaret would have loved it. She's studying out west now, my granddaughter, and she writes the way Margaret used to...`}]},
-   {k:'B', t:`"Thanks for calling, Walter. It's a busy night, so I want to make sure I help you best: what's the main thing you'd like to talk about?"`,
-    reply:[{spk:'Caller', meta:`(a small pause)`, t:`Oh. Well. Nothing urgent, I suppose.`},{spk:'Caller', meta:`(more formal now)`, t:`I don't want to keep you if it's a busy night.`}]},
    {k:'C', t:`"Hello, Walter. Have you thought about a seniors' program or a phone-visiting service for the evenings? It might help with the quiet."`,
-    reply:[{spk:'Caller', meta:`(polite, flatter)`, t:`I've got the pamphlets somewhere, I'm sure.`},{spk:'Caller', meta:`(pause)`, t:`Well. Perhaps I'm keeping you.`}]}
+    reply:[{spk:'Caller', meta:`(polite, flatter)`, t:`I've got the pamphlets somewhere, I'm sure.`},
+           {spk:'Caller', meta:`(pause)`, t:`Well. Perhaps I'm keeping you.`}]}
  ],
- closing:`Walter has explained why he called. The first response accepts his need for connection and lets the conversation develop. The others suggest that he should have something more urgent to discuss or find another service, and he begins to withdraw. Repeat contact does not make his need less legitimate.`}
+ closingBlocks:[
+   {p:`Walter has explained why he called. He would rather talk to a person tonight than sit alone with the quiet. The strongest response is a warm welcome that lets him decide where the conversation goes, which gives him the space to share more. The other responses suggest that he should have something more urgent to discuss or that he should find another service, and he begins to withdraw.`},
+   {p:`Although Walter calls most weeks, you have no shared history or record of those conversations, so each call is a new conversation for you. Repeat contact does not make his need less legitimate.`}
+ ]}
 },
 
-{sec:3, type:'vignette', n:5, person:{name:'Maya', init:'M', sub:'Text', tag:'A third-party interaction'},
+{sec:6, type:'vignette', n:5, person:{name:'Maya', init:'M', sub:'Text', tag:'A third-party interaction'},
  thread:{ch:'Text', lines:[
    {who:'us', spk:'Responder', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
-   {who:'them', spk:'Texter', t:`Hi, sorry if this isn't the right place for this. I'm actually not texting about me. I'm worried about my roommate. She barely left her room in two weeks and isn't answering my messages. She skipped all her classes too. Is it okay that I'm texting you about someone else? I don't know what I'm supposed to do`}
+   {who:'them', spk:'Texter', t:`Hey, sorry if this isn't even the right place to text this 😭 I'm not actually texting about me. I'm kind of worried about my roommate. She's barely left her room in like 2 weeks, she isn't answering any of my messages, and she's been skipping all her classes too. Is it okay that I'm texting you about someone else?? I honestly don't know what I'm supposed to do`}
  ]},
- step1:{prompt:`What may Maya need from the responder in these opening moments?`, hint:`Select the best answer.`, options:[
-   {k:'A', t:`A direct affirmative answer to her question, along with acknowledgement of how worrying the past two weeks have been`, correct:true,
-    fb:`Answering Maya's question directly confirms that third-party interactions are part of the service. Acknowledging her worry also keeps the focus on Maya as the person who reached out.`},
-   {k:'B', t:`Reassurance, followed by questions about her roommate to understand what is happening`, correct:false,
-    fb:`Questions about Maya's roommate will be important, but first she needs to know that her interaction is welcome.`},
-   {k:'C', t:`A warm acknowledgement of her concern, followed by encouragement to have her roommate contact 9-8-8 directly`, correct:false,
-    fb:`Her roommate may eventually be encouraged to reach out, but Maya is the person contacting the service now. This leaves her question unanswered.`}
- ]},
+ write:{prompt:`Before you see any options, try writing the first message you would send to Maya.`,
+  placeholder:`What would you send?`, cta:`Save my response`, best:'C',
+  feedback:`Keep your message in mind as you review the options below. Notice which option is closest to what you wrote, and how Maya responds to it.`},
  step2:{prompt:`Now choose the first message you would send to Maya.`, hint:`There is no score. Notice how each response affects what she does next.`, options:[
-   {k:'A', t:`"Yes, it's absolutely okay to text about someone else. You're in the right place. It sounds like a worrying two weeks, and we can think it through together."`,
-    reply:[{spk:'Texter', t:`Okay, thank you, that's honestly a relief`},{spk:'Texter', t:`I've been second guessing whether I'm overreacting. So what should I be doing? I have so many questions`}]},
-   {k:'B', t:`"Thanks for reaching out. Can you tell me more about your roommate? How long has this been going on, and has she said anything about how she's feeling?"`,
+   {k:'A', t:`"Thanks for reaching out. Can you tell me more about your roommate? How long has this been going on, and has she said anything about how she's feeling?"`,
     reply:[{spk:'Texter', t:`Um, two weeks ish? She hasn't really said anything, that's kind of the problem`},{spk:'Texter', t:`Sorry, was it wrong that I texted instead of her?`}]},
-   {k:'C', t:`"That sounds hard. The most helpful thing is often for the person to contact us themselves. Do you think your roommate would be open to texting this line?"`,
-    reply:[{spk:'Texter', t:`I mean maybe? She's not answering me at all though`},{spk:'Texter', t:`Sorry, I just didn't know where else to ask`}]}
+   {k:'B', t:`"That sounds hard. The most helpful thing is often for the person to contact us themselves. Do you think your roommate would be open to texting this line?"`,
+    reply:[{spk:'Texter', t:`I mean maybe? She's not answering me at all though`},{spk:'Texter', t:`Sorry, I just didn't know where else to ask`}]},
+   {k:'C', t:`"Yes, it's absolutely okay to text about someone else. You're in the right place. It sounds like a worrying two weeks, and we can think it through together."`,
+    reply:[{spk:'Texter', t:`Okay, thank you, that's honestly a relief`},{spk:'Texter', t:`I've been second guessing whether I'm overreacting. So what should I be doing? I have so many questions`}]}
  ],
- closing:`Maya first needs to know that she can reach out about someone else. Once you answer directly, she stops apologizing and begins asking for help. The other responses shift too quickly to her roommate.`}
+ closing:`Maya first needs to know that she can reach out about someone else. The strongest response is the one that answers her question directly and acknowledges how worrying the past two weeks have been for her. Third-party interactions are part of 9-8-8. Once Maya has her answer that she's reached the right place, she stops apologizing and begins asking for help. The other responses shift to her roommate too quickly and leave her question unanswered.`}
 },
 
-{sec:3, type:'vignette', n:6, person:{name:'Marc', init:'M', sub:'Voice', tag:'Thoughts of harming someone else'},
+{sec:6, type:'vignette', n:6, person:{name:'Marc', init:'M', sub:'Voice', tag:'Thoughts of harming someone else'},
  thread:{ch:'Voice call', lines:[
    {who:'them', spk:'Responder', t:`Hello, 9-8-8: Suicide Crisis Helpline.`},
    {who:'them', spk:'Caller', meta:`(quiet, halting)`, t:`Hi. Um. I've never called anything like this before. (pause) I want to say something first. It's not about hurting myself. It's these thoughts I've been having about someone. Someone from my old job. (pause) I don't know if I'm even allowed to talk about that here. The thoughts are scaring me. That's why I called.`}
@@ -651,17 +776,19 @@ const SCREENS = [
     fb:`Marc is testing whether it is safe to say more. A calm, non-judgmental response answers that question without alarm. The SASP course and standard operating procedures cover the next steps, including how to address risk to others.`}
  ]},
  step2:{prompt:`Now choose the first thing you would say to Marc.`, hint:`There is no score. Notice how each response affects what he does next.`, options:[
-   {k:'A', t:`"You're allowed to talk about that here. I'm glad you called. Take whatever time you need."`,
-    reply:[{spk:'Caller', meta:`(long exhale)`, t:`Okay. (pause) Okay. I wasn't sure anyone would say that.`},{spk:'Caller', meta:`(still halting, but continuing)`, t:`It started after they let me go...`}]},
-   {k:'B', t:`"It's normal to have upsetting thoughts sometimes. They usually pass. What's been going on?"`,
-    reply:[{spk:'Caller', meta:`(quiet)`, t:`Right. Normal. (pause) They don't feel normal.`},{spk:'Caller', meta:`(flatter)`, t:`Maybe this was a mistake.`}]},
+   {k:'A', t:`"It's normal to have upsetting thoughts sometimes. They usually pass. What's been going on?"`,
+    reply:[{spk:'Caller', meta:`(quiet)`, t:`Right. Normal. (pause) They don't feel normal.`},
+           {spk:'Caller', meta:`(flatter)`, t:`Maybe this was a mistake.`}]},
+   {k:'B', t:`"You're allowed to talk about that here. I'm glad you called. Take whatever time you need."`,
+    reply:[{spk:'Caller', meta:`(long exhale)`, t:`Okay. (pause) Okay. I wasn't sure anyone would say that.`},
+           {spk:'Caller', meta:`(still halting, but continuing)`, t:`It started after they let me go. I was so angry at him. Some days I still think I've got a right to be. It's where the thoughts go after that part. That's what scares me.`}]},
    {k:'C', t:`"I hear you. Before you say more, I should explain a few things about how this call works."`,
     reply:[{spk:'Caller', meta:`(wary)`, t:`How the call works. (pause) What do you mean? Is something going to happen if I tell you?`}]}
  ],
- closing:`Marc is asking whether he can say this here at all. A steady yes opens the door. Reassurance minimizes what frightened him, while the procedural preface sounds like the alarm he expects. The SASP course and standard operating procedures cover what you should do next.`}
+ closing:`Marc is asking whether he can say this here at all. The strongest response is the calm, clear yes, which gives him room to continue. Trying to reassure him minimizes what is frightening him, while explaining how the call works sounds like the alarm he expects. The SASP course and standard operating procedures cover what you should do next.`}
 },
 
-{sec:3, type:'vignette', n:7, person:{name:'Jae', init:'J', sub:'Text', tag:'A person in acute crisis'},
+{sec:6, type:'vignette', n:7, person:{name:'Jae', init:'J', sub:'Text', tag:'A person in acute crisis'},
  thread:{ch:'Text', lines:[
    {who:'us', spk:'Responder', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
    {who:'them', spk:'Texter', t:`i can't do this`},
@@ -683,61 +810,58 @@ const SCREENS = [
     reply:[{sys:`the reply pattern slows`},{spk:'Texter', t:`ok`},{spk:'Texter', t:`i'm here`}]},
    {k:'B', t:`"I'm so sorry about your relationship. Breakups are one of the hardest things we go through, and crying is a completely natural response. It makes sense that you don't know what to do. Can you tell me more about what happened between you two?"`,
     reply:[{spk:'Texter', t:`idk`},{spk:'Texter', t:`it's not really about the breakup`},{spk:'Texter', t:`i said i keep thinking about killing myself`},{sys:`the messages keep arriving in bursts`}]},
-   {k:'C', t:`"Thank you for reaching out. You've come to the right place. How are you feeling right now?"`,
+   {k:'C', t:`"Thank you for reaching out tonight. You've come to the right place, and I'm here to listen. How are you feeling right now?"`,
     reply:[{spk:'Texter', t:`i don't know`},{spk:'Texter', t:`bad`},{spk:'Texter', t:`i don't know what to do`},{sys:`the burst pattern continues`}]}
  ],
- closing:`Jae has mentioned suicidal thoughts directly. The first response addresses this clearly and calmly, and the pace begins to slow. The other responses focus elsewhere or ask Jae to repeat what is already evident. The SASP course covers suicide risk assessment and response in full.`}
+ closing:`Jae has told you directly that they are thinking about suicide. The strongest response is the one that says this back to them clearly and calmly, and lets Jae know you are there. With a response like this, the pace of the messages begins to stabilize. The other responses focus on the breakup or ask Jae to repeat what they have already said. The SASP course covers suicide risk assessment and response in full.`}
 },
 
-{sec:3, type:'prose', eyebrow:'Activity', title:'Activity debrief', blocks:[
+{sec:6, type:'prose', title:'Activity debrief', blocks:[
   {p:`These interactions show how differently people may present and what they may need in the opening moments. They also show how a responder's first words can shape what happens next.`, lede:true},
-  {key:[`The tricky part of this work is that no single response can meet every person's needs. Since you cannot know which needs the next interaction will bring, it is important to remain adaptable and comfortable with the unknown. That uncertainty is part of your job as a responder.`]},
+  {key:[`The tricky part of this work is that no single response can meet every person's needs. Since you cannot know which needs the next interaction will bring, it is important to remain adaptable. Working with that uncertainty is part of your job as a responder.`]},
   {note:`Note: these callers and texters will return throughout the course. In future modules, you will revisit these opening moments and develop the skills used in these first responses more fully.`}
 ]},
 
 /* ---------------- TOPIC 3 ---------------- */
-{sec:4, type:'section', num:'03', kicker:'Topic 3', art:'c',
- title:`Understanding context`, line:`How social, cultural and structural circumstances shape distress and disclosure.`},
+{sec:7, type:'section', num:'03', kicker:'Topic 3', art:'d',
+ title:`Understanding context`, line:`How social, cultural, and structural circumstances influence distress and disclosure.`},
 
-{sec:4, type:'prose', eyebrow:'Topic 3', title:'Distress does not look one way', blocks:[
+{sec:7, type:'prose', blocks:[
   {p:`People do not experience or express distress in the same way. Identity, social position and life circumstances shape what distress looks and sounds like, and whether someone feels able to discuss it in the first place.`, lede:true},
-  {h3:`Relevant factors can include:`},
-  {cards:{cols:5, tight:true, items:[
-    {t:`Gender`},{t:`Racialization`},{t:`Education`},{t:`Income`},{t:`Ability`}
-  ]}},
-  {p:`Suicide risk is also shaped by the social determinants of health, and some populations face greater risk than others.`},
-  {key:[`People experiencing similar levels of distress may still present very differently.`]},
+  {p:`Suicide risk is also shaped by the social determinants of health, and some populations face greater risk than others. People experiencing similar levels of distress may still present very differently.`},
   {panel:{cls:'grey', h:'For example', p:`Some men may communicate suicidal distress through anger or physical concerns, rather than direct statements about how they feel.`}},
   {key:[`There is no single way that a person in crisis sounds. If you expect distress to follow a familiar pattern, you may miss what is being communicated by someone whose experience does not fit that pattern.`]}
 ]},
 
-{sec:4, type:'prose', eyebrow:'Topic 3', title:"How can we understand someone's context?", blocks:[
+{sec:7, type:'prose', title:"How can we understand someone's context?", blocks:[
   {p:`There are two related forms of influence that help us understand a person's context.`, lede:true},
   {tabs:[
     {label:`Social determinants`, h:`Social determinants`, p:`The conditions in which people live, including income, housing, education, employment, and social connection.`},
     {label:`Structural determinants`, h:`Structural determinants`, p:`The policies, institutional arrangements, and written or unwritten rules that create and sustain patterns of advantage and disadvantage between groups.`}
   ]},
-  {p:`Racism, discrimination against 2SLGTBQIA+ people, and other forms of oppression can cause harm in daily life and within the institutions people approach for help. Past discrimination may also reduce trust in services and shape whether, when and how much someone feels able to disclose.`},
+  {p:`Racism, discrimination against 2SLGBTQIA+ people, and other forms of oppression can cause harm in daily life and within the institutions people approach for help. Past discrimination may also reduce trust in services and shape whether, when and how much someone feels able to disclose.`},
   {panel:{cls:'blue', p:`It's important to remember that context is not always just background information. Discrimination, isolation, financial precarity, or unsafe living conditions may be central to someone's crisis.`}},
   {key:[`Recognizing these experiences as potential sources of distress is part of understanding a person's situation more fully.`]}
 ]},
 
-{sec:4, type:'prose', eyebrow:'Topic 3', title:'You are also part of the interaction', blocks:[
+{sec:7, type:'prose', title:'You are also part of the interaction', blocks:[
   {p:`Every interaction includes another source of context: the responder.`, lede:true},
   {p:`Your own social and cultural position shapes what you notice, the meaning you assign to what you hear, and how you respond.`},
   {note:`In Module 3, you will explore in detail the reflective practice needed to work with this awareness. For now, remember that every interaction is shaped by the contexts of two people, not one.`}
 ]},
 
-{sec:5, type:'section', num:'', kicker:'Activity', art:'b', tone:'tranquil',
+/* ---------------- ACTIVITY: SHAPING THE PRESENTATION ---------------- */
+{sec:8, type:'section', kicker:'Activity', art:'b', tone:'tranquil',
  title:`What might be shaping this presentation?`, line:`Four caller and texter presentations, and the circumstances that may be shaping each one.`},
 
-{sec:5, type:'prose', eyebrow:'Activity', title:'How this activity works', blocks:[
+{sec:8, type:'prose', title:'How this activity works', blocks:[
   {p:`The same distress can look and sound very different from one person to another.`, lede:true},
-  {p:`In this activity, you will review a series of caller and texter presentations and select the factor that you think may be shaping how the person's distress is experienced.`},
+  {p:`In this activity, you will review a series of caller and texter presentations. For each one, select the explanation that you think is most important to stay curious about. More than one explanation could be true.`},
+  {p:`Before you look at the options for each presentation, take a moment to think of two or three explanations that could be true.`},
   {note:`Note: the word "may" matters. These are possibilities to remain curious about, not conclusions to reach on someone else's behalf.`}
 ]},
 
-{sec:5, type:'mcq', eyebrow:'Presentation 1 of 4', title:'A caller in his fifties',
+{sec:9, type:'mcq', title:'Presentation 1',
  prompt:`A caller in his fifties describes chest tightness, poor sleep and a short temper. When the responder asks how he has been feeling, he says he is "not much of a talker" and almost ends the call.`, ask:`What might be shaping how this caller's distress presents?`, hint:`Select the best answer.`,
  options:[
   {k:'A', t:`He has a preference for privacy and handling difficult situations on his own`, correct:false,
@@ -748,18 +872,18 @@ const SCREENS = [
    fb:`Almost ending the call is worth noticing, but reluctance to discuss feelings is not the same as unwillingness to accept support. He has remained on the line, creating an opportunity to continue gently.`}
  ]},
 
-{sec:5, type:'mcq', eyebrow:'Presentation 2 of 4', title:'A texter who asks twice',
+{sec:9, type:'mcq', title:'Presentation 2',
  prompt:`A texter takes a long time to share anything personal and asks twice about what will happen with the information they provide.`, ask:`What might be shaping how this texter engages with the service?`, hint:`Select the best answer.`,
  options:[
   {k:'A', t:`They are slower and more cautious because they are texting`, correct:false,
    fb:`The texter has asked twice what will happen with their information. Address that concern directly rather than attributing it to the fact that they are texting.`},
   {k:'B', t:`They are unfamiliar with how 9-8-8 works`, correct:false,
    fb:`Unfamiliarity may be a factor, but the repeated question suggests a broader concern about whether it is safe to disclose.`},
-  {k:'C', t:`They may be cautious based on past experiences with services or institutions`, correct:true,
+  {k:'C', t:`They may be cautious based on past experiences`, correct:true,
    fb:`Racism, discrimination, dismissal or other institutional harms can make caution a reasonable form of self-protection. Do not assume this is the texter's history. Support trust by answering honestly, explaining what happens with their information and avoiding pressure to disclose. You will practise this in Module 2.`}
  ]},
 
-{sec:5, type:'mcq', eyebrow:'Presentation 3 of 4', title:'A caller who keeps returning to money',
+{sec:9, type:'mcq', title:'Presentation 3',
  prompt:`When describing their distress, a caller keeps returning to issues around money. Rent is overdue, an eviction notice has arrived, and they are struggling to show up to their shifts at work.`, ask:`What might be shaping this caller's distress?`, hint:`Select the best answer.`,
  options:[
   {k:'A', t:`Financial precarity`, correct:true,
@@ -770,92 +894,115 @@ const SCREENS = [
    fb:`Practical resources may eventually help, but moving immediately to referrals or problem-solving may leave the caller's fear and distress unheard.`}
  ]},
 
-{sec:5, type:'mcq', eyebrow:'Presentation 4 of 4', title:'An older caller in a rural community',
+{sec:9, type:'mcq', title:'Presentation 4',
  prompt:`An older caller who lives alone in a rural community calls most weeks, usually in the evening.`, ask:`What might be shaping this pattern of contact?`, hint:`Select the best answer.`,
  options:[
   {k:'A', t:`The caller misunderstands the service's purpose and has become dependent on responders in place of other relationships`, correct:false,
-   fb:`Regular contact does not constitute misuse or dependence. Start with curiosity about what the calls provide and why this support is accessible.`},
+   fb:`Regular contact does not constitute misuse or dependence. Start with curiosity about what the calls provide and why the accessibility of a crisis line is important.`},
   {k:'B', t:`The caller prefers telephone support over building connections in their community`, correct:false,
    fb:`Telephone support may be a preference, but rural communities may also have limited services, long travel distances and few transportation options.`},
   {k:'C', t:`The caller is socially isolated and likely has limited access to services in the area`, correct:true,
    fb:`Local supports may be limited or difficult to reach, and telephone support may be the most accessible way to connect. Repeat contact is normal, and 9-8-8 may be a meaningful part of this caller's support network.`}
  ]},
 
-/* ---------------- PREPARE & REFLECT ---------------- */
-{sec:6, type:'section', num:'', kicker:'Prepare and reflect', art:'d', tone:'tranquil',
- title:`Being ready for the work`, line:`What readiness involves, and how responders build a set of strategies they can rely on.`},
+/* ---------------- BEING READY FOR THE WORK ---------------- */
+{sec:10, type:'video', title:'Being ready for the work'},
 
-{sec:6, type:'video', eyebrow:'Prepare and reflect', title:'Being ready for the work'},
+{sec:11, type:'section', kicker:'Activity', art:'a', tone:'tranquil',
+ title:`Build a readiness plan`, line:`A simple plan for before, during and after a shift.`},
 
-{sec:6, type:'plan', eyebrow:'Activity', title:'Build a readiness plan'},
+{sec:11, type:'write', title:'Build a readiness plan',
+ intro:[
+  {p:`As the video demonstrates, no single strategy works for everyone, and what helps may change from one day to the next. Over time, the goal is to build a personal set of strategies that you can draw on, adapt, and add to as needed.`, lede:true},
+  {p:`In this activity, you will create a simple readiness plan for your shifts. Choose strategies that feel realistic for you and that you would be able to use in practice. Your responses are for your own reflection and will not be scored.`},
+  {key:[`What could help you prepare before a shift, stay grounded during it, and decompress afterward?`]}
+ ],
+ prompts:[`Before a shift`,`During a shift`,`After a shift`],
+ placeholder:`What would work for you?`,
+ cta:`Submit my plan`,
+ feedback:[
+  {p:`Other possible strategies responders have described using include:`},
+  {cards:{cols:1, tight:true, items:[
+    {t:`Checking in with yourself before a shift and recognizing your early signs of stress`},
+    {t:`Setting realistic expectations about your role, including what is and is not within your control`},
+    {t:`Using emotion regulation and coping strategies that work for you`},
+    {t:`Maintaining healthy boundaries, including noticing when you may be over-identifying with a caller or texter`},
+    {t:`Recognizing the value and strengths of the work, as well as what it asks of you`},
+    {t:`Making time to decompress after a shift, including debriefing and seeking support from peers or supervisors`}
+  ]}}
+ ]},
 
-{sec:6, type:'reflect', eyebrow:'Activity', title:'Readiness reflection'},
+{sec:12, type:'section', kicker:'Activity', art:'d', tone:'tranquil',
+ title:`Readiness reflection`, line:`What you have noticed about yourself over the course of this module.`},
 
-{sec:6, type:'prose', eyebrow:'Prepare and reflect', title:'Live-practice handoff', blocks:[
+{sec:12, type:'write', title:'Readiness reflection', numbered:true, prototypeNote:false,
+ intro:[
+  {p:`Throughout this module, you have considered the range of people who contact 9-8-8, the different ways distress may present, and what you bring to each interaction.`, lede:true},
+  {p:`Before you finish, take a few minutes to reflect on what you have learned about yourself.`}
+ ],
+ prompts:[
+  `What is one assumption you have noticed that you hold about who contacts a crisis line?`,
+  `What is one aspect of your social or cultural position that you bring into your interactions?`,
+  `What is one personal reaction you may need to notice and manage during demanding interactions?`
+ ],
+ placeholder:`Your response`,
+ cta:`Submit my reflection`,
+ feedback:[
+  {p:`Thank you for reflecting. Be sure to write down your responses to these prompts and keep them somewhere you can retrieve them. You will return to these responses in Module 3.`}
+ ]},
+
+/* ---------------- LIVE PRACTICE AND REFERENCES ---------------- */
+{sec:13, type:'prose', title:'Live-practice handoff', blocks:[
   {p:`This module has focused on recognition and readiness. These skills deepen when you practise them with other people.`, lede:true},
-  {p:`If Community of Practice sessions are available to you, bring your readiness reflection to a session. The discussion will build directly on what you have identified here.`},
-  {p:`The callers and texters introduced in this module will also return throughout the course, and your organization may use their profiles for supervised role-play practice.`},
+  {p:`Consider bringing your readiness reflection to a conversation with your supervisor. The discussion can build on what you have identified here. The callers and texters introduced in this module will also return throughout the course, and your organization may use their profiles for supervised role-play practice.`},
   {p:`Related skills are developed in other parts of 9-8-8 training.`},
-  {panel:{cls:'blue', p:`Suicide risk assessment, safety planning and emergency intervention are practised in the SASP course. Procedures for setting limits within an interaction, including ending interactions that misuse the service, are covered in the Setting Boundaries course and the standard operating procedures.`}}
+  {panel:{cls:'blue', p:`Suicide risk assessment, safety planning and emergency intervention are practised in the SASP course. Procedures for setting limits within an interaction, including when a person uses inappropriate language or behaviour, are covered in other training and in the standard operating procedures.`}}
 ]},
 
-{sec:6, type:'refs', eyebrow:'References', title:'References'},
+{sec:13, type:'refs', title:'References'},
 
-{sec:6, type:'complete'}
+{sec:13, type:'complete'}
 ];
-const SECTIONS = ['Welcome','Topic 1: Preparing for the interaction','Topic 2: How callers and texters present','Activity: Who is reaching out?','Topic 3: Understanding context','Activity: Shaping the presentation','Prepare and reflect'];
-const REFS = [
-  `Centre for Addiction and Mental Health. (2024). 9-8-8 intervention manual [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
-  `Centre for Addiction and Mental Health. (2025). 9-8-8 Safety and Wellbeing Framework [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
-  `Coveney, C. M., Pollock, K., Armstrong, S., &amp; Moore, J. (2012). Callers' experiences of contacting a national suicide prevention helpline. Crisis, 33(6), 313–324.`,
-  `Crawford, A., &amp; Clarkin, C. (2023). Canadian crisis line response competency framework for suicide prevention. Centre for Addiction and Mental Health.`,
-  `Hafeez, H., Lamoureux, A., Stuart-Williams, S., Washington, I., &amp; Wolframe, J. (2025). Equity-focused practices in mental health and substance use care: Common definitions, tools and resources. Provincial System Support Program, Centre for Addiction and Mental Health.`,
-  `Middleton, A., Gunn, J., Bassilios, B., &amp; Pirkis, J. (2014). Systematic review of research into frequent callers to crisis helplines. Journal of Telemedicine and Telecare, 20(2), 89–98. https://doi.org/10.1177/1357633X14524156`,
-  `Mishara, B. L., Côté, L.-P., &amp; Dargis, L. (2023). Systematic review of research and interventions with frequent callers to suicide prevention helplines and crisis centers. Crisis, 44(2), 154–167. https://doi.org/10.1027/0227-5910/a000838`,
-  `National Collaborating Centre for Determinants of Health. (2025). Let's talk: Moving upstream. https://nccdh.ca/wp-content/uploads/2014/03/NCCDH_Lets-Talk_-Moving-Upstream_2025_EN.pdf`,
-  `Pisani, A. R., Gould, M. S., Gallo, C., Ertefaie, A., Kelberman, C., Harrington, D., Weller, D., &amp; Green, S. (2022). Individuals who text Crisis Text Line: Key characteristics and opportunities for suicide prevention. Suicide and Life-Threatening Behavior, 52(3), 567–582. https://doi.org/10.1111/sltb.12872`,
-  `Sercombe, J., Devine, E. K., Deady, M., &amp; Mills, K. L. (2024). Holding the line: Mental well-being, stressors, and coping in crisis supporters. Crisis: The Journal of Crisis Intervention and Suicide Prevention. https://doi.org/10.1027/0227-5910/a000985`,
-  `Sindahl, T. N., Cote, L.-P., Dargis, L., Mishara, B. L., &amp; Bechmann Jensen, T. (2019). Texting for help: Processes and impact of text counseling with children and youth with suicide ideation. Suicide and Life-Threatening Behavior, 49(5), 1412–1430. https://doi.org/10.1111/sltb.12531`
-];
-const STRATEGIES = [
-  `Checking in with yourself before a shift and recognizing your early signs of stress`,
-  `Setting realistic expectations about your role, including what is and is not within your control`,
-  `Using emotion regulation and coping strategies that work for you`,
-  `Maintaining healthy boundaries, including noticing when you may be over-identifying with a caller or texter`,
-  `Recognizing the value and strengths of the work, as well as what it asks of you`,
-  `Making time to decompress after a shift, including debriefing and seeking support from peers or supervisors`
-];
+
 const VIDEO_BLOCKS = [
   {p:`You have seen how much can vary from one interaction to the next. Let's now turn to how you can ready yourself to handle these interactions during your shifts.`, lede:true},
   {p:`Being ready for this work does not mean feeling calm, confident, or unaffected before every shift. It means knowing what helps you:`},
   {cards:{cols:3, items:[
     {t:`Stay grounded during your shifts`},
     {t:`Recognize when the work is affecting you`},
-    {t:`Recover when the shift ends`}
+    {t:`Take active steps to support your wellbeing when the shift ends`}
   ]}},
   {p:`To put this into practice, it can be helpful to hear what works for other people. In this video, you will hear experienced 9-8-8 responders reflect on what readiness looks like in their own practice.`},
   {note:`As you watch, consider which of their approaches might work for you.`}
 ];
-const REFLECT_PROMPTS = [
-  `What is one assumption you have noticed that you hold about who contacts a crisis line?`,
-  `What is one aspect of your social or cultural position that you bring into your interactions?`,
-  `What is one personal reaction you may need to notice and manage during demanding interactions?`
+
+const REFS = [
+  `Centre for Addiction and Mental Health. (2024). 9-8-8 intervention manual [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
+  `Centre for Addiction and Mental Health. (2025). 9-8-8 Safety and Wellbeing Framework [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
+  `Centre for Addiction and Mental Health. (2026a). Support plans, service limits and restrictions to support a safe and respectful service for all (SOP 4.12) [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
+  `Centre for Addiction and Mental Health. (2026b). Working with callers/texters who use inappropriate language or behaviours (SOP 4.10) [Internal document]. 9-8-8: Suicide Crisis Helpline.`,
+  `Coveney, C. M., Pollock, K., Armstrong, S., &amp; Moore, J. (2012). Callers' experiences of contacting a national suicide prevention helpline. Crisis, 33(6), 313–324.`,
+  `Crawford, A., &amp; Clarkin, C. (2023). Canadian crisis line response competency framework for suicide prevention. Centre for Addiction and Mental Health.`,
+  `Hafeez, H., Lamoureux, A., Stuart-Williams, S., Washington, I., &amp; Wolframe, J. (2025). Equity-focused practices in mental health and substance use care: Common definitions, tools and resources. Provincial System Support Program, Centre for Addiction and Mental Health.`,
+  `Middleton, A., Gunn, J., Bassilios, B., &amp; Pirkis, J. (2014). Systematic review of research into frequent callers to crisis helplines. Journal of Telemedicine and Telecare, 20(2), 89–98. https://doi.org/10.1177/1357633X14524156`,
+  `Mishara, B. L., Côté, L.-P., &amp; Dargis, L. (2023). Systematic review of research and interventions with frequent callers to suicide prevention helplines and crisis centers. Crisis, 44(2), 154–167. https://doi.org/10.1027/0227-5910/a000838`,
+  `National Collaborating Centre for Determinants of Health. (2025). Let's talk: Moving upstream. https://nccdh.ca/wp-content/uploads/2014/03/NCCDH_Lets-Talk_-Moving-Upstream_2025_EN.pdf`,
+  `9-8-8: Suicide Crisis Helpline. (2026). Terms of service. https://988.ca/terms`,
+  `Pisani, A. R., Gould, M. S., Gallo, C., Ertefaie, A., Kelberman, C., Harrington, D., Weller, D., &amp; Green, S. (2022). Individuals who text Crisis Text Line: Key characteristics and opportunities for suicide prevention. Suicide and Life-Threatening Behavior, 52(3), 567–582. https://doi.org/10.1111/sltb.12872`,
+  `Sercombe, J., Devine, E. K., Deady, M., &amp; Mills, K. L. (2024). Holding the line: Mental well-being, stressors, and coping in crisis supporters. Crisis: The Journal of Crisis Intervention and Suicide Prevention. https://doi.org/10.1027/0227-5910/a000985`,
+  `Sindahl, T. N., Cote, L.-P., Dargis, L., Mishara, B. L., &amp; Bechmann Jensen, T. (2019). Texting for help: Processes and impact of text counseling with children and youth with suicide ideation. Suicide and Life-Threatening Behavior, 49(5), 1412–1430. https://doi.org/10.1111/sltb.12531`
 ];
-const REFLECT_INTRO = [
-  {p:`Throughout this module, you have considered the range of people who contact 9-8-8, the different ways distress may present, and what you bring to each interaction.`, lede:true},
-  {p:`Before you finish, take a few minutes to reflect on what you have learned about yourself.`}
-];
-const REFLECT_FEEDBACK = `Thank you for reflecting. Be sure to write down your responses to these prompts and keep them somewhere you can retrieve them. You will return to these responses in Module 3.`;
-const PLAN_INTRO = [
-  {p:`As the video demonstrates, no single strategy works for everyone, and what helps may change from one day to the next. Over time, the goal is to build a personal set of strategies that you can draw on, adapt, and add to as needed.`, lede:true},
-  {p:`In this activity, you will create a simple readiness plan for your shifts. Choose strategies that feel realistic for you and that you would be able to use in practice. Your responses are for your own reflection and will not be scored.`},
-  {key:[`What could help you prepare before a shift, stay grounded during it, and decompress afterward?`]}
-];
-const PLAN_PROMPTS = ['Before a shift','During a shift','After a shift'];
-const PLAN_FEEDBACK = `Other possible strategies responders have described using include:`;
+
 
 const $ = s => document.querySelector(s);
+document.title = META.course + ' — ' + META.moduleLabel + ': ' + META.title;
+$('#topName').innerHTML = META.course + '<b>' + META.moduleLabel + ' &middot; ' + META.title + '</b>';
+$('#heroKick').textContent = META.course + ' · ' + META.moduleLabel;
+$('#heroTitle').textContent = META.title;
+$('#heroMeta').textContent = 'Estimated completion time: ' + META.time;
 const H = t => String(t).split('9-8-8').join('9\u20118\u20118');
+/* Anything the learner types is escaped before it goes back on the page. */
+const ESC = t => String(t).replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const el = (tag, cls, html) => { const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; };
 
 function sectionArt(v, tone){
@@ -874,7 +1021,7 @@ function sectionArt(v, tone){
 /* ---------- blocks ---------- */
 function blocks(list, root){
   list.forEach(b=>{
-    if(b.p) root.append(el('p', b.lede?'lede':null, H(b.p)));
+    if(b.p) root.append(el('p', [b.lede?'lede':'', b.indent?'indent':''].join(' ').trim()||null, H(b.p)));
     else if(b.h3) root.append(el('h3', null, H(b.h3)));
     else if(b.ul){ const u=el('ul','brand'); b.ul.forEach(t=>u.append(el('li',null,H(t)))); root.append(u); }
     else if(b.ol){ const o=el('ol','brand'); b.ol.forEach(t=>o.append(el('li',null,H(t)))); root.append(o); }
@@ -883,10 +1030,13 @@ function blocks(list, root){
     else if(b.key) root.append(el('div','keycall', b.key.map(t=>'<p>'+H(t)+'</p>').join('')));
     else if(b.cards) root.append(cardsEl(b.cards));
     else if(b.flip) root.append(flipEl(b.flip));
-    else if(b.tabs) root.append(tabsEl(b.tabs));
+    else if(b.tabs) root.append(tabsEl(b.tabs, b.select));
     else if(b.acc) root.append(accEl(b.acc));
     else if(b.reveal) root.append(revealEl(b.reveal));
+    else if(b.table) root.append(tableEl(b.table));
     else if(b.thread) root.append(threadEl(b.thread));
+    else if(b.audio) root.append(audioEl({label:b.audio.label, open:b.audio.open,
+      transcript: threadEl({ch:b.audio.ch||'Voice call', lines:b.audio.lines})}));
   });
 }
 function cardsEl(c){
@@ -897,6 +1047,8 @@ function cardsEl(c){
 }
 function flipEl(items){
   const d=el('div','flips');
+  /* Sets of two or four sit in two columns so no card is orphaned on its own row. */
+  if(items.length%3!==0 && items.length%2===0) d.dataset.cols='2';
   items.forEach((i,ix)=>{
     const c=el('div','flip','<button class="inner" aria-pressed="false">'+
       '<span class="face f"><span class="n">'+String(ix+1).padStart(2,'0')+'</span><span class="t">'+H(i.front)+'</span><span class="hint">Tap to turn</span></span>'+
@@ -907,19 +1059,30 @@ function flipEl(items){
   });
   return d;
 }
-function tabsEl(items){
+function tabsEl(items, sel){
   const d=el('div','tabs'), list=el('div','tablist'), panel=el('div','tabpanel');
+  /* `select` opens the tab that the learner's earlier answers call for:
+     {ids:['q1','q2'], same:1, diff:0} compares the picks recorded for those
+     question ids. With any of them unanswered the first tab opens. */
+  let first=0;
+  if(sel && sel.ids && sel.ids.every(id=>state.picks[id]!=null)){
+    const ks=sel.ids.map(id=>state.picks[id]);
+    first = ks.every(k=>k===ks[0]) ? (sel.same??0) : (sel.diff??0);
+  }
   list.setAttribute('role','tablist'); panel.setAttribute('role','tabpanel');
   const show=n=>{ [...list.children].forEach((b,i)=>b.setAttribute('aria-selected', i===n));
     const it=items[n]; panel.innerHTML=(it.h?'<h4>'+H(it.h)+'</h4>':'')+'<p>'+H(it.p)+'</p>'; };
   items.forEach((it,i)=>{ const b=el('button',null,it.label); b.setAttribute('role','tab'); b.onclick=()=>show(i); list.append(b); });
-  d.append(list,panel); show(0); return d;
+  d.append(list,panel); show(first); return d;
 }
 function accEl(items){
   const d=el('div','acc');
   items.forEach(it=>{
     const w=el('div','acc-item','<button aria-expanded="false"><span>'+H(it.q)+'</span><span class="plus"></span></button>'+
-      '<div class="acc-body"><p>'+H(it.a)+'</p></div>');
+      '<div class="acc-body"></div>');
+    const body=w.querySelector('.acc-body');
+    if(it.blocks) blocks(it.blocks, body);
+    else body.append(el('p',null,H(it.a)));
     const b=w.querySelector('button');
     b.onclick=()=>{ const on=w.classList.toggle('on'); b.setAttribute('aria-expanded', on); };
     d.append(w);
@@ -954,16 +1117,52 @@ function writingEl(cfg){
   const slot=el('div');
   show.onclick=()=>{
     slot.innerHTML='';
-    const fb=el('div','fb info'); fb.setAttribute('role','status'); fb.innerHTML=cfg.feedback;
+    /* `plainFeedback` renders the feedback blocks as ordinary content instead
+       of inside a feedback box — for an annotated exchange revealed on submit. */
+    const fb=el('div', cfg.plainFeedback?null:'fb info'); fb.setAttribute('role','status');
+    if(cfg.plainFeedback) fb.style.marginTop='1.4rem';
+    if(cfg.feedback) fb.innerHTML=cfg.feedback;
+    if(cfg.feedbackBlocks) blocks(cfg.feedbackBlocks, fb);
     slot.append(fb); show.remove();
+    if(cfg.onShow) cfg.onShow();
+    if(cfg.after||cfg.plainFeedback) fb.scrollIntoView({behavior:'smooth',block:'start'});
   };
   copy.onclick=async()=>{
     const txt=cfg.prompts.map((p,i)=>(cfg.numbered?(i+1)+'. ':'')+p+'\n'+(vals[i]||'')).join('\n\n');
     try{ await navigator.clipboard.writeText(txt); said.textContent='Copied'; }
     catch(e){ said.textContent='Copying is blocked here — select and copy manually'; }
   };
-  row.append(show,copy,said); wrap.append(row,slot);
-  wrap.append(el('div','note','<p>Prototype note: answers stay in this browser session only. In the LMS build, responses save to the learner record.</p>'));
+  row.append(show,copy,said); wrap.append(row);
+  if(cfg.after){ const a=el('div'); a.style.marginTop='1.4rem'; blocks(cfg.after,a); wrap.append(a); }
+  wrap.append(slot);
+  if(cfg.prototypeNote!==false) wrap.append(el('div','note','<p>Prototype note: answers stay in this browser session only. In the LMS build, responses save to the learner record.</p>'));
+  return wrap;
+}
+
+/* ---------- write your own response first ---------- */
+/* A short writing step inside a vignette: the learner drafts a first response
+   before the options appear. The text is kept in `store` so the response step
+   can set it beside the strongest option once a choice has been made. */
+function writeStepEl(cfg, store, onDone){
+  const wrap=el('div');
+  const q=el('div','check writestep','<p class="prompt">'+H(cfg.prompt)+'</p>'+
+    (cfg.hint?'<p class="hint">'+H(cfg.hint)+'</p>':''));
+  const ta=el('textarea'); ta.id='vw'+(writeSeq++);
+  ta.placeholder=cfg.placeholder||'Your response';
+  ta.setAttribute('aria-label', cfg.prompt);
+  ta.oninput=e=>{ store.text=e.target.value; };
+  q.append(ta);
+  const btn=el('button','btn yellow small', cfg.cta||'Save my response');
+  btn.style.marginTop='.9rem';
+  const slot=el('div');
+  btn.onclick=()=>{
+    btn.remove(); ta.readOnly=true;
+    const fb=el('div','fb info'); fb.setAttribute('role','status');
+    fb.append(el('p',null,H(cfg.feedback)));
+    slot.append(fb);
+    if(onDone) onDone();
+  };
+  q.append(btn); wrap.append(q, slot);
   return wrap;
 }
 
@@ -990,7 +1189,7 @@ function audioEl(cfg){
 
 function threadEl(t){
   const isText = t.ch==='Text';
-  const w=el('div','thread','<p class="ch">'+(isText?'Text conversation':'Voice call')+'</p>');
+  const w=el('div','thread', t.noCh?'':'<p class="ch">'+(isText?'Text conversation':'Voice call')+'</p>');
   t.lines.forEach(l=>w.append(lineEl(l,isText)));
   return w;
 }
@@ -1001,8 +1200,199 @@ function lineEl(l, isText){
     wrap.append(el('p','sysline','('+l.sys+')'));
     return wrap;
   }
-  if(isText) return el('div','bubble '+(l.who==='us'?'us':'them'),'<span class="spk">'+(l.spk||'')+'</span>'+H(l.t));
-  return el('div','line','<span class="spk">'+(l.spk||'')+'</span>'+(l.meta?'<span class="meta">'+l.meta+' </span>':'')+H(l.t));
+  const node = isText
+    ? el('div','bubble '+(l.who==='us'?'us':'them'),'<span class="spk">'+(l.spk||'')+'</span>'+H(l.t))
+    : el('div','line','<span class="spk">'+(l.spk||'')+'</span>'+(l.meta?'<span class="meta">'+l.meta+' </span>':'')+H(l.t));
+  if(!l.ann) return node;
+  /* Annotations sit under their line, hidden to start. Each <mark> in the
+     line toggles its own annotation (the nth mark opens the nth one); a line
+     with no marks is revealed by a `write` screen with `annotate:true`. */
+  const anns=[].concat(l.ann), labels=[].concat(l.annLabel||'Annotation');
+  const wrap=el('div'); wrap.append(node);
+  const boxes=anns.map((a,i)=>{ const b=el('div','ann',
+    (labels[i%labels.length]?'<span class="spk">'+labels[i%labels.length]+'</span>':'')+H(a)); wrap.append(b); return b; });
+  node.querySelectorAll('mark').forEach((m,i)=>{
+    const box=boxes[Math.min(i,boxes.length-1)];
+    m.setAttribute('role','button'); m.tabIndex=0; m.setAttribute('aria-expanded','false');
+    const flip=()=>{ const on=box.classList.toggle('on'); m.classList.toggle('on',on); m.setAttribute('aria-expanded',on); };
+    m.onclick=flip; m.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); flip(); } };
+  });
+  return wrap;
+}
+
+/* ---------- table ---------- */
+/* `cols` are the column headings; the first is the row-label column and may be
+   empty. Each row is [label, cell, cell, …]. Below 720px the headings are
+   dropped and each cell carries its column name as a small label. */
+function tableEl(t){
+  const outer=el('div');
+  const w=el('div','tbl');
+  const head='<thead><tr>'+t.cols.map(c=>'<th scope="col">'+H(c)+'</th>').join('')+'</tr></thead>';
+  const rowHtml=r=>'<tr>'+r.map((cell,i)=>
+    i===0 ? '<th scope="row">'+H(cell)+'</th>'
+          : '<td data-lbl="'+(t.cols[i]||'')+'">'+H(cell)+'</td>'
+  ).join('')+'</tr>';
+
+  /* revealRows: the table starts empty and fills a row at a time */
+  if(t.revealRows){
+    w.innerHTML='<table>'+head+'<tbody></tbody></table>';
+    const body=w.querySelector('tbody');
+    const row=el('div'); row.style.margin='0 0 1rem';
+    const btn=el('button','btn yellow small', t.revealCta||'Reveal the first row');
+    let i=0;
+    btn.onclick=()=>{
+      body.insertAdjacentHTML('beforeend', rowHtml(t.rows[i])); i++;
+      if(i>=t.rows.length) row.remove(); else btn.textContent=t.revealMore||'Reveal the next';
+    };
+    row.append(btn); outer.append(w,row);
+    return outer;
+  }
+
+  w.innerHTML='<table>'+head+'<tbody>'+t.rows.map(rowHtml).join('')+'</tbody></table>';
+  outer.append(w);
+  return outer;
+}
+
+/* ---------- branching conversation ---------- */
+/* Runs a scenario as a state machine. Each node contributes its own lines to a
+   running transcript, then offers a choice; every option names the node it
+   leads to, so learners on different paths see different conversations. Nodes
+   without options are scripted beats that continue to `next`; nodes with
+   `done` end the scenario. Only the path taken is shown.
+   An option marked `deferFb` holds its node's feedback back until after the
+   beat it leads to, so a recovery exchange plays before the teaching point. */
+function convoEl(cfg){
+  const wrap=el('div');
+  const stream=el('div');
+  const foot=el('div');
+  wrap.append(stream, foot);
+  const isText = cfg.ch==='Text';
+  let said=false, pending=null;
+
+  /* Voice scenarios stay audio-first: each exchange gets its own placeholder,
+     with the transcript collapsed unless the scenario asks for it open. */
+  const turnEl=(lines,label)=>{
+    const th=threadEl({ch:cfg.ch, noCh:said||cfg.audio, lines});
+    if(!cfg.audio) return th;
+    return audioEl({label:label||'The call continues', open:cfg.transcripts==='open', transcript:th});
+  };
+
+  const fbEl=(src)=>{
+    if(!src || (!src.fb && !src.fbBlocks)) return;
+    const fb=el('div','fb info'); fb.setAttribute('role','status');
+    if(src.fb) fb.append(el('p',null,H(src.fb)));
+    if(src.fbBlocks) blocks(src.fbBlocks, fb);
+    stream.append(fb);
+  };
+
+  const runNode=(id)=>{
+    const n=cfg.nodes[id];
+    if(!n) return;
+    if(n.blocks) blocks(n.blocks, stream);
+    if(n.lines && n.lines.length){ stream.append(turnEl(n.lines, n.audioLabel)); said=true; }
+    if(pending){ fbEl(pending); pending=null; }
+
+    if(n.done){
+      if(cfg.restart){
+        const again=el('button','btn ghost small', cfg.restart);
+        again.onclick=()=>{ stream.innerHTML=''; foot.innerHTML=''; said=false; pending=null; runNode(cfg.start); };
+        foot.innerHTML=''; foot.append(again);
+      }
+      return;
+    }
+
+    if(!n.options){
+      const on=el('button','btn yellow small', n.cta||'Continue the call');
+      on.style.margin='0 0 1rem';
+      on.onclick=()=>{ on.remove(); runNode(n.next); };
+      stream.append(on);
+      return;
+    }
+
+    const q=el('div','check','<p class="prompt">'+H(n.prompt)+'</p>'+
+      (n.hint?'<p class="hint">'+H(n.hint)+'</p>':''));
+    const list=el('div','opts'); q.append(list);
+    stream.append(q);
+
+    n.options.forEach(o=>{
+      const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>');
+      b.onclick=()=>{
+        list.querySelectorAll('button').forEach(x=>{
+          x.disabled=true;
+          if(x!==b) x.dataset.outcome='dim';
+        });
+        b.dataset.picked='1';
+        const turn=[{who:'us', spk:'Responder', t:o.t.replace(/^"|"$/g,'')}]
+          .concat((o.reply||[]).map(r=>({...r, who:'them'})));
+        stream.append(turnEl(turn, cfg.audioLabel||'Your response and what follows'));
+        said=true;
+        if(o.deferFb) pending={fb:n.fb, fbBlocks:n.fbBlocks};
+        else fbEl(n);
+        const on=el('button','btn yellow small', o.cta||'Continue the call');
+        on.style.margin='.9rem 0 1rem';
+        on.onclick=()=>{ on.remove(); runNode(o.next); };
+        stream.append(on);
+      };
+      list.append(b);
+    });
+  };
+
+  runNode(cfg.start);
+  return wrap;
+}
+
+/* ---------- response step ---------- */
+/* One "choose what you would say" step: options, the reply each one draws,
+   and a shared closing note once a response has been chosen. Used on its own
+   (`respond` screens) and as step 2 of a vignette. */
+function respondEl(cfg, isText){
+  const wrap=el('div');
+  const q=el('div','check','<p class="prompt">'+H(cfg.prompt)+'</p>'+
+    (cfg.hint?'<p class="hint">'+H(cfg.hint)+'</p>':''));
+  const list=el('div','opts'); q.append(list);
+  const out=el('div'), closing=el('div');
+  let chosen=null, tried=[];
+  const paint=()=>{
+    list.innerHTML=''; out.innerHTML=''; closing.innerHTML='';
+    cfg.options.filter(o=>!chosen||o.k===chosen).forEach(o=>{
+      const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>');
+      if(chosen){ b.disabled=true; b.dataset.picked='1'; }
+      b.onclick=()=>{ chosen=o.k; tried.push(o.k); paint(); };
+      list.append(b);
+    });
+    if(chosen){
+      const o=cfg.options.find(x=>x.k===chosen);
+      const cont=el('div','thread','<p class="ch">'+(isText?'How the thread continues':'How the call continues')+'</p>');
+      cont.append(lineEl({who:'us',spk:'Responder',t:o.t.replace(/^"|"$/g,'')},isText));
+      o.reply.forEach(r=>cont.append(lineEl({...r,who:'them'},isText)));
+      if(isText) out.append(cont);
+      else out.append(audioEl({label:cfg.audioLabel||'Your response and what follows', transcript:cont}));
+      if(tried.length<cfg.options.length){
+        const again=el('button','btn yellow small', cfg.againLabel||'Try another response');
+        again.style.margin='0 0 1rem'; again.onclick=()=>{ chosen=null; paint(); };
+        out.append(again);
+      }
+      const fb=el('div','fb info'); fb.setAttribute('role','status');
+      /* Where the learner drafted a response first, it is set beside the
+         strongest option before the closing note. */
+      if(cfg.compare){
+        const best=cfg.options.find(x=>x.k===cfg.compare.best);
+        const mine=(cfg.compare.store.text||'').trim();
+        const cmp=el('div','compare',
+          '<div class="side"><span class="lbl">What you wrote</span>'+
+          (mine ? '<p>'+ESC(mine)+'</p>' : '<p class="none">You moved on without writing a response.</p>')+'</div>'+
+          '<div class="side best"><span class="lbl">The strongest response</span><p>'+H(best.t.replace(/^"|"$/g,''))+'</p></div>');
+        fb.append(cmp);
+      }
+      if(cfg.closing) fb.append(el('p',null,H(cfg.closing)));
+      if(cfg.closingBlocks) blocks(cfg.closingBlocks, fb);
+      closing.append(fb);
+      if(cfg.onChoose) cfg.onChoose(chosen);
+    }
+  };
+  paint();
+  wrap.append(q,out,closing);
+  return wrap;
 }
 
 /* ---------- knowledge check ---------- */
@@ -1013,31 +1403,48 @@ function questionEl(q, opts){
     (q.hint?'<p class="hint">'+H(q.hint)+'</p>':''));
   const list=el('div','opts'); box.append(list);
   const slot=el('div'); box.append(slot);
-  let picked=null;
+  /* `picked` is the answer given; `reading` is another option the learner has
+     opened afterwards to read its feedback, which questions with per-option
+     feedback allow once the right answer is in. */
+  let picked=null, reading=null;
+  const perOption = !q.shared && !q.oneFb;
   const paint=()=>{
     list.innerHTML=''; slot.innerHTML='';
     const gotIt = picked && (q.shared || (q.options.find(o=>o.k===picked)||{}).correct);
+    const open = perOption && gotIt;
     q.options.forEach(o=>{
       const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>');
       if(picked){
-        b.disabled=true;
+        b.disabled = !open;
         if(picked===o.k) b.dataset.picked='1';
         if(q.shared){ if(q.answerKey===o.k) b.dataset.outcome='info'; else if(picked!==o.k) b.dataset.outcome='dim'; }
+        else if(q.oneFb){
+          if(o.correct) b.dataset.outcome='correct';
+          else if(picked===o.k) b.dataset.outcome='wrong';
+          else b.dataset.outcome='dim';
+        }
+        else if(open){ if(o.correct) b.dataset.outcome='correct'; else if(reading===o.k) b.dataset.outcome='info'; }
         else if(gotIt){ if(o.correct) b.dataset.outcome='correct'; else b.dataset.outcome='dim'; }
       }
-      b.onclick=()=>{ picked=o.k; paint(); if(opts&&opts.onCorrect&&(q.shared||o.correct)) opts.onCorrect(); };
+      b.onclick=()=>{
+        if(open){ reading = (o.k===picked||o.k===reading) ? null : o.k; paint(); return; }
+        picked=o.k; reading=null; paint();
+        if(opts&&opts.onPick) opts.onPick(o.k);
+        if(opts&&opts.onCorrect&&(q.shared||o.correct)) opts.onCorrect();
+      };
       list.append(b);
     });
     if(picked){
-      const chosen=q.options.find(o=>o.k===picked);
+      const shown=q.options.find(o=>o.k===(reading||picked));
       const fb=el('div'); fb.setAttribute('role','status');
       if(q.shared){ fb.className='fb info'; fb.innerHTML='<p>'+H(q.sharedFb)+'</p>'; }
+      else if(q.oneFb){ fb.className='fb '+(shown.correct?'yes':'no'); fb.innerHTML='<p>'+H(q.oneFb)+'</p>'; }
       else{
-        fb.className='fb '+(chosen.correct?'yes':'no');
-        fb.innerHTML='<p>'+H(chosen.fb)+'</p>';
-        if(!chosen.correct){
+        fb.className='fb '+(reading ? 'info' : (shown.correct?'yes':'no'));
+        fb.innerHTML='<p>'+H(shown.fb)+'</p>';
+        if(!shown.correct && !reading){
           const again=el('button','btn ghost small','Try again'); again.style.marginTop='.8rem';
-          again.onclick=()=>{ picked=null; paint(); };
+          again.onclick=()=>{ picked=null; reading=null; paint(); };
           fb.append(again);
         }
       }
@@ -1050,15 +1457,20 @@ function questionEl(q, opts){
 
 /* ---------- pages ---------- */
 const stream=$('#stream'), hero=document.querySelector('.hero');
-const PAGES = SECTIONS.map((name,si)=>({
-  si, name,
+const PAGES = SECTIONS.map((entry,si)=>({
+  si,
+  name: (typeof entry==='string') ? entry : entry.name,
+  /* Continuation pages carry `menu:false` so the contents list stays an
+     outline of topics and activities rather than every page. */
+  menu: (typeof entry==='string') ? true : entry.menu!==false,
   header: SCREENS.find(s=>s.sec===si && s.type==='section') || null,
   chunks: SCREENS.filter(s=>s.sec===si && s.type!=='section' && s.type!=='cover' && s.type!=='complete')
 }));
 const TOTAL = PAGES.reduce((n,p)=>n+p.chunks.length,0);
-const state = { page:0, revealed: PAGES.map(()=>1), done:false };
+const state = { page:0, revealed: PAGES.map(()=>1), done:false, picks:{} };
 
 function el2(tag,cls,html){ return el(tag,cls,html); }
+let writeSeq=0;
 
 function dividerEl(s){
   const d=el('section','divider rev in');
@@ -1078,7 +1490,7 @@ function chunkEl(s){
 
   if(s.type==='mcq'){
     if(s.intro) blocks(s.intro,c);
-    c.append(questionEl(s));
+    c.append(questionEl(s, s.id ? {onPick:k=>{ state.picks[s.id]=k; }} : undefined));
     return d;
   }
 
@@ -1090,42 +1502,62 @@ function chunkEl(s){
       '<span class="chip'+(isText?' blue':'')+'" style="display:none">'+s.person.tag+'</span>'));
     if(isText) v.append(threadEl(s.thread));
     else v.append(audioEl({label:'Opening moments of the call', transcript:threadEl(s.thread)}));
-    v.append(el('p','step','<span class="n">1</span> What may '+s.person.name+' need first?'));
-    const step2=el('div','locked');
-    v.append(questionEl({prompt:s.step1.prompt, hint:s.step1.hint, options:s.step1.options},{onCorrect:()=>{
-      step2.classList.remove('locked'); v.querySelector('.chip').style.display='';
-    }}));
-    step2.append(el('p','step','<span class="n">2</span> Choose your first response'));
-    const q2=el('div','check','<p class="prompt">'+H(s.step2.prompt)+'</p>'+
-      (s.step2.hint?'<p class="hint">'+H(s.step2.hint)+'</p>':''));
-    const list=el('div','opts'); q2.append(list);
-    const out=el('div'), closing=el('div');
-    let chosen=null, tried=[];
-    const paint2=()=>{
-      list.innerHTML=''; out.innerHTML=''; closing.innerHTML='';
-      s.step2.options.filter(o=>!chosen||o.k===chosen).forEach(o=>{
-        const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>');
-        if(chosen){ b.disabled=true; b.dataset.picked='1'; }
-        b.onclick=()=>{ chosen=o.k; tried.push(o.k); paint2(); };
-        list.append(b);
-      });
-      if(chosen){
-        const o=s.step2.options.find(x=>x.k===chosen);
-        const cont=el('div','thread','<p class="ch">'+(isText?'How the thread continues':'How the call continues')+'</p>');
-        cont.append(lineEl({who:'us',spk:'Responder',t:o.t.replace(/^"|"$/g,'')},isText));
-        o.reply.forEach(r=>cont.append(lineEl({...r,who:'them'},isText)));
-        if(isText) out.append(cont);
-        else out.append(audioEl({label:'Your response and what follows', transcript:cont}));
-        if(tried.length<s.step2.options.length){
-          const again=el('button','btn yellow small','Try another response');
-          again.style.margin='0 0 1rem'; again.onclick=()=>{ chosen=null; paint2(); };
-          out.append(again);
-        }
-        closing.append(el('div','fb info','<p>'+H(s.step2.closing)+'</p>'));
+
+    /* A vignette runs the steps the storyboard gives it: a question about what
+       the person needs, a draft of the learner's own first response, and the
+       response choice. Steps are numbered only where there is more than one,
+       and each one unlocks the next. The presentation tag stays hidden until a
+       step has been answered, so it does not give the answer away. */
+    const store={text:''};
+    const parts=[];
+    if(s.step1) parts.push('need');
+    if(s.write)  parts.push('write');
+    parts.push('respond');
+    const labels={need:'What may '+s.person.name+' need first?',
+                  write:'Write your own first response',
+                  respond:'Choose your first response'};
+    const showTag=()=>{ v.querySelector('.chip').style.display=''; };
+    const boxes=parts.map((p,i)=>{
+      const b=el('div', i>0 ? 'locked' : null);
+      if(parts.length>1) b.append(el('p','step','<span class="n">'+(i+1)+'</span> '+labels[p]));
+      return b;
+    });
+    const unlock=i=>{ if(boxes[i]) boxes[i].classList.remove('locked'); };
+    parts.forEach((p,i)=>{
+      if(p==='need'){
+        boxes[i].append(questionEl({prompt:s.step1.prompt, hint:s.step1.hint, options:s.step1.options},
+          {onCorrect:()=>{ unlock(i+1); showTag(); }}));
+      } else if(p==='write'){
+        boxes[i].append(writeStepEl(s.write, store, ()=>unlock(i+1)));
+      } else {
+        boxes[i].append(respondEl({...s.step2,
+          compare: s.write ? {store, best:s.write.best} : null,
+          onChoose: s.step1 ? null : showTag}, isText));
       }
-    };
-    paint2();
-    step2.append(q2,out,closing); v.append(step2); c.append(v);
+    });
+    boxes.forEach(b=>v.append(b));
+    c.append(v);
+    return d;
+  }
+
+  if(s.type==='convo'){
+    if(s.intro) blocks(s.intro,c);
+    c.append(convoEl(s));
+    return d;
+  }
+
+  if(s.type==='respond'){
+    if(s.intro) blocks(s.intro,c);
+    c.append(respondEl(s, s.ch==='Text'));
+    return d;
+  }
+
+  if(s.type==='write'){
+    if(s.intro) blocks(s.intro,c);
+    c.append(writingEl({id:'w'+(writeSeq++), prompts:s.prompts, numbered:!!s.numbered,
+      placeholder:s.placeholder||'Your answer', cta:s.cta||'Submit',
+      feedbackBlocks:s.feedback, prototypeNote:s.prototypeNote, after:s.after, plainFeedback:s.plainFeedback,
+      onShow: s.annotate ? ()=>c.querySelectorAll('.ann').forEach(a=>a.classList.add('on')) : null}));
     return d;
   }
 
@@ -1157,9 +1589,9 @@ function chunkEl(s){
 
 function endEl(){
   return el('section','end rev','<div class="sweep"></div><div class="in">'+
-    '<p class="eyebrow">Module 1 complete</p><h2>You have finished Module 1</h2>'+
-    '<p>You met seven callers and texters, tested your expectations against the research, and started building a personal set of strategies. They all return later in the course.</p>'+
-    '<div class="panel"><h4>What comes next</h4><p>Module 2 practises meeting caution with patience and honest answers. Module 3 develops reflective practice, and takes your readiness reflection with it. Module 4 builds first responses into a full skill set.</p></div>'+
+    '<p class="eyebrow">'+META.moduleLabel+' complete</p><h2>'+H(END.title)+'</h2>'+
+    '<p>'+H(END.summary)+'</p>'+
+    '<div class="panel"><h4>'+H(END.nextTitle)+'</h4><p>'+H(END.next)+'</p></div>'+
     '</div>');
 }
 
@@ -1201,8 +1633,8 @@ function goPage(pi){
   stream.innerHTML='';
   hero.style.display = pi===0 ? '' : 'none';
   const p=PAGES[pi];
+  stream.dataset.top = p.header ? 'divider' : (pi===0 ? 'hero' : 'bare');
   if(p.header) stream.append(dividerEl(p.header));
-  else stream.append(el('p','pagehead',p.name));
   const shown=state.revealed[pi];
   for(let i=0;i<shown;i++){ const n=chunkEl(p.chunks[i]); n.classList.add('in'); stream.append(n); }
   stream.append(gateEl());
@@ -1215,11 +1647,17 @@ function goPage(pi){
 const toc=$('#toc');
 function buildToc(){
   toc.innerHTML='';
+  let n=0;
   PAGES.forEach((p,si)=>{
-    const complete = state.revealed[si] >= p.chunks.length && si < state.page;
-    const a=el('a',null,'<span class="n">'+(si===0?'Start':'Part '+si)+(complete?'<span class="tick">&#9679;</span>':'')+'</span>'+p.name);
+    if(!p.menu) return;
+    /* a hidden continuation page counts as still being inside its listed page */
+    let last=si; while(last+1<PAGES.length && !PAGES[last+1].menu) last++;
+    const complete = state.revealed[last] >= PAGES[last].chunks.length && last < state.page;
+    const here = state.page>=si && state.page<=last;
+    if(si>0) n++;
+    const a=el('a',null,'<span class="n">'+(si===0?'Start':'Part '+n)+(complete?'<span class="tick">&#9679;</span>':'')+'</span>'+p.name);
     a.href='#';
-    if(si===state.page) a.setAttribute('aria-current','true');
+    if(here) a.setAttribute('aria-current','true');
     a.onclick=e=>{ e.preventDefault(); goPage(si); closeDrawer(); };
     toc.append(a);
   });
