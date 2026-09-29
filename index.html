@@ -251,6 +251,7 @@ ol.brand li::before{content:counter(b);position:absolute;left:0;top:0;width:1.8r
 .ann{display:none;max-width:88%;margin:-.55rem 0 .9rem auto;padding:.9rem .95rem .6rem;background:#FFF3C4;border:1px solid var(--trust);border-top:0;border-radius:0 0 .9rem .9rem;font-size:.95rem;line-height:1.5;color:var(--header);position:relative;z-index:0}
 .ann .spk{color:#6B5A1E}
 .ann.on{display:block}
+.col p.instr{margin:-.3rem 0 .9rem}
 .col p.indent{margin-left:1.6rem;padding-left:1rem;border-left:2px solid var(--border)}
 mark{background:var(--trust);color:var(--header);padding:.05em .25em;border-radius:.3em;cursor:pointer;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-bottom:2px solid rgba(34,34,34,.35);transition:background .15s}
 mark:hover{filter:brightness(.95)}
@@ -262,9 +263,6 @@ mark:focus-visible{outline:2px solid var(--header);outline-offset:2px}
 .typing i{width:6px;height:6px;border-radius:50%;background:var(--taupe);opacity:.5;animation:blink 1.3s infinite}
 .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:.9;transform:translateY(-3px)}}
-/* The learner's own draft set beside the strongest option, shown once a
-   response has been chosen. Two equal panels; the strongest one carries the
-   yellow edge. */
 .compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:0 0 .9rem}
 .compare .side{background:var(--white);border:1px solid var(--convo-line);border-radius:1rem;padding:.75rem .9rem}
 .compare .side.best{border-color:var(--trust);border-width:2px;background:#FFFBEF}
@@ -272,6 +270,7 @@ mark:focus-visible{outline:2px solid var(--header);outline-offset:2px}
 .compare p{margin:0;font-size:.97rem;line-height:1.55;color:var(--body);white-space:pre-wrap}
 .compare p.none{font-style:italic;color:var(--taupe)}
 .writestep textarea{margin-top:.2rem}
+.bubble .time{float:right;margin-left:.8rem;font-family:var(--sans);font-size:.66rem;letter-spacing:.02em;color:var(--taupe);text-transform:none}
 .step{font-family:var(--sans);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);font-weight:500;display:flex;align-items:center;gap:.6rem;margin:1.4rem 0 .6rem}
 .step .n{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--trust);color:var(--header);display:grid;place-items:center;font-size:.75rem;letter-spacing:0}
 .locked{opacity:.45;pointer-events:none}
@@ -336,6 +335,10 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
 .audio .sub{display:block;font-family:var(--sans);font-size:.75rem;color:var(--taupe)}
 .audio .wave{flex:1;height:1.6rem;display:flex;align-items:center;gap:2px;opacity:.45;min-width:3rem}
 .audio .wave span{flex:1;background:var(--taupe);border-radius:99px}
+.audio.live .wave{opacity:1;cursor:pointer}.audio.live .wave span{background:var(--border);transition:background .1s}.audio.live .wave span.on{background:var(--header)}
+.audio button.play{border:0;padding:0;cursor:pointer}
+.audio .play.pause::after{border:0;width:.7rem;height:.8rem;border-left:.22rem solid var(--header);border-right:.22rem solid var(--header);left:50%}
+.audio button.play:focus-visible{outline:2px solid var(--header);outline-offset:2px}
 .transbtn{margin:.6rem 0 0;font-family:var(--sans);font-size:.85rem;background:none;border:1.5px solid var(--border);border-radius:99px;padding:.38rem 1rem;cursor:pointer;color:var(--header)}
 .transbtn:hover{border-color:var(--trust)}
 .audio .thread{margin:.7rem 0 0}
@@ -385,7 +388,7 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
 
 <script>
 /* =====================================================================
-   9-8-8 e-learning prototype — MODULE CONTENT
+   9-8-8 e-learning prototype — MODULE CONTENT (v7)
    Key Responder Skills · Module 1: Preparing for Interactions
    Source storyboard: KRS_Module_1_Content_SME_Changes_Included.docx
 
@@ -460,7 +463,6 @@ const SCREENS = [
 ]},
 
 {sec:0, type:'prose', title:'Module topics', blocks:[
-  {p:`Turn each card to see what the topic covers.`, lede:true},
   {flip:[
     {front:`Preparing for the interaction`, back:`How working with uncertainty can be developed as a professional skill.`},
     {front:`How callers and texters present`, back:`How the range of caller and texter needs and experiences may appear in your work.`},
@@ -525,7 +527,7 @@ const SCREENS = [
 
 /* ---------------- ACTIVITY: FIRST MOMENTS ---------------- */
 {sec:2, type:'section', kicker:'Activity', art:'e', tone:'tranquil',
- title:`What can you know from the first moments?`, line:`One opening message, and what it does and does not tell you.`},
+ title:`What can you know from the first moments?`, line:`You will read one opening message and consider what it does and does not tell you.`},
 
 {sec:2, type:'prose', title:'How this activity works', blocks:[
   {p:`The first thing a person shares is often all you have to guide your initial response. It can quickly shape what you expect and what you say next. Working with uncertainty means noticing what those first words suggest and how you react to them, without treating those first impressions as facts.`, lede:true},
@@ -638,7 +640,7 @@ const SCREENS = [
 
 /* ---------------- ACTIVITY: WHO IS REACHING OUT? ---------------- */
 {sec:5, type:'section', kicker:'Activity', art:'c', tone:'tranquil',
- title:`Who is reaching out?`, line:`The opening moments of seven different 9-8-8 interactions.`},
+ title:`Who is reaching out?`, line:`You will meet seven people in the opening moments of a call or text and choose how to respond.`},
 
 {sec:5, type:'prose', title:'How this activity works', blocks:[
   {p:`In this activity, you will review the opening moments of seven different 9-8-8 interactions. Each person reflects a type of presentation you may encounter in this work.`, lede:true},
@@ -678,21 +680,21 @@ const SCREENS = [
 
 {sec:6, type:'vignette', n:2, person:{name:'Riley', init:'R', sub:'Text', tag:'A texter who is quiet and slow to engage'},
  thread:{ch:'Text', lines:[
-   {who:'us', spk:'Responder', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
-   {who:'them', spk:'Texter', t:`hi`},
-   {who:'them', spk:'Texter', t:`idk what i'm supposed to say`},
+   {who:'us', spk:'Responder', time:'9:41 PM', t:`Welcome to 9-8-8: Suicide Crisis Helpline. What has you reaching out today?`},
+   {who:'them', spk:'Texter', time:'9:42 PM', t:`hi`},
+   {who:'them', spk:'Texter', time:'9:42 PM', t:`idk what i'm supposed to say`},
    {sys:`a long pause; the typing indicator appears, then stops`, typing:true}
  ]},
  write:{prompt:`Before you see any options, try writing the first message you would send to Riley.`,
   placeholder:`What would you send?`, cta:`Save my response`, best:'A',
   feedback:`Keep your message in mind as you review the options below. Notice which option is closest to what you wrote, and how Riley responds to it.`},
  step2:{prompt:`Now choose the first message you would send to Riley.`, hint:`There is no score. Notice how each response affects what they do next.`, options:[
-   {k:'A', t:`"Hi, I'm glad you texted. There's no pressure to know what to say yet. I'm here, and we can go at your pace."`,
-    reply:[{sys:`two minutes pass`},{spk:'Texter', t:`ok`},{spk:'Texter', t:`it's been a weird week i guess`},{sys:`the thread stays open`}]},
-   {k:'B', t:`"Hi, thanks for reaching out. Can you tell me a bit about what's going on today? What made you decide to text?"`,
+   {k:'A', time:'9:46 PM', t:`"Hi, I'm glad you texted. There's no pressure to know what to say yet. I'm here, and we can go at your pace."`,
+    reply:[{spk:'Texter', time:'9:48 PM', t:`ok`},{spk:'Texter', time:'9:48 PM', t:`it's been a weird week i guess`},{sys:`the thread stays open`}]},
+   {k:'B', time:'9:46 PM', t:`"Hi, thanks for reaching out. Can you tell me a bit about what's going on today? What made you decide to text?"`,
     reply:[{sys:`the typing indicator appears, stops, and does not return for several minutes`}]},
-   {k:'C', t:`"Hi, you've reached 9-8-8. Lots of people aren't sure what to say at first. Is it something at school, at home, or something else?"`,
-    reply:[{spk:'Texter', t:`idk`},{sys:`nothing further arrives for a long time`}]}
+   {k:'C', time:'9:46 PM', t:`"Hi, you've reached 9-8-8. Lots of people aren't sure what to say at first. Is it something at school, at home, or something else?"`,
+    reply:[{spk:'Texter', time:'9:47 PM', t:`idk`},{sys:`nothing further arrives for a long time`}]}
  ],
  closing:`Riley's typing indicator suggests they are still deciding whether to continue. The strongest response is the warm welcome that does not ask for an answer, because it gives Riley room to reply at their own pace. The other two responses ask Riley a question before they seem ready. Even a gentle question, or a second message sent too soon, can create pressure to respond. In a hesitant text interaction, time can matter just as much as words.`}
 },
@@ -852,7 +854,7 @@ const SCREENS = [
 
 /* ---------------- ACTIVITY: SHAPING THE PRESENTATION ---------------- */
 {sec:8, type:'section', kicker:'Activity', art:'b', tone:'tranquil',
- title:`What might be shaping this presentation?`, line:`Four caller and texter presentations, and the circumstances that may be shaping each one.`},
+ title:`What might be shaping this presentation?`, line:`You will consider what may be shaping how four callers and texters present.`},
 
 {sec:8, type:'prose', title:'How this activity works', blocks:[
   {p:`The same distress can look and sound very different from one person to another.`, lede:true},
@@ -909,7 +911,7 @@ const SCREENS = [
 {sec:10, type:'video', title:'Being ready for the work'},
 
 {sec:11, type:'section', kicker:'Activity', art:'a', tone:'tranquil',
- title:`Build a readiness plan`, line:`A simple plan for before, during and after a shift.`},
+ title:`Build a readiness plan`, line:`You will plan what could help you before, during and after a shift.`},
 
 {sec:11, type:'write', title:'Build a readiness plan',
  intro:[
@@ -933,9 +935,9 @@ const SCREENS = [
  ]},
 
 {sec:12, type:'section', kicker:'Activity', art:'d', tone:'tranquil',
- title:`Readiness reflection`, line:`What you have noticed about yourself over the course of this module.`},
+ title:`Readiness reflection`, line:`You will reflect on what you have learned about yourself in this module.`},
 
-{sec:12, type:'write', title:'Readiness reflection', numbered:true, prototypeNote:false,
+{sec:12, type:'write', title:'Readiness reflection', numbered:true,
  intro:[
   {p:`Throughout this module, you have considered the range of people who contact 9-8-8, the different ways distress may present, and what you bring to each interaction.`, lede:true},
   {p:`Before you finish, take a few minutes to reflect on what you have learned about yourself.`}
@@ -1022,6 +1024,7 @@ function sectionArt(v, tone){
 function blocks(list, root){
   list.forEach(b=>{
     if(b.p) root.append(el('p', [b.lede?'lede':'', b.indent?'indent':''].join(' ').trim()||null, H(b.p)));
+    else if(b.instr) root.append(el('p','instr','<em>'+H(b.instr)+'</em>'));
     else if(b.h3) root.append(el('h3', null, H(b.h3)));
     else if(b.ul){ const u=el('ul','brand'); b.ul.forEach(t=>u.append(el('li',null,H(t)))); root.append(u); }
     else if(b.ol){ const o=el('ol','brand'); b.ol.forEach(t=>o.append(el('li',null,H(t)))); root.append(o); }
@@ -1035,7 +1038,7 @@ function blocks(list, root){
     else if(b.reveal) root.append(revealEl(b.reveal));
     else if(b.table) root.append(tableEl(b.table));
     else if(b.thread) root.append(threadEl(b.thread));
-    else if(b.audio) root.append(audioEl({label:b.audio.label, open:b.audio.open,
+    else if(b.audio) root.append(audioEl({label:b.audio.label, open:b.audio.open, src:b.audio.src,
       transcript: threadEl({ch:b.audio.ch||'Voice call', lines:b.audio.lines})}));
   });
 }
@@ -1135,7 +1138,6 @@ function writingEl(cfg){
   row.append(show,copy,said); wrap.append(row);
   if(cfg.after){ const a=el('div'); a.style.marginTop='1.4rem'; blocks(cfg.after,a); wrap.append(a); }
   wrap.append(slot);
-  if(cfg.prototypeNote!==false) wrap.append(el('div','note','<p>Prototype note: answers stay in this browser session only. In the LMS build, responses save to the learner record.</p>'));
   return wrap;
 }
 
@@ -1167,11 +1169,29 @@ function writeStepEl(cfg, store, onDone){
 }
 
 function audioEl(cfg){
-  const w=el('div','audio');
-  w.innerHTML='<div class="bar"><span class="play"></span>'+
+  const w=el('div','audio'+(cfg.src?' live':''));
+  w.innerHTML='<div class="bar">'+(cfg.src?'<button class="play" type="button" aria-label="Play"></button>':'<span class="play"></span>')+
     '<div class="meta"><span class="ttl">'+cfg.label+'</span>'+
-    '<span class="sub">Audio to be added</span></div>'+
+    '<span class="sub">'+(cfg.src?'Audio':'Audio to be added')+'</span></div>'+
     '<div class="wave">'+Array.from({length:38},(_,i)=>'<span style="height:'+(18+Math.abs(Math.sin(i*1.15))*62)+'%"></span>').join('')+'</div></div>';
+  if(cfg.src){
+    /* A real clip: the play button and the bars work as a small player.
+       `src` is a data URI or URL supplied by the content file. */
+    const a=new Audio(cfg.src), play=w.querySelector('.play'), sub=w.querySelector('.sub'),
+          bars=[...w.querySelectorAll('.wave span')], wave=w.querySelector('.wave');
+    const fmt=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
+    a.addEventListener('loadedmetadata',()=>{ sub.textContent=fmt(a.duration); });
+    a.addEventListener('timeupdate',()=>{
+      const f=a.duration?a.currentTime/a.duration:0;
+      bars.forEach((b,i)=>b.classList.toggle('on', i/bars.length<f));
+      sub.textContent=fmt(a.currentTime)+' / '+fmt(a.duration||0);
+    });
+    const setPlaying=on=>{ play.classList.toggle('pause',on); play.setAttribute('aria-label', on?'Pause':'Play'); };
+    a.addEventListener('play',()=>setPlaying(true)); a.addEventListener('pause',()=>setPlaying(false));
+    a.addEventListener('ended',()=>{ setPlaying(false); bars.forEach(b=>b.classList.remove('on')); sub.textContent=fmt(a.duration); });
+    play.onclick=()=>{ a.paused ? a.play() : a.pause(); };
+    wave.onclick=e=>{ const r=wave.getBoundingClientRect(); if(a.duration) a.currentTime=((e.clientX-r.left)/r.width)*a.duration; };
+  }
   const btn=el('button','transbtn', (cfg.open?'Hide transcript':'Show transcript'));
   const slot=el('div');
   slot.style.display = cfg.open ? '' : 'none';
@@ -1201,7 +1221,8 @@ function lineEl(l, isText){
     return wrap;
   }
   const node = isText
-    ? el('div','bubble '+(l.who==='us'?'us':'them'),'<span class="spk">'+(l.spk||'')+'</span>'+H(l.t))
+    ? el('div','bubble '+(l.who==='us'?'us':'them'),'<span class="spk">'+(l.spk||'')+
+        (l.time?'<span class="time">'+l.time+'</span>':'')+'</span>'+H(l.t))
     : el('div','line','<span class="spk">'+(l.spk||'')+'</span>'+(l.meta?'<span class="meta">'+l.meta+' </span>':'')+H(l.t));
   if(!l.ann) return node;
   /* Annotations sit under their line, hidden to start. Each <mark> in the
@@ -1363,7 +1384,7 @@ function respondEl(cfg, isText){
     if(chosen){
       const o=cfg.options.find(x=>x.k===chosen);
       const cont=el('div','thread','<p class="ch">'+(isText?'How the thread continues':'How the call continues')+'</p>');
-      cont.append(lineEl({who:'us',spk:'Responder',t:o.t.replace(/^"|"$/g,'')},isText));
+      cont.append(lineEl({who:'us',spk:'Responder',time:o.time,t:o.t.replace(/^"|"$/g,'')},isText));
       o.reply.forEach(r=>cont.append(lineEl({...r,who:'them'},isText)));
       if(isText) out.append(cont);
       else out.append(audioEl({label:cfg.audioLabel||'Your response and what follows', transcript:cont}));
@@ -1378,11 +1399,10 @@ function respondEl(cfg, isText){
       if(cfg.compare){
         const best=cfg.options.find(x=>x.k===cfg.compare.best);
         const mine=(cfg.compare.store.text||'').trim();
-        const cmp=el('div','compare',
+        fb.append(el('div','compare',
           '<div class="side"><span class="lbl">What you wrote</span>'+
           (mine ? '<p>'+ESC(mine)+'</p>' : '<p class="none">You moved on without writing a response.</p>')+'</div>'+
-          '<div class="side best"><span class="lbl">The strongest response</span><p>'+H(best.t.replace(/^"|"$/g,''))+'</p></div>');
-        fb.append(cmp);
+          '<div class="side best"><span class="lbl">The strongest response</span><p>'+H(best.t.replace(/^"|"$/g,''))+'</p></div>'));
       }
       if(cfg.closing) fb.append(el('p',null,H(cfg.closing)));
       if(cfg.closingBlocks) blocks(cfg.closingBlocks, fb);
@@ -1403,9 +1423,9 @@ function questionEl(q, opts){
     (q.hint?'<p class="hint">'+H(q.hint)+'</p>':''));
   const list=el('div','opts'); box.append(list);
   const slot=el('div'); box.append(slot);
-  /* `picked` is the answer given; `reading` is another option the learner has
-     opened afterwards to read its feedback, which questions with per-option
-     feedback allow once the right answer is in. */
+  /* `picked` is the answer given; `reading` is another option opened afterwards
+     to read its feedback, which per-option-feedback questions allow once the
+     right answer is in. */
   let picked=null, reading=null;
   const perOption = !q.shared && !q.oneFb;
   const paint=()=>{
@@ -1424,7 +1444,6 @@ function questionEl(q, opts){
           else b.dataset.outcome='dim';
         }
         else if(open){ if(o.correct) b.dataset.outcome='correct'; else if(reading===o.k) b.dataset.outcome='info'; }
-        else if(gotIt){ if(o.correct) b.dataset.outcome='correct'; else b.dataset.outcome='dim'; }
       }
       b.onclick=()=>{
         if(open){ reading = (o.k===picked||o.k===reading) ? null : o.k; paint(); return; }
@@ -1435,14 +1454,14 @@ function questionEl(q, opts){
       list.append(b);
     });
     if(picked){
-      const shown=q.options.find(o=>o.k===(reading||picked));
+      const chosen=q.options.find(o=>o.k===(reading||picked));
       const fb=el('div'); fb.setAttribute('role','status');
       if(q.shared){ fb.className='fb info'; fb.innerHTML='<p>'+H(q.sharedFb)+'</p>'; }
-      else if(q.oneFb){ fb.className='fb '+(shown.correct?'yes':'no'); fb.innerHTML='<p>'+H(q.oneFb)+'</p>'; }
+      else if(q.oneFb){ fb.className='fb '+(chosen.correct?'yes':'no'); fb.innerHTML='<p>'+H(q.oneFb)+'</p>'; }
       else{
-        fb.className='fb '+(reading ? 'info' : (shown.correct?'yes':'no'));
-        fb.innerHTML='<p>'+H(shown.fb)+'</p>';
-        if(!shown.correct && !reading){
+        fb.className='fb '+(reading ? 'info' : (chosen.correct?'yes':'no'));
+        fb.innerHTML='<p>'+H(chosen.fb)+'</p>';
+        if(!chosen.correct && !reading){
           const again=el('button','btn ghost small','Try again'); again.style.marginTop='.8rem';
           again.onclick=()=>{ picked=null; reading=null; paint(); };
           fb.append(again);
@@ -1502,7 +1521,6 @@ function chunkEl(s){
       '<span class="chip'+(isText?' blue':'')+'" style="display:none">'+s.person.tag+'</span>'));
     if(isText) v.append(threadEl(s.thread));
     else v.append(audioEl({label:'Opening moments of the call', transcript:threadEl(s.thread)}));
-
     /* A vignette runs the steps the storyboard gives it: a question about what
        the person needs, a draft of the learner's own first response, and the
        response choice. Steps are numbered only where there is more than one,
