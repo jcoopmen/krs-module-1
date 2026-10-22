@@ -306,8 +306,31 @@ mark:focus-visible{outline:2px solid var(--header);outline-offset:2px}
 .compare p{margin:0;font-size:.97rem;line-height:1.55;color:var(--body);white-space:pre-wrap}
 .compare p.none{font-style:italic;color:var(--taupe)}
 .writestep textarea{margin-top:.2rem}
+/* Immersive scenario: one stage at a time, finished stages in a trail above. */
+.imm-trail{display:grid;gap:.6rem;margin:0 0 .3rem}
+.imm-trail:empty{display:none}
+.imm-trail .audio{margin:0}
+.imm-trail .thread{margin:0}
+.imm-done{background:var(--bg);border:1px solid var(--border);border-radius:1rem;padding:.65rem .95rem;font-size:.95rem;line-height:1.5}
+.imm-done .lbl,.imm-said .lbl{display:block;font-family:var(--sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);font-weight:500;margin-bottom:.2rem}
+.imm-stage{scroll-margin-top:5.5rem;padding-top:.4rem}
+.imm-trail:not(:empty)+.imm-stage{border-top:1px solid var(--border);margin-top:1rem;padding-top:.6rem}
+.imm-stage .col-instr,.imm-stage p.instr{font-style:italic;color:var(--body);margin:.3rem 0 .8rem}
+.imm-said{background:var(--tranquil);color:var(--header);border-radius:1.1rem;border-bottom-right-radius:.35rem;padding:.75rem 1rem;margin:0 0 1rem auto;max-width:88%;line-height:1.55}
+.imm-next{margin:.9rem 0 .2rem;display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.imm-in{animation:immIn .45s ease both}
+@keyframes immIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.opt .tried{margin-left:auto;flex:0 0 auto;font-family:var(--sans);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);padding:.3rem 0 0 .6rem}
+.thread .typing.pending{margin:0 0 .45rem}
+.audio.big .bar{padding:1rem 1.2rem;gap:1.1rem}
+.audio.big .play{width:3.4rem;height:3.4rem}
+.audio.big .play::after{border-left-width:.95rem;border-top-width:.6rem;border-bottom-width:.6rem}
+.audio.big .play.pause::after{border:0;border-left:.28rem solid var(--header);border-right:.28rem solid var(--header);width:.95rem;height:1.05rem;left:50%}
+.audio.big .ttl{font-size:1rem}
+.audio.big .wave{height:2.4rem}
 .gate{max-width:var(--col);margin:2.6rem auto 1rem;padding:1.4rem 1.4rem 0;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:.7rem;text-align:center}
 .gate .btn{max-width:100%}
+.gate[hidden]{display:none}
 .gate .back{background:none;border:0;color:var(--taupe);font-family:var(--sans);font-size:.85rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .gate .back:hover{color:var(--header)}
 .drawer a[aria-current="true"]{background:var(--bg);color:var(--header);font-weight:500}
@@ -420,7 +443,7 @@ textarea:focus{border-color:var(--trust);outline:none;box-shadow:0 0 0 3px rgba(
 
 <script>
 /* =====================================================================
-   9-8-8 e-learning prototype — MODULE CONTENT (v9)
+   9-8-8 e-learning prototype — MODULE CONTENT (v10)
    Key Responder Skills · Module 1: Preparing for Interactions
    Source storyboard: KRS_Module_1_Content_Editor_Changes_Included.docx
    Audio: KRS_Module_1_Audio_Scripts.docx, clips M1-V1-01 to M1-V6-08
@@ -434,7 +457,10 @@ const META = {
   course:      'Key Responder Skills',
   moduleLabel: 'Module 1',
   title:       'Preparing for Interactions',
-  time:        '30 minutes'
+  time:        '30 minutes',
+  /* Scenario vignettes run one stage at a time (see COMPONENTS.md,
+     "Immersive scenarios"). Remove this line for the standard layout. */
+  immersive:   true
 };
 
 /* Recorded audio for the four voice vignettes. build.py embeds every clip in
@@ -1310,7 +1336,7 @@ function writeStepEl(cfg, store, onDone){
 
 function audioEl(cfg){
   const srcs=[].concat(cfg.src||[]).filter(Boolean);
-  const w=el('div','audio'+(srcs.length?' live':''));
+  const w=el('div','audio'+(srcs.length?' live':'')+(cfg.big?' big':''));
   w.innerHTML='<div class="bar">'+(srcs.length?'<button class="play" type="button" aria-label="Play"></button>':'<span class="play"></span>')+
     '<div class="meta"><span class="ttl">'+cfg.label+'</span>'+
     '<span class="sub">'+(srcs.length?'Audio':'Audio to be added')+'</span></div>'+
@@ -1320,57 +1346,68 @@ function audioEl(cfg){
        `src` is a data URI or URL, or a list of them played in order as one
        exchange (the responder's line, then the caller's reply) with a short
        gap between clips (`gap`, in seconds). The bars and the clock run
-       across the whole list. */
-    const clips=srcs.map(x=>{ const a=new Audio(); a.preload='metadata'; a.src=x; return a; });
+       across the whole list. One audio element plays every clip in turn, so a
+       phone that allowed the first clip also allows the rest. `onEnd` runs
+       when the last clip finishes. */
+    const a=new Audio(); a.preload='auto';
     const gap=(cfg.gap ?? 0.4)*1000;
     const play=w.querySelector('.play'), sub=w.querySelector('.sub'),
           bars=[...w.querySelectorAll('.wave span')], wave=w.querySelector('.wave');
     const fmt=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
-    const durs=clips.map(()=>0);
-    let idx=0, playing=false, timer=null;
-    const total=()=>durs.reduce((a,b)=>a+b,0);
-    const elapsed=()=>durs.slice(0,idx).reduce((a,b)=>a+b,0)+(clips[idx].currentTime||0);
+    const durs=srcs.map(()=>0);
+    let idx=0, loaded=-1, playing=false, timer=null;
+    srcs.forEach((x,i)=>{ const m=new Audio(); m.preload='metadata';
+      m.addEventListener('loadedmetadata',()=>{ durs[i]=m.duration||0; if(!playing) paint(); }); m.src=x; });
+    const total=()=>durs.reduce((p,q)=>p+q,0);
+    const elapsed=()=>durs.slice(0,idx).reduce((p,q)=>p+q,0)+(loaded===idx?(a.currentTime||0):0);
     const paint=()=>{
-      const T=total(), e=elapsed(), f=T?e/T:0;
+      const T=total(), e=Math.min(elapsed(),T), f=T?e/T:0;
       bars.forEach((b,i)=>b.classList.toggle('on', i/bars.length<f));
       sub.textContent=(playing||e>0) ? fmt(e)+' / '+fmt(T) : fmt(T);
     };
     const setPlaying=on=>{ playing=on; play.classList.toggle('pause',on); play.setAttribute('aria-label', on?'Pause':'Play'); };
-    const start=i=>{ const p=clips[i].play(); if(p&&p.catch) p.catch(()=>setPlaying(false)); };
-    const stop=()=>{ clearTimeout(timer); timer=null; clips.forEach(c=>c.pause()); setPlaying(false); };
-    clips.forEach((a,i)=>{
-      a.addEventListener('loadedmetadata',()=>{ durs[i]=a.duration||0; if(!playing) paint(); });
-      a.addEventListener('timeupdate',paint);
-      a.addEventListener('ended',()=>{
-        if(i<clips.length-1){
-          idx=i+1; clips[idx].currentTime=0;
-          timer=setTimeout(()=>{ timer=null; if(playing) start(idx); }, gap);
-        } else {
-          stop(); idx=0; clips.forEach(c=>{ c.currentTime=0; });
-          bars.forEach(b=>b.classList.remove('on')); sub.textContent=fmt(total());
-        }
-      });
+    const go=(t)=>{
+      const run=()=>{ if(t!=null) a.currentTime=t; if(playing){ const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>{ setPlaying(false); paint(); }); } };
+      if(loaded!==idx){ loaded=idx; a.src=srcs[idx]; a.addEventListener('loadedmetadata',run,{once:true}); a.load(); }
+      else run();
+    };
+    const stop=()=>{ clearTimeout(timer); timer=null; a.pause(); setPlaying(false); };
+    a.addEventListener('timeupdate',paint);
+    a.addEventListener('ended',()=>{
+      if(idx<srcs.length-1){
+        idx++; paint();
+        timer=setTimeout(()=>{ timer=null; if(playing) go(0); }, gap);
+      } else {
+        stop(); idx=0; loaded=-1; bars.forEach(b=>b.classList.remove('on')); sub.textContent=fmt(total());
+        if(cfg.onEnd) cfg.onEnd();
+      }
     });
-    const player={stop:()=>{ if(playing){ stop(); paint(); } }};
+    const player={
+      stop:()=>{ if(playing){ stop(); paint(); } },
+      play:()=>{ stopAudio(player); setPlaying(true); go(null); }
+    };
     PLAYERS.add(player); w._player=player;
-    play.onclick=()=>{ if(playing){ stop(); paint(); } else { stopAudio(player); setPlaying(true); start(idx); } };
+    play.onclick=()=>{ if(playing){ stop(); paint(); } else player.play(); };
     wave.onclick=e=>{
       const T=total(); if(!T) return;
       const r=wave.getBoundingClientRect(); let t=((e.clientX-r.left)/r.width)*T;
-      clearTimeout(timer); timer=null; clips[idx].pause();
-      let i=0; while(i<clips.length-1 && t>=durs[i]){ t-=durs[i]; i++; }
-      idx=i; clips[i].currentTime=t; paint(); if(playing) start(i);
+      clearTimeout(timer); timer=null;
+      let i=0; while(i<srcs.length-1 && t>=durs[i]){ t-=durs[i]; i++; }
+      if(i!==idx) a.pause();
+      idx=i; go(t); paint();
     };
   }
   const btn=el('button','transbtn', (cfg.open?'Hide transcript':'Show transcript'));
   const slot=el('div');
   slot.style.display = cfg.open ? '' : 'none';
   slot.append(cfg.transcript);
+  let opened=false;
   btn.onclick=()=>{
     const on = slot.style.display==='none';
     slot.style.display = on ? '' : 'none';
     btn.textContent = on ? 'Hide transcript' : 'Show transcript';
     btn.setAttribute('aria-expanded', on);
+    if(on && !opened){ opened=true; if(cfg.onTranscript) cfg.onTranscript(); }
   };
   btn.setAttribute('aria-expanded', !!cfg.open);
   w.append(btn, slot);
@@ -1615,6 +1652,181 @@ function respondEl(cfg, isText){
   return wrap;
 }
 
+/* ---------- immersive scenario ---------- */
+/* An opt-in way of running a vignette: `immersive:true` on the vignette, or
+   `immersive:true` in META for a whole module. One stage shows at a time. The
+   call plays on its own (or the messages arrive one by one) and the first
+   question appears when it has finished. After a response is chosen, the reply
+   plays and the feedback appears when it ends. Finished stages fold into a
+   short trail above the current one, so the opening can be replayed and the
+   learner can see what they chose. Opening a transcript offers a Continue
+   button, so nobody has to listen to move on. */
+const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Text messages arriving one at a time, with a typing indicator before each
+   message from the other person and a longer pause where the clock jumps.
+   `skip()` shows the rest at once. */
+function typeLines(box, lines, isText, done){
+  let i=0, timer=null, finished=false, pending=null, current=null;
+  const end=()=>{ if(finished) return; finished=true; if(done) done(); };
+  const put=l=>{ current=null; const n=lineEl(l,isText); if(!REDUCED) n.classList.add('imm-in'); box.append(n); };
+  const next=()=>{
+    if(i>=lines.length){ end(); return; }
+    const l=current=lines[i++];
+    if(REDUCED){ put(l); next(); return; }
+    const pause = l.wait ? 1100 : 0;
+    if(!l.sys && l.who!=='us'){
+      timer=setTimeout(()=>{
+        pending=el('div','typing pending','<i></i><i></i><i></i>'); box.append(pending);
+        timer=setTimeout(()=>{ pending.remove(); pending=null; put(l); timer=setTimeout(next, 450); },
+          Math.min(2200, 650 + String(l.t).length*14));
+      }, pause);
+    } else {
+      timer=setTimeout(()=>{ put(l); timer=setTimeout(next, l.sys?1100:550); }, pause);
+    }
+  };
+  next();
+  return {skip:()=>{ clearTimeout(timer); if(pending){ pending.remove(); pending=null; }
+    /* a message caught mid-typing still has to land */
+    if(current) box.append(lineEl(current,isText)); current=null;
+    while(i<lines.length) box.append(lineEl(lines[i++],isText)); end(); }};
+}
+
+function immersiveEl(s, onComplete){
+  const isText=s.thread.ch==='Text', name=s.person.name;
+  const v=el('div','vig imm');
+  v.append(el('div','vig-head','<div class="avatar">'+s.person.init+'</div>'+
+    '<div><span class="nm">'+name+'</span><span class="sub">'+s.person.sub+'</span></div>'+
+    '<span class="chip'+(isText?' blue':'')+'" style="display:none">'+s.person.tag+'</span>'));
+  const trail=el('div','imm-trail'), stage=el('div','imm-stage');
+  v.append(trail, stage);
+  const store={text:''};
+  const parts=[]; if(s.step1) parts.push('need'); if(s.write) parts.push('write'); parts.push('respond');
+  const labels={need:'What might '+name+' need first?', write:'Write your own first response', respond:'Choose your first response'};
+  const showTag=()=>{ v.querySelector('.chip').style.display=''; };
+  const instr=t=>el('p','instr','<em>'+H(t)+'</em>');
+  const enter=()=>{ if(!REDUCED) stage.classList.remove('imm-in'), void stage.offsetWidth, stage.classList.add('imm-in');
+    if(stage.isConnected) requestAnimationFrame(()=>stage.scrollIntoView({behavior:REDUCED?'auto':'smooth', block:'start'})); };
+  const done=(label, html)=>{ const d=el('div','imm-done','<span class="lbl">'+H(label)+'</span>'+html); trail.append(d); };
+  const nextBtn=(label, fn)=>{ const row=el('div','imm-next'); const b=el('button','btn yellow small',label); b.onclick=()=>{ row.remove(); fn(); }; row.append(b); return row; };
+  const stepHead=i=> parts.length>1 ? el('p','step','<span class="n">'+(i+1)+'</span> '+labels[parts[i]]) : null;
+  const run=i=>{ const p=parts[i]; stage.innerHTML=''; if(p==='need') need(i); else if(p==='write') write(i); else respond(i); };
+
+  /* Stage 0: the opening, on its own */
+  const opening=()=>{
+    let moved=false;
+    const advance=()=>{ if(moved) return; moved=true;
+      if(isText) trail.append(th);
+      else { player.classList.remove('big'); trail.append(player); }
+      run(0); enter(); };
+    let th, player;
+    if(isText){
+      stage.append(instr('Read the messages as they arrive.'));
+      th=el('div','thread','<p class="ch">Text conversation</p>'); stage.append(th);
+      const skipRow=el('div','imm-next'); const skip=el('button','btn ghost small','Show all messages'); skipRow.append(skip); stage.append(skipRow);
+      const t=typeLines(th, stampLines(s.thread.lines, clockFrom(s.thread.startTime)), true,
+        ()=>{ skipRow.remove(); setTimeout(advance, REDUCED?0:700); });
+      skip.onclick=()=>t.skip();
+    } else {
+      stage.append(instr('Listen to the opening moments of the call. The next step appears when it ends.'));
+      let cont=null;
+      player=audioEl({label:'Opening moments of the call', src:s.audio, big:true, transcript:threadEl(s.thread),
+        onEnd:()=>{ if(cont) cont.remove(); advance(); },
+        onTranscript:()=>{ if(!moved && !cont){ cont=nextBtn('Continue', advance); stage.append(cont); } }});
+      stage.append(player);
+      if(!s.audio){ cont=nextBtn('Continue', advance); stage.append(cont); }
+    }
+  };
+
+  /* Stage: what might the person need */
+  const need=i=>{
+    const h=stepHead(i); if(h) stage.append(h);
+    let shown=false;
+    const q=questionEl({...s.step1}, {onCorrect:()=>{
+      showTag(); if(shown) return; shown=true;
+      stage.append(nextBtn('Continue', ()=>{
+        const right=s.step1.options.find(o=>o.correct);
+        done(labels.need, H(right.t)); run(i+1); enter(); }));
+    }});
+    stage.append(q);
+  };
+
+  /* Stage: the learner's own first response */
+  const write=i=>{
+    const h=stepHead(i); if(h) stage.append(h);
+    stage.append(writeStepEl(s.write, store, ()=>{
+      stage.append(nextBtn('Continue', ()=>{
+        const mine=(store.text||'').trim();
+        done('Your first response', mine?ESC(mine):'<em>You moved on without writing a response.</em>');
+        run(i+1); enter(); }));
+    }));
+  };
+
+  /* Stage: choose a response, hear or read the reply, then the feedback */
+  const respond=i=>{
+    const st=s.step2, tried=new Set();
+    const h=stepHead(i); if(h) stage.append(h);
+    const q=el('div','check','<p class="prompt">'+H(st.prompt)+'</p>'+(st.hint?'<p class="hint">'+H(st.hint)+'</p>':''));
+    const list=el('div','opts'); q.append(list);
+    const out=el('div');
+    stage.append(q, out);
+    const quiet=()=>out.querySelectorAll('.audio').forEach(a=>a._player&&a._player.stop());
+    const options=()=>{
+      quiet(); out.innerHTML=''; q.style.display=''; list.innerHTML='';
+      st.options.forEach(o=>{
+        const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>'+(tried.has(o.k)?'<span class="tried">Tried</span>':''));
+        b.onclick=()=>choose(o); list.append(b);
+      });
+    };
+    const choose=o=>{
+      tried.add(o.k); q.style.display='none'; quiet(); out.innerHTML='';
+      let finished=false;
+      const finish=()=>{
+        if(finished) return; finished=true;
+        if(!s.step1) showTag();
+        /* the reply has been heard: its player steps back so the feedback leads */
+        out.querySelectorAll('.audio.big').forEach(a=>a.classList.remove('big'));
+        const fb=el('div','fb info'+(REDUCED?'':' imm-in')); fb.setAttribute('role','status');
+        if(s.write){
+          const best=st.options.find(x=>x.k===s.write.best), mine=(store.text||'').trim();
+          fb.append(el('div','compare','<div class="side"><span class="lbl">What you wrote</span>'+
+            (mine?'<p>'+ESC(mine)+'</p>':'<p class="none">You moved on without writing a response.</p>')+'</div>'+
+            '<div class="side best"><span class="lbl">The strongest response</span><p>'+H(best.t.replace(/^"|"$/g,''))+'</p></div>'));
+        }
+        if(st.closing) fb.append(el('p',null,H(st.closing)));
+        if(st.closingBlocks) blocks(st.closingBlocks, fb);
+        out.append(fb);
+        if(onComplete) onComplete();
+        if(tried.size<st.options.length) out.append(nextBtn(st.againLabel||'Try another response', ()=>{ options(); enter(); }));
+        requestAnimationFrame(()=>fb.scrollIntoView({behavior:REDUCED?'auto':'smooth', block:'nearest'}));
+      };
+      const said=o.t.replace(/^"|"$/g,'');
+      if(isText){
+        const th=el('div','thread','<p class="ch">How the thread continues</p>'); out.append(th);
+        const lines=stampLines([{who:'us',spk:'Responder',wait:o.wait,t:said}].concat(o.reply.map(r=>({...r,who:'them'}))), clockFrom(st.startTime));
+        const skipRow=el('div','imm-next'); const skip=el('button','btn ghost small','Show all messages'); skipRow.append(skip); out.append(skipRow);
+        const t=typeLines(th, lines, true, ()=>{ skipRow.remove(); setTimeout(finish, REDUCED?0:600); });
+        skip.onclick=()=>t.skip();
+      } else {
+        out.append(el('div','imm-said','<span class="lbl">Your response</span>'+H(said)));
+        out.append(instr('Listen to how '+name+' responds.'));
+        let cont=null;
+        const transcript=threadEl({ch:'Voice call', lines:[{who:'us',spk:'Responder',t:said}].concat(o.reply.map(r=>({...r,who:'them'})))});
+        const pl=audioEl({label:'Your response and what follows', src:o.audio, big:true, transcript,
+          onEnd:()=>{ if(cont) cont.remove(); finish(); },
+          onTranscript:()=>{ if(!finished && !cont){ cont=nextBtn('Continue', finish); pl.after(cont); } }});
+        out.append(pl);
+        if(o.audio && pl._player) pl._player.play(); else { cont=nextBtn('Continue', finish); out.append(cont); }
+      }
+      enter();
+    };
+    options();
+  };
+
+  opening();
+  return v;
+}
+
 /* ---------- knowledge check ---------- */
 function questionEl(q, opts){
   const box=el('div','check',
@@ -1705,6 +1917,10 @@ function chunkEl(s){
     return d;
   }
 
+  if(s.type==='vignette' && (s.immersive ?? META.immersive)){
+    c.append(immersiveEl(s, ()=>{ if(!COMPLETE.has(s)){ COMPLETE.add(s); document.dispatchEvent(new CustomEvent('screendone',{detail:s})); } }));
+    return d;
+  }
   if(s.type==='vignette'){
     const isText=s.thread.ch==='Text';
     const v=el('div','vig');
@@ -1804,9 +2020,22 @@ function endEl(){
     '</div>');
 }
 
+/* Screens that hold the page's Continue button until they are finished: an
+   immersive scenario, until its first reply and feedback have been shown.
+   Finished screens are remembered, so revisiting a page does not hold it again. */
+const COMPLETE=new Set();
+const holdsGate=s=>s && s.type==='vignette' && (s.immersive ?? META.immersive) && !COMPLETE.has(s);
+
 function gateEl(){
   const p=PAGES[state.page], shown=state.revealed[state.page];
   const g=el('div','gate');
+  const lastShown=p.chunks[shown-1];
+  if(holdsGate(lastShown)){
+    g.hidden=true;
+    const show=e=>{ if(e.detail!==lastShown) return; document.removeEventListener('screendone',show);
+      g.hidden=false; if(!REDUCED) g.classList.add('imm-in'); };
+    document.addEventListener('screendone',show);
+  }
   const more = shown < p.chunks.length;
   const last = state.page===PAGES.length-1;
   const btn=el('button','btn', more ? 'Continue' : (last ? 'Finish module' : 'Continue to '+PAGES[state.page+1].name));
